@@ -1,0 +1,39 @@
+{% extends 'bs-template.html' %}
+
+{% block body %}
+<style>
+    .background {
+        background-image: url("../static/img/background-g.png");
+        background-repeat: repeat;
+        background-size: 20%;
+    }
+
+    .line-shadow {
+        width: 100%;
+        margin-top: 0;
+        box-shadow: 0px 20px 30px -8px rgba(0, 0, 0, .2);
+    }
+    .im {
+        width: 40%;
+        height: 40%;
+        max-width: 40%;
+        max-height: 40%;
+        object-fit: cover;
+    }
+</style>
+
+<div class="container-fluid vh-100 d-flex justify-content-center g-0 background">
+    <div class="row w-100 justify-content-center py-5">
+        <div class="col-8 d-flex justify-content-center p-5 h-100 overflow-hidden">
+            <div class="text-center">
+
+                <h2 class="line-shadow">Sitio web en construcción</h2>
+
+                <img src="static/img/chao-island.png" alt="" class="object-fit-cover mb-3">
+                <p><a href="/dashboard">Ir al dashboard</a></p>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

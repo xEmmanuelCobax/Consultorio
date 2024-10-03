@@ -1,0 +1,190 @@
+{% extends 'bs-template.html' %}
+
+{% block head %} 
+<link href="https://fonts.cdnfonts.com/css/chaolphabet" rel="stylesheet">
+<link href="../static/css/styles.css" rel="stylesheet">
+{% endblock %}
+{% block title %} Dashboard {% endblock %}
+
+{% block body %}
+<style>
+  .table-responsive {
+    max-height: 200px;
+  }
+
+  .tableFixHead thead th {
+    position: sticky; 
+    top: 0;
+    z-index: 1;
+  }
+
+  @font-face {
+    font-family: 'chiaro-std-b';
+    src: url('../static/font/FOT-PopJoyStd-B.otf');
+  }
+</style>
+
+<div class="container-fluid p-0 m-0 vh-100 d-flex bg-black">
+  <div class="row w-100 g-0">
+    <!-- #region sidebar -->
+    <div class="col-2 h-100">
+      <div class="flex-shrink-0 p-3 px-2 bg-white h-100 overflow-auto overflow-hide-scroll" style="width: auto;">
+        <a href="/dashboard" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
+          <span class="fs-5 fw-semibold">Dashboard</span>
+        </a>
+        <div class="mb-3 w-100 text-center">
+          <img src="../static/img/chao-island.png" alt="" class="img-circle img-fluid shadow border border-4 w-75">
+        </div>
+        <div class="overflow-y-scroll overflow-hide-scroll h-auto">
+          <p class="mb-0">Guía de navegación</p>
+          <ul class="list-unstyled ps-0">
+            <li class="mb-1">
+              <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
+                data-bs-target="#home-collapse" aria-expanded="false">
+                Principal
+              </button>
+              <div class="collapse show" id="home-collapse">
+                <ul class="btn-toggle-nav fw-normal pb-1 small">
+                  <li><a href="/" class="link-dark rounded">Regresar al inicio</a></li>
+                </ul>
+              </div>
+            </li>
+            <li class="mb-1">
+              <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
+                data-bs-target="#dashboard-collapse" aria-expanded="false">
+                Pacientes
+              </button>
+              <div class="collapse" id="dashboard-collapse">
+                <ul class="btn-toggle-nav fw-normal pb-1 small">
+                  <li><a href="#" class="link-dark rounded">Ver pacientes</a></li>
+                </ul>
+              </div>
+            </li>
+            <li class="mb-1">
+              <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
+                data-bs-target="#orders-collapse" aria-expanded="false">
+                Agenda
+              </button>
+              <div class="collapse" id="orders-collapse">
+                <ul class="btn-toggle-nav fw-normal pb-1 small">
+                  <li><a href="#" class="link-dark rounded">Ver agenda</a></li>
+                </ul>
+              </div>
+            </li>
+            <li class="border-top my-3"></li>
+            <li class="mb-1">
+              <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
+                data-bs-target="#account-collapse" aria-expanded="false">
+                Sesión
+              </button>
+              <div class="collapse" id="account-collapse">
+                <ul class="btn-toggle-nav fw-normal pb-1 small">
+                  <li><a href="#" class="link-dark rounded">Perfil</a></li>
+                  <li><a href="#" class="link-dark rounded">Configuración</a></li>
+                  <li><a href="#" class="link-dark rounded">Cerrar sesión</a></li>
+                </ul>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- #endregion -->
+
+    <!-- #region content -->
+    <div class="col-10">
+      <div class="container-fluid h-100 p-3 bg-danger">
+        <div class="row p-0 h-50">
+          <div class="col-6 p-0">
+            <div class="card rounded-5 p-3 h-100">
+              <div class="row m-0 h-100">
+
+                <!-- #region icono -->
+                <div class="col-3 d-flex px-0">
+                  <div class="d-flex  flex-column text-center">
+                    <div class="mt-5">
+                      <img src="../static/img/icons/Stethoscope Icon.png" alt="" class="img-fluid w-100">
+                    </div>
+
+                    <div class="mt-auto">
+                      <button type="button" class="btn btn-success w-100 p-0"> Agregar </button>
+                      <!-- #region búsqueda -->
+                      <form action="">
+                        <div data-mdb-input-init class="form-outline shadow-sm bg-white">
+                          <div class="input-group py-0">
+                              <span class="input-group-text">
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                      class="bi bi-person-vcard" viewBox="0 0 16 16">
+                                      <path
+                                          d="M5 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4m4-2.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5M9 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4A.5.5 0 0 1 9 8m1 2.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5" />
+                                      <path
+                                          d="M2 2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zM1 4a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H8.96q.04-.245.04-.5C9 10.567 7.21 9 5 9c-2.086 0-3.8 1.398-3.984 3.181A1 1 0 0 1 1 12z" />
+                                  </svg>
+                              </span>
+                              <div class="form-floating">
+                                  <input type="text" class="form-control" pattern="(?=.*[a-zA-Z])(^[\w]{5,20})$">
+                                  <span class="invalid-feedback mt-3 px-4">
+                                      <ul class="fw-bold">
+                                          <span class="badge bg-danger rounded-pill fs-6">Requisitos del nombre de usuario:</span>
+                                          <li>El nombre de usuario debe contener entre 5 y 20 caracteres.</li>
+                                          <li>El nombre de usuario debe contener al menos una letra (sin signos diacríticos).</li>
+                                          <li>El nombre de usuario sólo debe contener letras (sin signos diacríticos), números o guiones bajos, y no debe contener espacios.</li>
+                                      </ul>
+                                  </span>
+                              </div>
+                          </div>
+                        </div>
+                      </form>
+                      <!-- #endregion -->
+                    </div>
+                  </div>
+                </div>
+                <!-- #endregion -->
+
+                <!-- #region tabla -->
+                <div class="col-9">
+                  <h3 class="card-title my-3">Pacientes</h3>
+                  <div class="bg-white overflow-hidden border border-1">
+
+                    <!-- TABLE RESPONSIVE -->
+                    <div class=" table-responsive overflow-auto overflow-hide-scroll">
+                      <table class="table table-sm table-hover table-bordered">
+                        <thead>
+                          <tr>
+                            <th class="w-25 small">Nombre</th>
+                            <th class="w-25 small">Fecha</th>
+                            <th class="w-25 small">Hora</th>
+                            <th class="w-25 small">Motivo</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {% for i in range(11) %}
+                          <tr class="p-0">
+                            <td class="w-50 p-0 small">Fulanito</td>
+                            <td class="w-50 p-1 small">23-12-2344</td>
+                            <td class="w-50 p-1 small">23:32</td>
+                            <td class="w-50 p-1 small">Daño cerebral</td>
+                          </tr>
+                          {% endfor %}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                <!-- #endregion -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      
+
+    </div>
+    <!-- #endregion -->
+  </div>
+
+</div>
+
+{% endblock %}
