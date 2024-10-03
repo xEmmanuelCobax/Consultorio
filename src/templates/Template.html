@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block head %}
+    {% endblock %}
+    <title>
+        {% block title %}
+        MediLink - Template
+        {% endblock %}
+    </title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            min-height: 100vh;
+            min-height: -webkit-fill-available;
+        }
+
+        html {
+            height: -webkit-fill-available;
+        }
+
+        main {
+            display: flex;
+            flex-wrap: nowrap;
+            height: 100vh;
+            height: -webkit-fill-available;
+            max-height: 100vh;
+            overflow-x: auto;
+            overflow-y: hidden;
+        }
+
+        .sidebar {
+            width: 280px;
+            background-color: #3498db;
+        }
+
+        .sidebar-content {
+            padding: 1rem;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.8) !important;
+        }
+
+        .nav-link:hover,
+        .nav-link:focus {
+            color: #ffffff !important;
+        }
+
+        .nav-link.active {
+            background-color: #2980b9 !important;
+        }
+
+        .dropdown-toggle::after {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <div class="d-flex flex-column flex-shrink-0 p-3 text-white sidebar">
+            <div class="sidebar-content">
+
+                <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="32" fill="currentColor" class="bi me-2"
+                        viewBox="0 0 16 16">
+                        <path
+                            d="M8 0a8 8 0 0 0-8 8 8 8 0 0 0 8 8 8 8 0 0 0 8-8 8 8 0 0 0-8-8zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z" />
+                    </svg>
+                    <span class="fs-4">MediLink</span>
+                </a>
+
+                <hr>
+
+                <div class="dropdown">
+                    <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="https://github.com/mdo.png" alt="" width="75" height="75" class="rounded-circle me-2">
+                        <strong>Dr. García</strong>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+                        <li><a class="dropdown-item" href="#">Configuración</a></li>
+                        <li><a class="dropdown-item" href="#">Perfil</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="#">Cerrar sesión</a></li>
+                    </ul>
+                </div>
+
+                <hr>
+
+                <ul class="nav nav-pills flex-column mb-auto">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link active" aria-current="page">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi me-2" viewBox="0 0 16 16">
+                                <path
+                                    d="M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146zM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4H2.5z" />
+                            </svg>
+                            Inicio
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{url_for('Pacientes')}}" class="nav-link text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi me-2" viewBox="0 0 16 16">
+                                <path
+                                    d="M7 2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1zM2 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H2zm12 1a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1h12z" />
+                            </svg>
+                            Pacientes
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{url_for('Agenda')}}" class="nav-link text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi me-2" viewBox="0 0 16 16">
+                                <path
+                                    d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z" />
+                            </svg>
+                            Agenda
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{url_for('Inventario')}}" class="nav-link text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi me-2" viewBox="0 0 16 16">
+                                <path
+                                    d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5 8 5.961 14.154 3.5 8.186 1.113zM15 4.239l-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464L7.443.184z" />
+                            </svg>
+                            Inventario
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{url_for('Ajustes')}}" class="nav-link text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi me-2" viewBox="0 0 16 16">
+                                <path
+                                    d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z" />
+                            </svg>
+                            Ajustes
+                        </a>
+                    </li>
+                </ul>
+                
+            </div>
+        </div>
+        <div id="content-wrapper" class="d-flex flex-column">
+            
+        </div>
+        {%block body%}
+        {%endblock%}
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
