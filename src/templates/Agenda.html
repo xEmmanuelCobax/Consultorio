@@ -1,5 +1,265 @@
-{% extends 'Template.html' %}
+{% extends 'Vertical-navbar.html' %}
 
+{% block title %}
+MediLink - Agenda
+{% endblock %}
+
+{% block head %}
+<style>
+    .calendar-container {
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .calendar-day {
+        cursor: pointer;
+    }
+
+    .calendar-day:hover {
+        background-color: #e9ecef;
+    }
+
+    .calendar-day.has-appointment {
+        background-color: #cfe2ff;
+    }
+
+    .calendar-day.selected {
+        background-color: #0d6efd;
+        color: white;
+    }
+</style>
+{% endblock %}
 
 {% block body %}
+<div class="container-fluid main-content">
+    <div class="row">
+        <div class="col-md-9">
+            <div class="calendar-container p-3 mt-4">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2 id="currentMonthYear"></h2>
+                    <div>
+                        <button id="prevMonth" class="btn btn-outline-primary"><i
+                                class="fas fa-chevron-left"></i></button>
+                        <button id="nextMonth" class="btn btn-outline-primary"><i
+                                class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Lun</th>
+                            <th>Mar</th>
+                            <th>Mié</th>
+                            <th>Jue</th>
+                            <th>Vie</th>
+                            <th>Sáb</th>
+                            <th>Dom</th>
+                        </tr>
+                    </thead>
+                    <tbody id="calendarBody">
+                        <!-- Calendar days will be inserted here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h5 class="card-title">Detalles de la Cita</h5>
+                    <div id="appointmentDetails">
+                        <!-- Appointment details will be shown here -->
+                    </div>
+                    <div class="d-grid gap-2 mt-3">
+                        <button id="addAppointment" class="btn btn-primary" type="button">Agregar Cita</button>
+                        <button id="modifyAppointment" class="btn btn-secondary" type="button" disabled>Modificar
+                            Cita</button>
+                        <button id="deleteAppointment" class="btn btn-danger" type="button" disabled>Eliminar
+                            Cita</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Appointment Modal -->
+<div class="modal fade" id="appointmentModal" tabindex="-1" aria-labelledby="appointmentModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="appointmentModalLabel">Detalles de la Cita</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="appointmentForm">
+                    <input type="hidden" id="appointmentId">
+                    <div class="mb-3">
+                        <label for="appointmentDate" class="form-label">Fecha</label>
+                        <input type="date" class="form-control" id="appointmentDate" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="appointmentTime" class="form-label">Hora</label>
+                        <input type="time" class="form-control" id="appointmentTime" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="patientName" class="form-label">Nombre del Paciente</label>
+                        <input type="text" class="form-control" id="patientName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="appointmentReason" class="form-label">Motivo</label>
+                        <input type="text" class="form-control" id="appointmentReason" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" id="saveAppointment">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        let currentDate = new Date();
+        let appointments = [];
+
+        function updateCalendar() {
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+            const firstDay = new Date(year, month, 1);
+            const lastDay = new Date(year, month + 1, 0);
+            const daysInMonth = lastDay.getDate();
+            const startingDay = firstDay.getDay() === 0 ? 7 : firstDay.getDay(); // Adjust for Monday start
+
+            $('#currentMonthYear').text(`${currentDate.toLocaleString('default', { month: 'long' })} ${year}`);
+
+            let calendarHTML = '';
+            let dayCount = 1;
+            for (let i = 0; i < 6; i++) {
+                calendarHTML += '<tr>';
+                for (let j = 1; j <= 7; j++) {
+                    if (i === 0 && j < startingDay) {
+                        calendarHTML += '<td></td>';
+                    } else if (dayCount > daysInMonth) {
+                        calendarHTML += '<td></td>';
+                    } else {
+                        const date = new Date(year, month, dayCount);
+                        const hasAppointment = appointments.some(app => {
+                            const appDate = new Date(app.date);
+                            return appDate.getFullYear() === year && appDate.getMonth() === month && appDate.getDate() === dayCount;
+                        });
+                        const classes = ['calendar-day'];
+                        if (hasAppointment) classes.push('has-appointment');
+                        calendarHTML += `<td class="${classes.join(' ')}" data-date="${date.toISOString().split('T')[0]}">${dayCount}</td>`;
+                        dayCount++;
+                    }
+                }
+                calendarHTML += '</tr>';
+                if (dayCount > daysInMonth) break;
+            }
+            $('#calendarBody').html(calendarHTML);
+        }
+
+        $('#prevMonth').click(function () {
+            currentDate.setMonth(currentDate.getMonth() - 1);
+            updateCalendar();
+        });
+
+        $('#nextMonth').click(function () {
+            currentDate.setMonth(currentDate.getMonth() + 1);
+            updateCalendar();
+        });
+
+        $('#calendarBody').on('click', '.calendar-day', function () {
+            $('.calendar-day').removeClass('selected');
+            $(this).addClass('selected');
+            const selectedDate = $(this).data('date');
+            showAppointments(selectedDate);
+        });
+
+        function showAppointments(date) {
+            const dayAppointments = appointments.filter(app => app.date === date);
+            let detailsHTML = '<ul class="list-group">';
+            dayAppointments.forEach(app => {
+                detailsHTML += `
+                    <li class="list-group-item">
+                        <strong>${app.time}</strong> - ${app.patientName}<br>
+                        Motivo: ${app.reason}
+                    </li>
+                `;
+            });
+            detailsHTML += '</ul>';
+            $('#appointmentDetails').html(detailsHTML);
+            $('#modifyAppointment, #deleteAppointment').prop('disabled', dayAppointments.length === 0);
+        }
+
+        $('#addAppointment').click(function () {
+            const selectedDate = $('.calendar-day.selected').data('date');
+            if (selectedDate) {
+                $('#appointmentId').val('');
+                $('#appointmentDate').val(selectedDate);
+                $('#appointmentTime').val('');
+                $('#patientName').val('');
+                $('#appointmentReason').val('');
+                $('#appointmentModal').modal('show');
+            } else {
+                alert('Por favor, seleccione una fecha en el calendario.');
+            }
+        });
+
+        $('#saveAppointment').click(function () {
+            const id = $('#appointmentId').val();
+            const newAppointment = {
+                id: id || Date.now().toString(),
+                date: $('#appointmentDate').val(),
+                time: $('#appointmentTime').val(),
+                patientName: $('#patientName').val(),
+                reason: $('#appointmentReason').val()
+            };
+
+            if (id) {
+                // Modify existing appointment
+                const index = appointments.findIndex(app => app.id === id);
+                if (index !== -1) {
+                    appointments[index] = newAppointment;
+                }
+            } else {
+                // Add new appointment
+                appointments.push(newAppointment);
+            }
+
+            $('#appointmentModal').modal('hide');
+            updateCalendar();
+            showAppointments(newAppointment.date);
+        });
+
+        $('#modifyAppointment').click(function () {
+            const selectedDate = $('.calendar-day.selected').data('date');
+            const dayAppointments = appointments.filter(app => app.date === selectedDate);
+            if (dayAppointments.length > 0) {
+                const appointment = dayAppointments[0]; // For simplicity, edit the first appointment
+                $('#appointmentId').val(appointment.id);
+                $('#appointmentDate').val(appointment.date);
+                $('#appointmentTime').val(appointment.time);
+                $('#patientName').val(appointment.patientName);
+                $('#appointmentReason').val(appointment.reason);
+                $('#appointmentModal').modal('show');
+            }
+        });
+
+        $('#deleteAppointment').click(function () {
+            const selectedDate = $('.calendar-day.selected').data('date');
+            appointments = appointments.filter(app => app.date !== selectedDate);
+            updateCalendar();
+            showAppointments(selectedDate);
+        });
+
+        updateCalendar();
+    });
+</script>
 {% endblock %}

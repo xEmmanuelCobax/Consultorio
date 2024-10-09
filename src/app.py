@@ -23,14 +23,14 @@ def dashboard():
     return render_template('dashboard.html')
 
 
-@app.route("/SignUp", methods=["GET"])
-def SignUp():
-    return render_template("SignIn.html")
+@app.route("/Registrarse", methods=["GET"])
+def Registrarse():
+    return render_template("Registrarse.html")
 
 
-@app.route("/SignIn", methods=["GET"])
-def SignIn():
-    return render_template("SignUp.html")
+@app.route("/Ingreso", methods=["GET"])
+def Ingreso():
+    return render_template("Ingreso.html")
 
 
 @app.route("/template", methods=["GET"])
@@ -56,6 +56,21 @@ def Inventario():
 @app.route("/Ajustes", methods=["GET"])
 def Ajustes():
     return render_template("Ajustes.html")
+
+
+@app.route("/Inicio", methods=["GET"])
+def Inicio():
+    return render_template("Inicio.html")
+
+
+@app.route("/Índice", methods=["GET"])
+def Índice():
+    return render_template("Índice.html")
+
+
+@app.route("/Registrar_Paciente", methods=["GET"])
+def Registrar_Paciente():
+    return render_template("Registrar_Paciente.html")
 
 
 app.run()

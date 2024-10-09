@@ -1,0 +1,50 @@
+{% extends 'Vertical-navbar.html' %}
+
+{% block body %}
+        <div class="container-fluid">
+            <!-- Main content -->
+            <div
+                class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">CITAS</h1>
+                <div class="btn-toolbar mb-2 mb-md-0">
+                    <button type="button" class="btn btn-sm btn-outline-secondary me-2">Agregar</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary">Modificar</button>
+                </div>
+            </div>
+        
+            <!-- Appointments table -->
+            <div class="table-responsive">
+                <table class="table table-striped table-sm">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Fecha</th>
+                            <th>Doctor</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Fulanito</td>
+                            <td>27-09 / 18:00</td>
+                            <td>Fulano</td>
+                        </tr>
+                        <tr>
+                            <td>Menganito</td>
+                            <td>27-09 / 19:00</td>
+                            <td>Javier</td>
+                        </tr>
+                        <tr>
+                            <td>Perenganito</td>
+                            <td>28-09 / 10:30</td>
+                            <td>Javier</td>
+                        </tr>
+                        <tr>
+                            <td>Zutanito</td>
+                            <td>28-09 / 11:15</td>
+                            <td>Fulano</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+{% endblock %}

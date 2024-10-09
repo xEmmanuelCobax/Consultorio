@@ -1,0 +1,56 @@
+{% extends 'Vertical-navbar.html' %}
+
+
+{% block body %}
+    <div class="container-fluid">
+        <!-- Patient registration form -->
+        <form>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="nombre" class="form-label">Nombre</label>
+                    <input type="text" class="form-control" id="nombre" required>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-3">
+                    <label for="apellido1" class="form-label">Apellidos</label>
+                    <input type="text" class="form-control" id="apellido1" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="apellido2" class="form-label">&nbsp;</label>
+                    <input type="text" class="form-control" id="apellido2">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" required>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="telefono" class="form-label">Teléfono</label>
+                    <input type="tel" class="form-control" id="telefono" required>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="direccion" class="form-label">Dirección</label>
+                    <input type="text" class="form-control" id="direccion" required>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-3">
+                    <label for="codigoPostal" class="form-label">Código postal</label>
+                    <input type="text" class="form-control" id="codigoPostal" required>
+                </div>
+                <div class="col-md-3">
+                    <label for="colonia" class="form-label">Colonia</label>
+                    <input type="text" class="form-control" id="colonia" required>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Registrarse</button>
+        </form>
+    </div>
+    
+{% endblock %}
