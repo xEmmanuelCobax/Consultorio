@@ -147,27 +147,31 @@
                   <div class="bg-white overflow-hidden border border-1">
 
                     <!-- TABLE RESPONSIVE -->
+                     {% if pacientes %}
                     <div class=" table-responsive overflow-auto overflow-hide-scroll">
                       <table class="table table-sm table-hover table-bordered">
                         <thead>
                           <tr>
+                            <th class="w-25 small">ID</th>
                             <th class="w-25 small">Nombre</th>
-                            <th class="w-25 small">Fecha</th>
-                            <th class="w-25 small">Hora</th>
-                            <th class="w-25 small">Motivo</th>
-                          </tr>
+                            <th class="w-25 small">Apellido Paterno</th>
+                            <th class="w-25 small">Apellido Materno</th>
+                          </tr> 
                         </thead>
                         <tbody>
-                          {% for i in range(11) %}
+                          {% for paciente in pacientes %}
                           <tr class="p-0">
-                            <td class="w-50 p-0 small">Fulanito</td>
-                            <td class="w-50 p-1 small">23-12-2344</td>
-                            <td class="w-50 p-1 small">23:32</td>
-                            <td class="w-50 p-1 small">Daño cerebral</td>
+                            <td class="w-50 p-1 small">{{paciente[0]}}</td>
+                            <td class="w-50 p-0 small">{{paciente[3]}}</td>
+                            <td class="w-50 p-1 small">{{paciente[4]}}</td>
+                            <td class="w-50 p-1 small">{{paciente[5]}}</td>
                           </tr>
                           {% endfor %}
                         </tbody>
                       </table>
+                      {% else %}
+                      <p>NO HAY DATOS</p>
+                      {% endif %}
                     </div>
                   </div>
                 </div>
