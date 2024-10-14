@@ -1,64 +1,365 @@
 {% extends 'Vertical-navbar.html' %}
 
-
 {% block body %}
-    <div class="container-fluid">
-        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <h1 class="h2">Pacientes</h1>
-            <div class="btn-toolbar mb-2 mb-md-0">
-                <button type="button" class="btn btn-sm btn-outline-secondary me-2">Agregar</button>
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Buscar">
-                    <button class="btn btn-outline-secondary" type="button"><i class="fas fa-search"></i></button>
+<!--No se, no estaba eso, lo acaba de agregar-->
+<div class="container-fluid">
+    <div
+        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Pacientes</h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Buscar">
+                <button class="btn btn-outline-secondary" type="button"><i class="fas fa-search"></i></button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <!-- Patients table -->
+        <div class="col-md-9">
+            {% if pacientes %}
+            <div class="table-responsive">
+                <table class="table table-striped table-sm">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Apellidos</th>
+                            <th>Telefono</th>
+                            <th>Email</th>
+                            <th>Fecha de Nacimiento</th>
+                            <th>Direccion</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for paciente in pacientes %}
+                        <tr id="{{paciente[0]}}" class="clickable-row">
+                            <td>{{paciente[3]}}</td>
+                            <td>{{paciente[4]}} {{paciente[5]}}</td>
+                            <td>{{paciente[6]}}</td>
+                            <td>{{paciente[7]}}</td>
+                            <td>{{paciente[8]}}</td>
+                            <td>{{paciente[9]}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <p>No hay conexión con la base de datos!!!</p>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Acciones</h5>
+                    <div id="appointmentDetails">
+                        <!-- Appointment details will be shown here -->
+                    </div>
+                    <div class="d-grid gap-2 mt-3">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#modalAgregarPaciente">Agregar</button>
+                        <button id="modificarBoton" class="btn btn-secondary">Modificar</button>
+                        <button id="eliminarBoton" class="btn btn-danger">Eliminar</button>
+                    </div>
                 </div>
             </div>
         </div>
-        <!-- Patients table -->
-        <div class="table-responsive">
-            <table class="table table-striped table-sm">
-                <thead>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Apellidos</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Fulanito</td>
-                        <td>MEX</td>
-                        <td>
-                            <button class="btn btn-sm btn-info">Agendar</button>
-                            <button class="btn btn-sm btn-danger">Eliminar</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Menganito</td>
-                        <td></td>
-                        <td>
-                            <button class="btn btn-sm btn-info">Agendar</button>
-                            <button class="btn btn-sm btn-danger">Eliminar</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Perenganito</td>
-                        <td></td>
-                        <td>
-                            <button class="btn btn-sm btn-info">Agendar</button>
-                            <button class="btn btn-sm btn-danger">Eliminar</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Zutanito</td>
-                        <td></td>
-                        <td>
-                            <button class="btn btn-sm btn-info">Agendar</button>
-                            <button class="btn btn-sm btn-danger">Eliminar</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+    </div>
+
+    <!-- Agregar Paciente -->
+    <div class="modal fade" id="modalAgregarPaciente" tabindex="-1" aria-labelledby="modalAgregarPacienteLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title h5" id="modalAgregarPacienteLabel">Agregar Paciente</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Formulario dentro del modal -->
+                    <form id="form_pacientes" action="/Agregar_Pacientes" method="post">
+                        <div class="input-group flex-nowrap mb-2">
+                            <label for="nombre" class="input-group-text">Nombre(s)</label>
+                            <input type="text" name="nombre" id="nombre_paciente" class="form-control" required maxlength="20">
+                        </div>
+                        <div class="input-group flex-nowrap mb-2">
+                            <label for="apellido_p_paciente" class="input-group-text">Apellido paterno</label>
+                            <input type="text" name="apellido_p_paciente" id="apellido_p_paciente" class="form-control" required maxlength="20">
+                        </div>
+                        <div class="input-group flex-nowrap mb-2">
+                            <label for="apellido_m_paciente" class="input-group-text">Apellido materno</label>
+                            <input type="text" name="apellido_m_paciente" id="apellido_m_paciente" class="form-control" required maxlength="20">
+                        </div>
+                        <div class="input-group flex-nowrap mb-2">
+                            <label for="email_paciente" class="input-group-text">Email</label>
+                            <input type="email" name="email_paciente" id="email_paciente" class="form-control" required>
+                        </div>
+                        <div class="input-group flex-nowrap mb-2">
+                            <label for="telefono_paciente" class="input-group-text">Teléfono</label>
+                            <input type="tel" name="telefono_paciente" id="telefono_paciente" class="form-control" required maxlength="10">
+                        </div>
+                        <div class="input-group flex-nowrap mb-2">
+                            <label for="fecha_n_paciente" class="input-group-text">Fecha de nacimiento</label>
+                            <input type="date" name="fecha_n_paciente" id="fecha_n_paciente" class="form-control" required>
+                        </div>
+                        <div class="input-group flex-nowrap mb-2">
+                            <label for="direccion_paciente" class="input-group-text">Direccion</label>
+                            <textarea class="form-control" id="direccion_paciente" rows="2"
+                                name="direccion_paciente" required></textarea>
+                        </div>
+                        <div class="input-group flex-nowrap mb-2">
+                            <input type="submit" name="submit" id="submit" class="form-control btn btn-primary">
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
-    
-{% endblock %}
+    <!-- Modificar paciente -->
+    <div class="modal fade" id="modalModificarPaciente" tabindex="-1" aria-labelledby="modalModificarPacienteLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title h5" id="modalModificarPacienteLabel">Modificar datos del Paciente</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Formulario dentro -->
+                    <form id="form_pacientes_mod" action="/Modificar_Pacientes" method="post">
+                        <!--ID-->
+                        <input type="input-group" name="paciente_id" id="paciente_id" class="form-control"
+                            style="display: none;" value="">
+
+                        <div class="input-group flex-nowrap mb-2">
+                            <label for="nombre" class="input-group-text">Nombre(s)</label>
+                            <input type="text" name="nombre_mod" id="nombre_paciente_mod" class="form-control" value="" required maxlength="20">
+                        </div>
+                        <div class="input-group flex-nowrap mb-2">
+                            <label for="apellido_p_paciente" class="input-group-text">Apellido paterno</label>
+                            <input type="text" name="apellido_p_paciente_mod" id="apellido_p_paciente_mod"
+                                class="form-control" value="" required maxlength="20">
+                        </div>
+                        <div class="input-group flex-nowrap mb-2">
+                            <label for="apellido_m_paciente" class="input-group-text">Apellido materno</label>
+                            <input type="text" name="apellido_m_paciente_mod" id="apellido_m_paciente_mod"
+                                class="form-control" value="" required maxlength="20">
+                        </div>
+                        <div class="input-group flex-nowrap mb-2">
+                            <label for="email_paciente" class="input-group-text">Email</label>
+                            <input type="email" name="email_paciente_mod" id="email_paciente_mod" class="form-control"
+                                value="" required>
+                        </div>
+                        <div class="input-group flex-nowrap mb-2">
+                            <label for="telefono_paciente" class="input-group-text">Teléfono</label>
+                            <input type="tel" name="telefono_paciente_mod" id="telefono_paciente_mod"
+                                class="form-control" value="" required maxlength="10">
+                        </div>
+                        <div class="input-group flex-nowrap mb-2">
+                            <label for="fecha_n_paciente" class="input-group-text">Fecha de nacimiento</label>
+                            <input type="date" name="fecha_n_paciente_mod" id="fecha_n_paciente_mod"
+                                class="form-control" value="" required>
+                        </div>
+                        <div class="input-group flex-nowrap mb-2">
+                            <label for="direccion_paciente" class="input-group-text">Direccion</label>
+                            <textarea class="form-control" id="direccion_paciente_mod" rows="2"
+                                name="direccion_paciente_mod" required> </textarea>
+                        </div>
+                        <div class="input-group flex-nowrap mb-2">
+                            <input type="submit" name="change" id="change" class="form-control btn btn-primary"
+                                value="Cambiar">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Eliminar paciente -->
+    <div class="modal fade" id="modalEliminarPaciente" tabindex="-1" aria-labelledby="modalEliminarPacienteLabel"
+        aria-hidden="true">
+        <!-- Modal -->
+        <div class="modal-dialog">
+            <!-- Contenido -->
+            <div class="modal-content">
+                <!-- Titulos -->
+                <div class="modal-header">
+                    <h1 class="modal-title h5" id="modalEliminarPacienteLabel">Eliminar paciente</h1>
+                </div>
+                <!-- Cuerpo -->
+                <div class="modal-body">
+                    <!-- Formulario dentro -->
+                    <form id="form_pacientes_elim" action="/Eliminar_Pacientes" method="post">
+                        <!--ID-->
+                        <input type="input-group" name="paciente_id_eli" id="paciente_id_eli" class="form-control"
+                            style="display: none;" value="">
+
+                        <div class="modal-footer d-flex flex-column align-items-center">
+                            <p class="mb-4">¿Estás seguro de que quieres continuar?</p>
+                            <div class="text-end">
+                                <button type="submit" name="eliminate" id="eliminate" class="btn btn-danger me-2">
+                                    Eliminar
+                                </button>
+                                <button type="button" class="btn btn-primary me-2" data-bs-dismiss="modal"
+                                    aria-label="Close">
+                                    Cancelar
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para mostrar flash-->
+    <div class="modal fade" id="flashModal" tabindex="-1" role="dialog" aria-labelledby="flashModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="flashModalLabel">Notification</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="flashModalBody">
+                    <!-- LOS MENSAJES SE MOSTRARAN AQUI -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        //
+        let selectedRow = null;
+        document.querySelectorAll('.clickable-row').forEach(row => {
+            row.addEventListener('click', function () {
+                // Seleccionar fila
+                if (selectedRow) {
+                    selectedRow.classList.remove('table-primary');
+                }
+                selectedRow = this;
+                selectedRow.classList.add('table-primary');
+                // Guardar en las variables
+                const id = row.getAttribute('id');
+                const nombre = row.children[1].textContent;
+                const apellidoP = row.children[2].textContent.split(' ')[0]; // Obtener primer apellido
+                const apellidoM = row.children[2].textContent.split(' ')[1]; // Obtener segundo apellido
+                const telefono = row.children[3].textContent;
+                const email = row.children[4].textContent;
+                const fechaNacimiento = row.children[5].textContent;
+                const direccion = row.children[6].textContent;
+                // Verificar los datos con la consola 
+                console.log(id)
+                console.log(nombre)
+                console.log(apellidoP)
+                console.log(apellidoM)
+                console.log(telefono)
+                console.log(email)
+                console.log(fechaNacimiento)
+                console.log(direccion)
+                // Asignar valores al modal
+                document.getElementById('paciente_id').value = id;
+                document.getElementById('paciente_id_eli').value = id;
+                document.getElementById('nombre_paciente_mod').value = nombre;
+                document.getElementById('apellido_p_paciente_mod').value = apellidoP;
+                document.getElementById('apellido_m_paciente_mod').value = apellidoM;
+                document.getElementById('telefono_paciente_mod').value = telefono;
+                document.getElementById('email_paciente_mod').value = email;
+                document.getElementById('fecha_n_paciente_mod').value = fechaNacimiento;
+                document.getElementById('direccion_paciente_mod').value = direccion;
+            });
+        });
+        // Evento
+        document.getElementById('modificarBoton').addEventListener('click', function () {
+            if (!selectedRow) {
+                alert('Por favor selecciona una fila para modificar.');
+                return;
+            }
+
+            // Si hay una fila seleccionada, se muestra el modal
+            const modal = new bootstrap.Modal(document.getElementById('modalModificarPaciente'));
+            modal.show();
+        });
+        // Evento
+        document.getElementById('eliminarBoton').addEventListener('click', function () {
+            if (!selectedRow) {
+                alert('Por favor selecciona una fila para eliminar.');
+                return;
+            }
+            // Si hay una fila seleccionada, se muestra el modal
+            const modal = new bootstrap.Modal(document.getElementById('modalEliminarPaciente'));
+            modal.show();
+        });
+        // Validaciones generales
+            function validarCamposTexto(regex, campo, mensajeError) {
+                if (!regex.test(campo)) {
+                    alert(mensajeError);
+                    return false;
+                }
+                return true;
+            }
+            // Validación de campos en el formulario de agregar paciente
+            document.getElementById('form_pacientes').addEventListener('submit', function (event) {
+                const nombre = document.getElementById('nombre_paciente').value;
+                const apellidoP = document.getElementById('apellido_p_paciente').value;
+                const apellidoM = document.getElementById('apellido_m_paciente').value;
+                const telefono = document.getElementById('telefono_paciente').value;
+                const email = document.getElementById('email_paciente').value;
+                const regexNombreApellido = /^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s]{1,20}$/;
+                const regexTelefono = /^[0-9]{1,10}$/;
+                const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                // Validar nombre y apellidos
+                if (!validarCamposTexto(regexNombreApellido, nombre, 'El nombre solo debe contener letras, números y espacios.') ||
+                    !validarCamposTexto(regexNombreApellido, apellidoP, 'El apellido paterno solo debe contener letras, números y espacios.') ||
+                    !validarCamposTexto(regexNombreApellido, apellidoM, 'El apellido materno solo debe contener letras, números y espacios.')) {
+                    event.preventDefault();
+                    return;
+                }
+                // Validar teléfono
+                if (!validarCamposTexto(regexTelefono, telefono, 'El teléfono solo debe contener números.')) {
+                    event.preventDefault();
+                    return;
+                }
+                // Validar email
+                if (!validarCamposTexto(regexEmail, email, 'El email no tiene un formato válido.')) {
+                    event.preventDefault();
+                }
+            });
+            // Validaciones en el formulario de modificar paciente (repetir validaciones del formulario de agregar)
+            document.getElementById('form_pacientes_mod').addEventListener('submit', function (event) {
+                const nombre = document.getElementById('nombre_paciente_mod').value;
+                const apellidoP = document.getElementById('apellido_p_paciente_mod').value;
+                const apellidoM = document.getElementById('apellido_m_paciente_mod').value;
+                const telefono = document.getElementById('telefono_paciente_mod').value;
+                const email = document.getElementById('email_paciente_mod').value;
+                const regexNombreApellido = /^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s]+$/;
+                const regexTelefono = /^[0-9]+$/;
+                const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                // Validar nombre y apellidos
+                if (!validarCamposTexto(regexNombreApellido, nombre, 'El nombre solo debe contener letras, números y espacios.') ||
+                    !validarCamposTexto(regexNombreApellido, apellidoP, 'El apellido paterno solo debe contener letras, números y espacios.') ||
+                    !validarCamposTexto(regexNombreApellido, apellidoM, 'El apellido materno solo debe contener letras, números y espacios.')) {
+                    event.preventDefault();
+                    return;
+                }
+                // Validar teléfono
+                if (!validarCamposTexto(regexTelefono, telefono, 'El teléfono solo debe contener números.')) {
+                    event.preventDefault();
+                    return;
+                }
+                // Validar email
+                if (!validarCamposTexto(regexEmail, email, 'El email no tiene un formato válido.')) {
+                    event.preventDefault();
+                }
+            });
+            // Validación en eliminar paciente
+            document.getElementById('form_pacientes_elim').addEventListener('submit', function (event) {
+                const pacienteId = document.getElementById('paciente_id_eli').value;
+                if (!pacienteId) {
+                    alert('No se puede eliminar un paciente sin ID.');
+                    event.preventDefault();
+                }
+            });
+    </script>
+    {% endblock %}

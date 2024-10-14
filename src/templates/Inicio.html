@@ -1,50 +1,101 @@
 {% extends 'Vertical-navbar.html' %}
 
 {% block body %}
-        <div class="container-fluid">
-            <!-- Main content -->
-            <div
-                class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h1 class="h2">CITAS</h1>
-                <div class="btn-toolbar mb-2 mb-md-0">
-                    <button type="button" class="btn btn-sm btn-outline-secondary me-2">Agregar</button>
-                    <button type="button" class="btn btn-sm btn-outline-secondary">Modificar</button>
+
+<div class="container-fluid">
+    <!-- Main content -->
+    <div
+        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">CITAS</h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+            <button type="button" class="btn btn-sm btn-outline-secondary me-2" data-bs-toggle="modal"
+                data-bs-target="#modalAgregarCita">Agregar</button>
+            <button type="button" class="btn btn-sm btn-outline-secondary">Modificar</button>
+        </div>
+    </div>
+
+    <!-- Appointments table -->
+    <div class="table-responsive">
+        <table class="table table-striped table-sm">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Fecha</th>
+                    <th>Motivo</th>
+                    <th>Doctor</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if citas %}
+                {% for cita in citas %}
+                <tr>
+                    <td>{{cita['Nombres']}} {{cita['Apellido_Paterno']}} {{cita['Apellido_Materno']}}</td>
+                    <td>{{cita['Fecha']}}</td>
+                    <td>{{cita['Motivo']}}</td>
+                    <td>Dr. {{cita['Nombres_doctor']}} {{cita['Apellido_p_doctor']}} {{cita['Apellido_m_doctor']}}</td>
+                </tr>
+                {% endfor %}
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+    <div class="modal fade" id="modalAgregarCita" tabindex="-1" aria-labelledby="modalAgregarPacienteLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title h5" id="modalAgregarCitaLabel">Agregar Cita</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Agregar cita -->
+                    <form action="/agregar_cita" method="post">
+                        <div class="input-group flex-nowrap mb-2">
+                            <label for="paciente" class="input-group-text">Nombre</label>
+                            <select class="form-select" name="paciente" id="paciente">
+                                <option value="-1" selected>----- Elige una opción -----</option>
+                                {% if lista_pacientes %}
+                                {% for paciente in lista_pacientes %}
+                                <option value="{{paciente['ID_paciente']}}">{{paciente['Nombres']}}
+                                    {{paciente['Apellido_paterno']}}
+                                    {{paciente['Apellido_materno']}}</option>
+                                {% endfor %}
+                                {% endif %}
+                            </select>
+                        </div>
+                        <div class="input-group flex-nowrap mb-2">
+                            <label for="motivo" class="input-group-text">Motivo</label>
+                            <textarea class="form-control" id="motivo" rows="3" name="motivo"></textarea>
+                        </div>
+                        <div class="input-group flex-nowrap mb-2">
+                            <label for="apellido_m_paciente" class="input-group-text">Fecha</label>
+                            <input type="date" name="fecha" id="fecha" class="form-control">
+                        </div>
+                        <div class="input-group flex-nowrap mb-2">
+                            <label for="hora" class="input-group-text">Hora</label>
+                            <input type="time" name="hora" id="hora" class="form-control" min="07:00" max="24:00"
+                                step="1800" value="12:00">
+                        </div>
+                        <div class="input-group flex-nowrap mb-2">
+                            <label for="doctor" class="input-group-text">Doctor asignado</label>
+                            <select class="form-select" name="doctor" id="doctor">
+                                <option value="-1" selected>----- Elige una opción -----</option>
+                                {% if lista_doctores %}
+                                {% for doctor in lista_doctores %}
+                                <option value="{{doctor['ID_doctor']}}">Dr. {{doctor['Nombres']}}
+                                    {{doctor['Apellido_paterno']}}
+                                    {{doctor['Apellido_materno']}}</option>
+                                {% endfor %}
+                                {% endif %}
+                            </select>
+                        </div>
+                        <div class="input-group flex-nowrap mb-2">
+                            <input type="submit" name="submit" id="submit" class="form-control">
+                        </div>
+                    </form>
                 </div>
             </div>
-        
-            <!-- Appointments table -->
-            <div class="table-responsive">
-                <table class="table table-striped table-sm">
-                    <thead>
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Fecha</th>
-                            <th>Doctor</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Fulanito</td>
-                            <td>27-09 / 18:00</td>
-                            <td>Fulano</td>
-                        </tr>
-                        <tr>
-                            <td>Menganito</td>
-                            <td>27-09 / 19:00</td>
-                            <td>Javier</td>
-                        </tr>
-                        <tr>
-                            <td>Perenganito</td>
-                            <td>28-09 / 10:30</td>
-                            <td>Javier</td>
-                        </tr>
-                        <tr>
-                            <td>Zutanito</td>
-                            <td>28-09 / 11:15</td>
-                            <td>Fulano</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
         </div>
-{% endblock %}
+        
+    </div>
+    {% endblock %}
