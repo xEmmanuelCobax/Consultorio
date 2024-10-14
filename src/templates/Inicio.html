@@ -2,11 +2,119 @@
 
 {% block body %}
 
+<style>
+.table {
+    border-radius: 0.5rem; /* Ajusta el valor según lo necesites */
+    overflow: hidden; /* Asegúrate de que el contenido no sobresalga */
+    box-shadow: 0 8px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+.table th, .table td {
+            border: 0.5px solid #ADD8E6; /* Borde de celdas */
+            padding: 0.5rem; /* Espaciado interno */
+        }
+
+.table th {
+    font-size: 1.2rem; /* Aumenta el tamaño de la fuente */
+    color: #333; /* Color del texto en encabezados */
+    background-color: #2980b9; /* Fondo para encabezados */
+    color: #fff; /* Color del texto en encabezados */
+    text-align: center; /* Centrar contenido si es apropiado */
+}
+
+.table td {
+    font-size: 1rem; /* Tamaño de la fuente en celdas */
+    color: #555; /* Color del texto en celdas */
+}
+
+.clickable-row {
+        cursor: pointer; /* Cambia el cursor a una mano para indicar que la fila es clickeable. */
+}
+.card {
+    border: 1px solid #e1e1e1; /* Establece un borde gris claro alrededor de las tarjetas. */
+    border-radius: 0.5rem; /* Bordes redondeados para las tarjetas. */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra suave para dar efecto de elevación. */
+}
+
+.btn {
+    border-radius: 0.3rem; /* Bordes ligeramente redondeados para botones. */
+}
+
+.modal-header { 
+    background-color: #2980b9; /* Fondo azul oscuro para el encabezado del modal. */
+    color: #fff; /* Color blanco para el texto en el encabezado del modal. */
+}
+
+.modal-footer {
+    justify-content: center; /* Centra los botones en el pie del modal. */
+}
+
+.input-group-text {
+    background-color: #e9ecef; /* Fondo gris claro para las etiquetas en inputs. */
+    border: 1px solid #ced4da; /* Borde gris para las etiquetas en inputs. */
+}
+
+.modal:hover {
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada */
+}
+
+.btn:hover {
+    background-color: #1f7a93; /* Un tono más oscuro */
+    color: #fff; /* Asegúrate de que el texto sea legible */
+}
+
+.btn-submit:hover {
+    background-color: #219653; /* Color más oscuro al pasar el cursor */
+    cursor: pointer; /* Cambia el cursor para indicar interactividad */
+}
+
+.input-group {
+    border: 1px solid #ced4da; /* Borde gris claro alrededor del grupo de entrada */
+    border-radius: 0.25rem; /* Bordes redondeados */
+    box-shadow: none; /* Eliminar sombra si hay */
+    transition: border-color 0.3s; /* Transición suave al cambiar el borde */
+}
+
+.input-group:focus-within {
+    border-color: #2980b9; /* Cambiar el color del borde al azul cuando el campo está en foco */
+}
+
+.form-control {
+    border: 1px solid #e1e1e1; /* Borde gris claro para cada campo */
+    border-radius: 0.25rem; /* Bordes redondeados */
+    transition: border-color 0.3s; /* Transición suave al cambiar el borde */
+}
+
+.form-control:focus {
+    border-color: #2980b9; /* Cambiar color del borde a azul al hacer foco */
+    box-shadow: 0 0 5px rgba(41, 128, 185, 0.5); /* Añadir sombra suave en foco */
+}
+
+.btn, .table th, .table td {
+    transition: background-color 0.3s, color 0.3s; /* Transiciones para botones y celdas */
+}
+
+h1.h2 {
+    font-size: 2rem; /* Tamaño más grande */
+    color: #2980b9; /* Color atractivo */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); /* Sombra para dar profundidad */
+    margin-bottom: 1rem; /* Espacio debajo del título */
+    font-weight: bold; /* Hacer el texto más audaz */
+    text-align: center;
+}
+
+h1.h2:hover {
+    color: #1f7a93; /* Color más oscuro al pasar el mouse */
+    transition: color 0.3s; /* Transición suave */
+}
+
+</style>
+
 <div class="container-fluid">
     <!-- Main content -->
     <div
         class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">CITAS</h1>
+        <h1 class="h2">Citas</h1>
         <div class="btn-toolbar mb-2 mb-md-0">
             <button type="button" class="btn btn-sm btn-outline-secondary me-2" data-bs-toggle="modal"
                 data-bs-target="#modalAgregarCita">Agregar</button>

@@ -1,10 +1,27 @@
 {% extends 'Vertical-navbar.html' %}
 
+
+
 {% block title %}
 MediLink - Agenda
 {% endblock %}
 
 {% block head %}
+<!--JQuery-->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
+<!-- Scripts de Bootstrap y jQuery -->
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css">
+<!-- OTRAS LIBRERIAS QUE NECESITES IMPORTAR -->
+<!-- Bootstrap datepicker CSS -->
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" />
+<!-- Bootstrap datepicker JS-->
+<script
+src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+
 <style>
     .calendar-container {
         background-color: white;
@@ -33,15 +50,16 @@ MediLink - Agenda
 
 {% block body %}
 <div class="container-fluid main-content">
+    di
     <div class="row">
         <div class="col-md-9">
             <div class="calendar-container p-3 mt-4">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h2 id="currentMonthYear"></h2>
                     <div>
-                        <button id="prevMonth" class="btn btn-outline-primary"><<i
+                        <button id="prevMonth" class="btn btn-outline-primary"><i
                                 class="fas fa-chevron-left"></i></button>
-                        <button id="nextMonth" class="btn btn-outline-primary">><i
+                        <button id="nextMonth" class="btn btn-outline-primary"><i
                                 class="fas fa-chevron-right"></i></button>
                     </div>
                 </div>
@@ -81,41 +99,79 @@ MediLink - Agenda
             </div>
         </div>
     </div>
+    <!-- ||||||||||||||||| -->
+    <div class="row">
+        <div class="col-8">
+            <input type="date" id="fecha-test" class="form-control">
+            <button type="button" class="btn btn-danger" id="boton-test">Llamar</button>
+            <textarea name="" id="texto" class="form-control"></textarea>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-8">
+            <div data-date="12/03/2012" id="select-fecha"></div>
+        </div>
+
+    </div>
+
 </div>
 
-<!-- Appointment Modal -->
-<div class="modal fade" id="appointmentModal" tabindex="-1" aria-labelledby="appointmentModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="appointmentModalLabel">Detalles de la Cita</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="appointmentForm">
-                    <input type="hidden" id="appointmentId">
-                    <div class="mb-3">
-                        <label for="appointmentDate" class="form-label">Fecha</label>
-                        <input type="date" class="form-control" id="appointmentDate" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="appointmentTime" class="form-label">Hora</label>
-                        <input type="time" class="form-control" id="appointmentTime" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="patientName" class="form-label">Nombre del Paciente</label>
-                        <input type="text" class="form-control" id="patientName" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="appointmentReason" class="form-label">Motivo</label>
-                        <input type="text" class="form-control" id="appointmentReason" required>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-primary" id="saveAppointment">Guardar</button>
-            </div>
+<div class="modal fade" id="modalAgregarCita" tabindex="-1" aria-labelledby="modalAgregarPacienteLabel"
+aria-hidden="true">
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h1 class="modal-title h5" id="modalAgregarCitaLabel">Agregar Cita</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <!-- Agregar cita -->
+            <form action="/agregar_cita" method="post">
+                <div class="input-group flex-nowrap mb-2">
+                    <label for="paciente" class="input-group-text">Nombre</label>
+                    <select class="form-select" name="paciente" id="paciente">
+                        <option value="-1" selected>----- Elige una opción -----</option>
+                        {% if lista_pacientes %}
+                        {% for paciente in lista_pacientes %}
+                        <option value="{{paciente['ID_paciente']}}">{{paciente['Nombres']}}
+                            {{paciente['Apellido_paterno']}}
+                            {{paciente['Apellido_materno']}}</option>
+                        {% endfor %}
+                        {% endif %}
+                    </select>
+                </div>
+                <div class="input-group flex-nowrap mb-2">
+                    <label for="motivo" class="input-group-text">Motivo</label>
+                    <textarea class="form-control" id="motivo" rows="3" name="motivo"></textarea>
+                </div>
+                <div class="input-group flex-nowrap mb-2">
+                    <label for="fecha" class="input-group-text">Fecha</label>
+                    <input type="date" name="fecha" id="fecha" class="form-control">
+                </div>
+                <div class="input-group flex-nowrap mb-2">
+                    <label for="hora" class="input-group-text">Hora</label>
+                    <input type="time" name="hora" id="hora" class="form-control" min="07:00" max="24:00"
+                        step="1800" value="12:00">
+                </div>
+                <div class="input-group flex-nowrap mb-2">
+                    <label for="doctor" class="input-group-text">Doctor asignado</label>
+                    <select class="form-select" name="doctor" id="doctor">
+                        <option value="-1" selected>----- Elige una opción -----</option>
+                        {% if lista_doctores %}
+                        {% for doctor in lista_doctores %}
+                        <option value="{{doctor['ID_doctor']}}">Dr. {{doctor['Nombres']}}
+                            {{doctor['Apellido_paterno']}}
+                            {{doctor['Apellido_materno']}}</option>
+                        {% endfor %}
+                        {% endif %}
+                    </select>
+                </div>
+                <div class="input-group flex-nowrap mb-2">
+                    <input type="submit" name="submit" id="submit" class="form-control">
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -127,7 +183,6 @@ MediLink - Agenda
     $(document).ready(function () {
         let currentDate = new Date();
         let appointments = [];
-
         function updateCalendar() {
             const year = currentDate.getFullYear();
             const month = currentDate.getMonth();
@@ -189,7 +244,8 @@ MediLink - Agenda
                 detailsHTML += `
                     <li class="list-group-item">
                         <strong>${app.time}</strong> - ${app.patientName}<br>
-                        Motivo: ${app.reason}
+                        Motivo: ${app.reason}<br>
+                        Estado: ${getStatusText(app.status)}
                     </li>
                 `;
             });
@@ -198,17 +254,37 @@ MediLink - Agenda
             $('#modifyAppointment, #deleteAppointment').prop('disabled', dayAppointments.length === 0);
         }
 
+        function getStatusText(status) {
+            switch (status) {
+                case 'pending': return 'En espera';
+                case 'completed': return 'Finalizado';
+                case 'cancelled': return 'Cancelado';
+                default: return status;
+            }
+        }
+
         $('#addAppointment').click(function () {
             const selectedDate = $('.calendar-day.selected').data('date');
             if (selectedDate) {
                 $('#appointmentId').val('');
-                $('#appointmentDate').val(selectedDate);
+                $('#fecha').val(selectedDate);
                 $('#appointmentTime').val('');
                 $('#patientName').val('');
                 $('#appointmentReason').val('');
-                $('#appointmentModal').modal('show');
+                $('#appointmentStatus').val('pending');
+                $('#prescription').val('');
+                $('#prescriptionContainer').hide();
+                $('#modalAgregarCita').modal('show');
             } else {
                 alert('Por favor, seleccione una fecha en el calendario.');
+            }
+        });
+
+        $('#appointmentStatus').change(function () {
+            if ($(this).val() === 'completed') {
+                $('#prescriptionContainer').show();
+            } else {
+                $('#prescriptionContainer').hide();
             }
         });
 
@@ -219,7 +295,9 @@ MediLink - Agenda
                 date: $('#appointmentDate').val(),
                 time: $('#appointmentTime').val(),
                 patientName: $('#patientName').val(),
-                reason: $('#appointmentReason').val()
+                reason: $('#appointmentReason').val(),
+                status: $('#appointmentStatus').val(),
+                prescription: $('#prescription').val()
             };
 
             if (id) {
@@ -248,6 +326,13 @@ MediLink - Agenda
                 $('#appointmentTime').val(appointment.time);
                 $('#patientName').val(appointment.patientName);
                 $('#appointmentReason').val(appointment.reason);
+                $('#appointmentStatus').val(appointment.status);
+                $('#prescription').val(appointment.prescription || '');
+                if (appointment.status === 'completed') {
+                    $('#prescriptionContainer').show();
+                } else {
+                    $('#prescriptionContainer').hide();
+                }
                 $('#appointmentModal').modal('show');
             }
         });
@@ -260,6 +345,104 @@ MediLink - Agenda
         });
 
         updateCalendar();
+
+
+
+        $('#boton-test').click(function () {
+            const fecha = $('#fecha-test').val();
+            
+            const date = new Date(fecha);
+            const year = date.getFullYear()
+            const month = date.getMonth() + 1
+            const day = date.getDate() + 1
+            console.log(fecha)
+            request(year, month, day)
+        });
+        //LLamada a APi
+        function request(year, month, day) {
+            const route = `/api/citas/${year}/${month}/${day}`
+            $.ajax({
+                url: route,
+                async: false,
+                success: function(resultado) {
+                    console.log('Request complete!')
+                    if (resultado.length == 0) {
+                        console.log('No hay citas para esta fecha')
+                    }
+                    console.log(resultado)
+                    console.log(resultado[0]['Nombres'])
+                    console.log(resultado[0]['Apellido_Paterno'])
+                    console.log(resultado[0]['Apellido_Paterno'])
+                    for (let key in resultado[0]) {
+                        document.getElementById('texto').innerHTML += `${key}: ${resultado[0][key]} \n`
+                    }
+
+                },
+                error: function(jqXHR, exception) {
+                    if (jqXHR.status === 0) {
+                        alert('Not connect.\n Verify Network.');
+                    } else if (jqXHR.status == 404) {
+                        alert('Requested page not found. [404]');
+                    } else if (jqXHR.status == 500) {
+                        alert('Internal Server Error [500].');
+                    } else if (exception === 'parsererror') {
+                        alert('Requested JSON parse failed.');
+                    } else if (exception === 'timeout') {
+                        alert('Time out error.');
+                    } else if (exception === 'abort') {
+                        alert('Ajax request aborted.');
+                    } else {
+                        alert('Uncaught Error.\n' + jqXHR.responseText);
+                    }
+                }
+            })
+        }
+
+        //
+        $.fn.datepicker.dates['es'] = {
+            days: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+            daysShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
+            daysMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
+            months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            monthsShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
+            today: 'Hoy',
+            clear: 'Limpiar',
+            format: 'dd/mm/yy',
+            titleFormat: "MM yyyy", 
+            weekStart: 1
+        };
+        // inicializar el datepicker
+        $('#select-fecha').datepicker({
+            autoclose: true,
+            language: 'es-419',
+            todayHighlight: true,   
+            keepEmptyValues: true,
+            todayBtn: true,
+            changeMonth: true,
+            changeYear: true,
+            keyboardNavigation: false,  
+            maxViewMode: 'days',
+            daysOfWeekHighlighted: [selectDia.value],
+            beforeShowDay : function(date) {
+                return date.getDay() == selectDia.value
+            },
+            startDate: new Date(new Date().getFullYear(), new Date().getMonth() - 2, 1),
+            endDate: new Date(),
+            format : 'yyyy-mm-dd'
+        });
+        // configurar evento para validar cuando se cambia la fecha
+        $('#select-fecha').datepicker().on('changeDate', function(e){
+            console.log(e)
+            if (e.date == null || e.date.getDay() != selectDia.value) {
+                console.log('La fecha es inválida')
+                fechaState = false
+                $('#select-fecha').addClass('is-invalid').removeClass('is-valid')
+            } else {
+                fechaState = true
+                $('#select-fecha').addClass('is-valid').removeClass('is-invalid')
+            }
+        });
+        //
     });
 </script>
 {% endblock %}

@@ -4,6 +4,24 @@ from config import ROOT_CONECTION, RECEPCIONIST_CONECTION, DOCTOR_CONECTION
 
 app = Flask(__name__)
 app.config["DEBUG"] = True
+app.secret_key = 'super secret key'
+app.config['SESSION_TYPE'] = 'filesystem'
+
+# Metodo para validar entradas
+def validar_entrada(texto):
+    # a-z y A-Z son para minusculas y mayusculas
+    # \u00e1\u00e9\u00ed\u00f3\u00fa\u00f1\u00c1\u00c9\u00cd\u00d3\u00da\u00d1  Letras mayusculas y minusculas con acentos
+    # \s Espacios en blanco
+    # '' Al menos un caracter del conjunto
+    # $ Al final de la cadena
+    # Definimos el patrón que NO queremos en la entrada
+    patron = r"^[a-zA-Z\u00e1\u00e9\u00ed\u00f3\u00fa\u00f1\u00c1\u00c9\u00cd\u00d3\u00da\u00d1\s]+$"
+
+    # Buscamos si hay alguna coincidencia en el texto
+    if not re.search(patron, texto):
+        return False
+    else:
+        return True
 
 
 # Metodo para poder realizar CUD> CREATE, UPDATE Y DELETE
@@ -69,8 +87,6 @@ def Read(query, params=None):
             print("-------------------- Conexión finalizada -------------------->")
 
 
-### Estos son los antiguos
-# Los nuevos inicias desde /Inicio w
 @app.route("/", methods=["GET"])
 def index():
     return render_template("index.html")
@@ -97,6 +113,7 @@ def dashboard():
     return render_template("dashboard.html", pacientes=pacientes)
 
 
+# region login y registro
 # Estos son nuevos
 @app.route("/Registrarse", methods=["GET"])
 def Registrarse():
@@ -105,7 +122,79 @@ def Registrarse():
 
 @app.route("/Ingreso", methods=["GET"])
 def Ingreso():
+    #Solicitar datos  
     return render_template("Ingreso.html")
+
+@app.route('/iniciar_sesion', methods=['POST'])
+def logearse():
+    tipo_sesion = request.form.get('elegir_sesion')
+    if tipo_sesion == 'doctor':
+        cedula = request.form.get('cedula-doctor')
+        password = request.form.get('password')
+        print(f'Iniciar sesion el doctor:\n{cedula}\n{password}')
+
+        conn = mariadb.connect(**ROOT_CONECTION)
+        if conn:
+            usuario_existe = """
+                SELECT * FROM doctores
+                JOIN datos_basicos ON doctores.ID_datos_basicos = datos_basicos.ID_datos_basicos
+                WHERE Cedula_Profesional = ? AND Contraseña = ?
+                """
+            params = (cedula, password,)
+
+            cursor = conn.cursor(dictionary=True)
+            cursor.execute(usuario_existe, params)
+            usuario = cursor.fetchone()
+            if usuario is not None:
+                utils.print_cols(usuario)
+                session.clear()
+                session['Tipo_usuario'] = 'doctor'
+                session['ID_doctor'] = usuario['ID_Doctor']
+                session['ID_datos_basicos'] = usuario['ID_Datos_Basicos']
+                session['Nombres'] = usuario['Nombres']
+                session['Apellido_Paterno'] = usuario['Apellido_Paterno']
+                session['Apellido_Materno'] = usuario['Apellido_Materno']
+            pass
+    elif tipo_sesion == 'recepcionista':
+        rfc = request.form.get('rfc-recepcionista')
+        password = request.form.get('password')
+        conn = mariadb.connect(**ROOT_CONECTION)
+        if conn:
+            usuario_existe = """
+                SELECT * FROM recepcionistas
+                JOIN datos_basicos ON recepcionistas.ID_datos_basicos = datos_basicos.ID_datos_basicos
+                WHERE RFC = ? AND Contraseña = ?
+                """
+            params = (rfc, password,)
+            cursor = conn.cursor(dictionary=True)
+            cursor.execute(usuario_existe, params)
+            usuario = cursor.fetchone()
+            if usuario is not None:
+                print(f'Iniciar sesion la recepcionista:\n{rfc}\n{password}')
+                utils.print_cols(usuario)
+                session.clear()
+                session['Tipo_usuario'] = 'recepcionista'
+                session['ID_recepcionista'] = usuario['ID_Recepcionista']
+                session['ID_datos_basicos'] = usuario['ID_Datos_Basicos']
+                session['Nombres'] = usuario['Nombres']
+                session['Apellido_Paterno'] = usuario['Apellido_Paterno']
+                session['Apellido_Materno'] = usuario['Apellido_Materno']
+            pass
+
+    else:
+        print('error')
+
+    return redirect(url_for('Inicio'))
+
+@app.route('/logout', methods=['GET'])
+def logout():
+    if session['Tipo_usuario'] is None:
+        print('FORBIDEN')
+        return redirect(url_for('Inicio'))
+
+    session.clear()
+    return redirect(url_for('Inicio'))
+# endregion
 
 
 @app.route("/template", methods=["GET"])
@@ -115,15 +204,68 @@ def template():
 
 @app.route("/Agenda", methods=["GET"])
 def Agenda():
+    conn = mariadb.connect(**ROOT_CONECTION)
+    if conn:
+        try:
+            query = """
+                SELECT datos_p.Nombres, datos_p.Apellido_Paterno, datos_p.Apellido_Materno,
+                    Fecha, Motivo,
+                    datos_d.Nombres AS Nombres_doctor, datos_d.Apellido_Paterno AS Apellido_p_doctor, datos_d.Apellido_Materno AS Apellido_m_doctor,
+                    datos_r.Nombres AS Nombres_recep, datos_r.Apellido_Paterno AS Apellido_p_recep, datos_r.Apellido_Materno AS Apellido_m_recep
+                FROM citas
+                JOIN estatus_cita ON citas.ID_Estatus_Cita = estatus_cita.ID_Estatus_Cita
+                #Paciente y sus datos
+                JOIN pacientes ON citas.ID_Paciente = pacientes.ID_Paciente
+                    JOIN datos_basicos AS datos_p ON pacientes.ID_Datos_Basicos = datos_p.ID_Datos_Basicos
+                #Doctor y sus datos
+                JOIN doctores ON citas.ID_Doctor = doctores.ID_Doctor
+                    JOIN datos_basicos AS datos_d ON doctores.ID_Datos_Basicos = datos_d.ID_Datos_Basicos
+                #Recepcionista y sus datos
+                JOIN recepcionistas ON citas.ID_Recepcionista = recepcionistas.ID_Recepcionista
+                    JOIN datos_basicos AS datos_r ON recepcionistas.ID_Datos_Basicos = datos_r.ID_Datos_Basicos
+                """
+            cursor = conn.cursor(dictionary=True)
+            cursor.execute(query)
+            rows = cursor.fetchall()
 
-    return render_template("Agenda.html")
+            print("Cita:")
+            print(utils.print_rows(rows))
 
+            query_lista_pacientes = """
+                SELECT ID_paciente, Nombres, Apellido_paterno, Apellido_materno FROM pacientes
+                JOIN datos_basicos ON datos_basicos.ID_datos_basicos = pacientes.ID_datos_basicos
+                """
+            cursor.execute(query_lista_pacientes)
+            lista_pacientes = cursor.fetchall()
+            print("Pacientes")
+            print(utils.print_rows(lista_pacientes))
 
+            query_lista_doctores = """
+                SELECT ID_doctor, Nombres, Apellido_paterno, Apellido_materno FROM doctores
+                JOIN datos_basicos ON datos_basicos.ID_datos_basicos = doctores.ID_datos_basicos
+                """
+            cursor.execute(query_lista_doctores)
+            lista_doctores = cursor.fetchall()
+            print("Doctores")
+            print(utils.print_rows(lista_doctores))
+        except:
+            pass
+        finally:
+            conn.close()
+    return render_template(
+        "Agenda.html",
+        citas=rows,
+        lista_pacientes=lista_pacientes,
+        lista_doctores=lista_doctores,
+        current_page='Agenda'
+    )
+
+# region pacientes
 @app.route("/Pacientes", methods=["GET"])
 def Pacientes():
     query = "SELECT * FROM pacientes JOIN datos_basicos ON pacientes.ID_Datos_Basicos = datos_basicos.ID_Datos_Basicos"
     pacientes = Read(query)  # Llama a Read con la consulta adecuada
-    return render_template("Pacientes.html", pacientes=pacientes)
+    return render_template("Pacientes.html", pacientes=pacientes, current_page='Pacientes')
 
 
 @app.route("/Agregar_Pacientes", methods=["POST"])
@@ -144,7 +286,7 @@ def agregar_Pacientes():
         (nombres, apellido_paterno, apellido_materno, email, telefono, fecha_nacimiento, direccion)
         values
         (?,?,?,?,?,?,?)
-    """
+        """
     # Coloca los parámetros en una variable y ejecuta la consulta SQL, con esto insertado los datos básicos del paciente
     params = (nombre, apellido_p, apellido_m, email, telefono, fecha_n, direccion)
     CUD(insertar_datos_basicos, params)
@@ -249,8 +391,9 @@ def eliminar_Paciente():
         (id_datos_basicos[0][0],),
     )  
     return redirect(url_for("Pacientes"))
+# endregion
 
-#region Medicamentos
+# region Medicamentos
 @app.route("/Inventario", methods=["GET"])
 def Inventario():
     conn = mariadb.connect(**ROOT_CONECTION)
@@ -273,7 +416,7 @@ def Inventario():
         lista_proveedores = cursor.fetchall()
         # utils.print_rows(lista_proveedores)
     
-    return render_template("Inventario.html", medicamentos = rows, lista_proveedores=lista_proveedores)
+    return render_template("Inventario.html", medicamentos = rows, lista_proveedores=lista_proveedores, current_page='Inventario')
 
 @app.route('/agregar_medicamento', methods=['POST'])
 def agregar_medicamento():
@@ -451,12 +594,11 @@ def eliminar_medicamento():
         finally:
             conn.close()
     return redirect(url_for('Inventario'))
-#endregion
+# endregion
 
 @app.route("/Ajustes", methods=["GET"])
 def Ajustes():
-    return render_template("Ajustes.html")
-
+    return render_template("Ajustes.html", current_page='Ajustes')
 
 
 @app.route("/Inicio", methods=["GET"])
@@ -514,6 +656,7 @@ def Inicio():
         citas=rows,
         lista_pacientes=lista_pacientes,
         lista_doctores=lista_doctores,
+        current_page='Inicio'
     )
 
 
@@ -555,6 +698,7 @@ def agregar_cita():
                 1,
             )
             cursor = conn.cursor(dictionary=True)
+            # Error
             cursor.execute(insertar_cita, params)
 
             cursor.execute("SELECT * FROM citas WHERE ID_cita = LAST_INSERT_ID()")
@@ -569,49 +713,37 @@ def Índice():
     return render_template("Índice.html")
 
 
-
-
-
-
-@app.route("/test")
-def test():
+@app.route("/api/citas/<year>/<month>/<day>", methods=["GET"])
+def post_test(year, month, day):
     conn = mariadb.connect(**ROOT_CONECTION)
-    cursor = conn.cursor(dictionary=True)
-    query = """
-        SELECT * FROM citas
-        #JOIN datos_basicos ON datos_basicos.ID_datos_basicos = recepcionistas.ID_datos_basicos
-    """
-    cursor.execute(query)
-    doctores = cursor.fetchall()
-    # utils.print_rows(doctores)
-    return jsonify(doctores)
-
-
-@app.route("/post", methods=["POST"])
-def post_test():
-    if request.method == "POST":
-        nombre = request.form.get("nombre")
-        ap_p = request.form.get("apellido_p_paciente")
-        ap_m = request.form.get("apellido_m_paciente")
-        fecha = request.form["fecha"]
-        hora = request.form.get("hora")
-        motivo = request.form.get("motivo")
-        fechahora = datetime.datetime.combine(fecha, hora)
-        query = """
-            SELECT *
-            FROM doctores
-            JOIN datos_basicos ON doctores.ID_Datos_Basicos = datos_basicos.ID_Datos_Basicos
-            """
-
-        conn = mariadb.connect(**ROOT_CONECTION)
+    if conn is not None:
         cursor = conn.cursor(dictionary=True)
-        cursor.execute(query)
-        doctores = cursor.fetchall()
-        utils.print_rows(doctores)
-
-        return f"<h1>Cita agendada</h1><p>Nombre del paciente: {nombre} {ap_p} {ap_m}</p><p>Motivo: {motivo}</p><p>Fecha: {fechahora} hrs.</p>"
-
-    return "Post"
+        query = """
+            SELECT datos_p.Nombres, datos_p.Apellido_Paterno, datos_p.Apellido_Materno,
+                Fecha, Motivo,
+                datos_d.Nombres AS Doctor_Nombres, datos_d.Apellido_Paterno AS Doctor_Apellido_Paterno,
+                datos_d.Apellido_Materno AS Doctor_Apellido_Materno,
+                datos_r.Nombres AS Recepcionista_Nombres, datos_r.Apellido_Paterno AS Recepcionista_Apellido_Paterno, 
+                datos_r.Apellido_Materno AS Recepcionista_Apellido_Materno
+            FROM citas
+            JOIN estatus_cita ON citas.ID_Estatus_Cita = estatus_cita.ID_Estatus_Cita
+            #Paciente y sus datos
+            JOIN pacientes ON citas.ID_Paciente = pacientes.ID_Paciente
+            JOIN datos_basicos AS datos_p ON pacientes.ID_Datos_Basicos = datos_p.ID_Datos_Basicos
+            #Doctor y sus datos
+            JOIN doctores ON citas.ID_Doctor = doctores.ID_Doctor
+            JOIN datos_basicos AS datos_d ON doctores.ID_Datos_Basicos = datos_d.ID_Datos_Basicos
+            #Recepcionista y sus datos
+            JOIN recepcionistas ON citas.ID_Recepcionista = recepcionistas.ID_Recepcionista
+            JOIN datos_basicos AS datos_r ON recepcionistas.ID_Datos_Basicos = datos_r.ID_Datos_Basicos
+            WHERE YEAR(Fecha) = ? AND MONTH(Fecha) = ? AND DAY(Fecha) = ?
+        """
+        params = (year, month, day)
+        cursor.execute(query, params)
+        citas = cursor.fetchall()
+        utils.print_rows(citas)
+        return jsonify(citas)
+    return jsonify(None)    
 
 
 app.run()
