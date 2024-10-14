@@ -23,73 +23,129 @@ href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/boot
 src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 
 <style>
-    .calendar-container {
-        background-color: white;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    .table {
+        border-radius: 0.5rem; /* Ajusta el valor según lo necesites */
+        overflow: hidden; /* Asegúrate de que el contenido no sobresalga */
+        box-shadow: 0 8px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
     }
-
-    .calendar-day {
-        cursor: pointer;
+    
+    .table th, .table td {
+                border: 0.5px solid #ADD8E6; /* Borde de celdas */
+                padding: 0.5rem; /* Espaciado interno */
+            }
+    
+    .table th {
+        font-size: 1.2rem; /* Aumenta el tamaño de la fuente */
+        color: #333; /* Color del texto en encabezados */
+        background-color: #2980b9; /* Fondo para encabezados */
+        color: #fff; /* Color del texto en encabezados */
+        text-align: center; /* Centrar contenido si es apropiado */
     }
-
-    .calendar-day:hover {
-        background-color: #e9ecef;
+    
+    .table td {
+        font-size: 1rem; /* Tamaño de la fuente en celdas */
+        color: #555; /* Color del texto en celdas */
     }
-
-    .calendar-day.has-appointment {
-        background-color: #cfe2ff;
+    
+    .clickable-row {
+            cursor: pointer; /* Cambia el cursor a una mano para indicar que la fila es clickeable. */
     }
-
-    .calendar-day.selected {
-        background-color: #0d6efd;
-        color: white;
+    .card {
+        border: 1px solid #e1e1e1; /* Establece un borde gris claro alrededor de las tarjetas. */
+        border-radius: 0.5rem; /* Bordes redondeados para las tarjetas. */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra suave para dar efecto de elevación. */
     }
+    
+    .btn {
+        border-radius: 0.3rem; /* Bordes ligeramente redondeados para botones. */
+    }
+    
+    .modal-header { 
+        background-color: #2980b9; /* Fondo azul oscuro para el encabezado del modal. */
+        color: #fff; /* Color blanco para el texto en el encabezado del modal. */
+    }
+    
+    .modal-footer {
+        justify-content: center; /* Centra los botones en el pie del modal. */
+    }
+    
+    .input-group-text {
+        background-color: #e9ecef; /* Fondo gris claro para las etiquetas en inputs. */
+        border: 1px solid #ced4da; /* Borde gris para las etiquetas en inputs. */
+    }
+    
+    .modal:hover {
+        box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada */
+    }
+    
+    .btn:hover {
+        background-color: #1f7a93; /* Un tono más oscuro */
+        color: #fff; /* Asegúrate de que el texto sea legible */
+    }
+    
+    .btn-submit:hover {
+        background-color: #219653; /* Color más oscuro al pasar el cursor */
+        cursor: pointer; /* Cambia el cursor para indicar interactividad */
+    }
+    
+    .input-group {
+        border: 1px solid #ced4da; /* Borde gris claro alrededor del grupo de entrada */
+        border-radius: 0.25rem; /* Bordes redondeados */
+        box-shadow: none; /* Eliminar sombra si hay */
+        transition: border-color 0.3s; /* Transición suave al cambiar el borde */
+    }
+    
+    .input-group:focus-within {
+        border-color: #2980b9; /* Cambiar el color del borde al azul cuando el campo está en foco */
+    }
+    
+    .form-control {
+        border: 1px solid #e1e1e1; /* Borde gris claro para cada campo */
+        border-radius: 0.25rem; /* Bordes redondeados */
+        transition: border-color 0.3s; /* Transición suave al cambiar el borde */
+    }
+    
+    .form-control:focus {
+        border-color: #2980b9; /* Cambiar color del borde a azul al hacer foco */
+        box-shadow: 0 0 5px rgba(41, 128, 185, 0.5); /* Añadir sombra suave en foco */
+    }
+    
+    .btn, .table th, .table td {
+        transition: background-color 0.3s, color 0.3s; /* Transiciones para botones y celdas */
+    }
+    
+    h1.h2 {
+        font-size: 2rem; /* Tamaño más grande */
+        color: #2980b9; /* Color atractivo */
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); /* Sombra para dar profundidad */
+        margin-bottom: 1rem; /* Espacio debajo del título */
+        font-weight: bold; /* Hacer el texto más audaz */
+        text-align: center;
+    }
+    
+    h1.h2:hover {
+        color: #1f7a93; /* Color más oscuro al pasar el mouse */
+        transition: color 0.3s; /* Transición suave */
+    }
+    
 </style>
 {% endblock %}
 
 {% block body %}
-<div class="container-fluid main-content">
-    di
+<div class="container-fluid">
     <div class="row">
-        <div class="col-md-9">
-            <div class="calendar-container p-3 mt-4">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h2 id="currentMonthYear"></h2>
-                    <div>
-                        <button id="prevMonth" class="btn btn-outline-primary"><i
-                                class="fas fa-chevron-left"></i></button>
-                        <button id="nextMonth" class="btn btn-outline-primary"><i
-                                class="fas fa-chevron-right"></i></button>
-                    </div>
-                </div>
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Lun</th>
-                            <th>Mar</th>
-                            <th>Mié</th>
-                            <th>Jue</th>
-                            <th>Vie</th>
-                            <th>Sáb</th>
-                            <th>Dom</th>
-                        </tr>
-                    </thead>
-                    <tbody id="calendarBody">
-                        <!-- Calendar days will be inserted here -->
-                    </tbody>
-                </table>
-            </div>
+        <div class="col-8">
+            <div id="calendar"></div>
         </div>
-        <div class="col-md-3">
+        <div class="col-4">
             <div class="card mt-4">
                 <div class="card-body">
                     <h5 class="card-title">Detalles de la Cita</h5>
-                    <div id="appointmentDetails">
-                        <!-- Appointment details will be shown here -->
+                    <div id="appointmentDetails">   
                     </div>
                     <div class="d-grid gap-2 mt-3">
-                        <button id="addAppointment" class="btn btn-primary" type="button">Agregar Cita</button>
+                        <button id="addAppointment" class="btn btn-primary" type="button" data-bs-toggle="modal"
+                        data-bs-target="#modalAgregarCita">Agregar Cita</button>
                         <button id="modifyAppointment" class="btn btn-secondary" type="button" disabled>Modificar
                             Cita</button>
                         <button id="deleteAppointment" class="btn btn-danger" type="button" disabled>Eliminar
@@ -99,23 +155,6 @@ src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootst
             </div>
         </div>
     </div>
-    <!-- ||||||||||||||||| -->
-    <div class="row">
-        <div class="col-8">
-            <input type="date" id="fecha-test" class="form-control">
-            <button type="button" class="btn btn-danger" id="boton-test">Llamar</button>
-            <textarea name="" id="texto" class="form-control"></textarea>
-        </div>
-
-    </div>
-
-    <div class="row">
-        <div class="col-8">
-            <div data-date="12/03/2012" id="select-fecha"></div>
-        </div>
-
-    </div>
-
 </div>
 
 <div class="modal fade" id="modalAgregarCita" tabindex="-1" aria-labelledby="modalAgregarPacienteLabel"
@@ -128,7 +167,7 @@ aria-hidden="true">
         </div>
         <div class="modal-body">
             <!-- Agregar cita -->
-            <form action="/agregar_cita" method="post">
+            <form id="form_agregar_cigar" action="/agregar_cita" method="post">
                 <div class="input-group flex-nowrap mb-2">
                     <label for="paciente" class="input-group-text">Nombre</label>
                     <select class="form-select" name="paciente" id="paciente">
@@ -174,191 +213,176 @@ aria-hidden="true">
             </form>
         </div>
     </div>
+
+<div id="data" data-citas='{{ citas }}' data-pacientes='{{ lista_pacientes }}' data-doctores='{{ lista_doctores }}'>
 </div>
+
 {% endblock %}
 
 {% block scripts %}
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    $(document).ready(function () {
-        let currentDate = new Date();
-        let appointments = [];
-        function updateCalendar() {
-            const year = currentDate.getFullYear();
-            const month = currentDate.getMonth();
-            const firstDay = new Date(year, month, 1);
-            const lastDay = new Date(year, month + 1, 0);
-            const daysInMonth = lastDay.getDate();
-            const startingDay = firstDay.getDay() === 0 ? 7 : firstDay.getDay(); // Adjust for Monday start
-
-            $('#currentMonthYear').text(`${currentDate.toLocaleString('default', { month: 'long' })} ${year}`);
-
-            let calendarHTML = '';
-            let dayCount = 1;
-            for (let i = 0; i < 6; i++) {
-                calendarHTML += '<tr>';
-                for (let j = 1; j <= 7; j++) {
-                    if (i === 0 && j < startingDay) {
-                        calendarHTML += '<td></td>';
-                    } else if (dayCount > daysInMonth) {
-                        calendarHTML += '<td></td>';
-                    } else {
-                        const date = new Date(year, month, dayCount);
-                        const hasAppointment = appointments.some(app => {
-                            const appDate = new Date(app.date);
-                            return appDate.getFullYear() === year && appDate.getMonth() === month && appDate.getDate() === dayCount;
-                        });
-                        const classes = ['calendar-day'];
-                        if (hasAppointment) classes.push('has-appointment');
-                        calendarHTML += `<td class="${classes.join(' ')}" data-date="${date.toISOString().split('T')[0]}">${dayCount}</td>`;
-                        dayCount++;
-                    }
-                }
-                calendarHTML += '</tr>';
-                if (dayCount > daysInMonth) break;
+    let selectedRow = null;
+    document.querySelectorAll('.clickable-row').forEach(row => {
+        row.addEventListener('click', function () {
+            // Seleccionar fila
+            if (selectedRow) {
+                selectedRow.classList.remove('table-primary');
             }
-            $('#calendarBody').html(calendarHTML);
-        }
+            selectedRow = this;
+            selectedRow.classList.add('table-primary');
 
-        $('#prevMonth').click(function () {
-            currentDate.setMonth(currentDate.getMonth() - 1);
-            updateCalendar();
-        });
+            const id = row.getAttribute('id'); // ID
+            const nombre = row.children[0].textContent; // Ajustado a [0] para "Nombre"
+            const proveedor = row.children[1].textContent; // Ajustado a [1] para "Dosis"
+            const telefono = row.children[2].textContent; // Ajustado a [1] para "Dosis"
+            const id_proveedor = row.children[2].getAttribute('id');
 
-        $('#nextMonth').click(function () {
-            currentDate.setMonth(currentDate.getMonth() + 1);
-            updateCalendar();
-        });
+            // Verificar los datos con la consola 
+            console.log(id)
+            console.log(nombre)
+            console.log(proveedor)
+            console.log(telefono)
+            console.log(id_proveedor)
 
-        $('#calendarBody').on('click', '.calendar-day', function () {
-            $('.calendar-day').removeClass('selected');
-            $(this).addClass('selected');
-            const selectedDate = $(this).data('date');
-            showAppointments(selectedDate);
-        });
-
-        function showAppointments(date) {
-            const dayAppointments = appointments.filter(app => app.date === date);
-            let detailsHTML = '<ul class="list-group">';
-            dayAppointments.forEach(app => {
-                detailsHTML += `
-                    <li class="list-group-item">
-                        <strong>${app.time}</strong> - ${app.patientName}<br>
-                        Motivo: ${app.reason}<br>
-                        Estado: ${getStatusText(app.status)}
-                    </li>
-                `;
-            });
-            detailsHTML += '</ul>';
-            $('#appointmentDetails').html(detailsHTML);
-            $('#modifyAppointment, #deleteAppointment').prop('disabled', dayAppointments.length === 0);
-        }
-
-        function getStatusText(status) {
-            switch (status) {
-                case 'pending': return 'En espera';
-                case 'completed': return 'Finalizado';
-                case 'cancelled': return 'Cancelado';
-                default: return status;
-            }
-        }
-
-        $('#addAppointment').click(function () {
-            const selectedDate = $('.calendar-day.selected').data('date');
-            if (selectedDate) {
-                $('#appointmentId').val('');
-                $('#fecha').val(selectedDate);
-                $('#appointmentTime').val('');
-                $('#patientName').val('');
-                $('#appointmentReason').val('');
-                $('#appointmentStatus').val('pending');
-                $('#prescription').val('');
-                $('#prescriptionContainer').hide();
-                $('#modalAgregarCita').modal('show');
-            } else {
-                alert('Por favor, seleccione una fecha en el calendario.');
-            }
-        });
-
-        $('#appointmentStatus').change(function () {
-            if ($(this).val() === 'completed') {
-                $('#prescriptionContainer').show();
-            } else {
-                $('#prescriptionContainer').hide();
-            }
-        });
-
-        $('#saveAppointment').click(function () {
-            const id = $('#appointmentId').val();
-            const newAppointment = {
-                id: id || Date.now().toString(),
-                date: $('#appointmentDate').val(),
-                time: $('#appointmentTime').val(),
-                patientName: $('#patientName').val(),
-                reason: $('#appointmentReason').val(),
-                status: $('#appointmentStatus').val(),
-                prescription: $('#prescription').val()
-            };
-
-            if (id) {
-                // Modify existing appointment
-                const index = appointments.findIndex(app => app.id === id);
-                if (index !== -1) {
-                    appointments[index] = newAppointment;
-                }
-            } else {
-                // Add new appointment
-                appointments.push(newAppointment);
-            }
-
-            $('#appointmentModal').modal('hide');
-            updateCalendar();
-            showAppointments(newAppointment.date);
-        });
-
-        $('#modifyAppointment').click(function () {
-            const selectedDate = $('.calendar-day.selected').data('date');
-            const dayAppointments = appointments.filter(app => app.date === selectedDate);
-            if (dayAppointments.length > 0) {
-                const appointment = dayAppointments[0]; // For simplicity, edit the first appointment
-                $('#appointmentId').val(appointment.id);
-                $('#appointmentDate').val(appointment.date);
-                $('#appointmentTime').val(appointment.time);
-                $('#patientName').val(appointment.patientName);
-                $('#appointmentReason').val(appointment.reason);
-                $('#appointmentStatus').val(appointment.status);
-                $('#prescription').val(appointment.prescription || '');
-                if (appointment.status === 'completed') {
-                    $('#prescriptionContainer').show();
-                } else {
-                    $('#prescriptionContainer').hide();
-                }
-                $('#appointmentModal').modal('show');
-            }
-        });
-
-        $('#deleteAppointment').click(function () {
-            const selectedDate = $('.calendar-day.selected').data('date');
-            appointments = appointments.filter(app => app.date !== selectedDate);
-            updateCalendar();
-            showAppointments(selectedDate);
-        });
-
-        updateCalendar();
-
-
-
-        $('#boton-test').click(function () {
-            const fecha = $('#fecha-test').val();
+            // Asignar valores al modal
+            document.getElementById('modificar_medicina_id').value = id;
+            document.getElementById('modificar_medicina_nombre').value = nombre;
+            document.getElementById('modificar_medicina_telefono').value = telefono;
+            document.getElementById('modificar_medicina_id_proveedor').value = id_proveedor;
             
-            const date = new Date(fecha);
-            const year = date.getFullYear()
-            const month = date.getMonth() + 1
-            const day = date.getDate() + 1
-            console.log(fecha)
-            request(year, month, day)
+            //Asignar para eliminar
+            document.getElementById('eliminar_medicamento_id').value = id;
+            console.log(document.getElementById('eliminar_medicamento_id').value)
         });
-        //LLamada a APi
+    });
+
+    document.getElementById('modificarBoton').addEventListener('click', function () {
+            if (!selectedRow) {
+                alert('Por favor selecciona una fila para modificar.');
+                return;
+            }
+
+            // Si hay una fila seleccionada, se muestra el modal
+            const modal = new bootstrap.Modal(document.getElementById('modalModificarMedicina'));
+            modal.show();
+        });
+
+        document.getElementById('eliminarBoton').addEventListener('click', function () {
+            if (!selectedRow) {
+                alert('Por favor selecciona una fila para eliminar.');
+                return;
+            }
+
+            // Si hay una fila seleccionada, se muestra el modal
+            const modal = new bootstrap.Modal(document.getElementById('modalEliminarMedicina'));
+            modal.show();
+        });
+
+
+        document.getElementById('modalAgregarCita').addEventListener('click', function () {
+            if (!selectedRow) {
+                alert('Por favor selecciona una fila para eliminar.');
+                return;
+            }
+
+            // Si hay una fila seleccionada, se muestra el modal
+            const modal = new bootstrap.Modal(document.getElementById('modalEliminarMedicina'));
+            modal.show();
+        });
+
+
+        // Evento para el checkb
+        const checkbox1 = document.getElementById('elegir_proveedor1') //False
+        checkbox1.addEventListener('change', (event) => {
+            if (event.currentTarget.checked) {
+                console.log('Elegir proveedor existente')
+                document.getElementById('show-nombre-proveedor').style.display = 'none'
+                document.getElementById('show-telefono-proveedor').style.display = 'none'
+                document.getElementById('show-select').style.display = 'flex'
+
+                document.getElementById('nombre_proveedor').removeAttribute('required')
+                document.getElementById('telefono_proveedor').removeAttribute('required')
+                document.getElementById('ID_proveedor').setAttribute('required', 'true')
+            } 
+        })
+        var event = new Event('change');
+        checkbox1.dispatchEvent(event);
+
+        const checkbox = document.getElementById('elegir_proveedor2') //True
+        checkbox.addEventListener('change', (event) => {
+            if (event.currentTarget.checked) {
+                console.log('Ingresar nuevo proveedor')
+                document.getElementById('show-nombre-proveedor').style.display = 'flex'
+                document.getElementById('show-telefono-proveedor').style.display = 'flex'
+                document.getElementById('show-select').style.display = 'none'
+
+                document.getElementById('nombre_proveedor').setAttribute('required', 'true')
+                document.getElementById('telefono_proveedor').setAttribute('required', 'true')
+                document.getElementById('ID_proveedor').removeAttribute('required')
+            }
+        })
+</script>
+
+<!-- Scripts de bootstrap -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+crossorigin="anonymous"></script>
+<script>
+    // esto es para configurar la tabla en español
+    $.fn.datepicker.dates['es'] = {
+            days: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+            daysShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'],
+            daysMin: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'],
+            months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+            today: 'Ir al día de hoy',
+            clear: 'Limpiar',
+            format: 'dd/mm/yy',
+            titleFormat: "MM yyyy",
+            weekStart: 1
+        };
+        
+        $('#calendar').datepicker({
+            language: "es",
+            //calendarWeeks: true,
+            todayHighlight: true,   
+            keepEmptyValues: true,
+            todayBtn: true,
+            changeMonth: true,
+            changeYear: true,
+            keyboardNavigation: false,  
+            maxViewMode: 'months',
+        })
+
+        // configurar evento para validar cuando se cambia la fecha
+        $('#calendar').datepicker().on('changeDate', function(e){
+            console.log(e.date)
+            console.log(e.date.getFullYear())
+            console.log(e.date.getMonth() + 1)
+            console.log(e.date.getDate() + 1)
+            request(e.date.getFullYear(), e.date.getMonth() + 1, e.date.getDate())
+        });
+
+        $(document.querySelectorAll('.datepicker-inline')).addClass('bg-white w-100 rounded-5 p-4 shadow-lg overflow-auto overflow-hide-scroll')
+        $(document.querySelectorAll('.table-condensed')).addClass('table w-100').removeClass('table-condensed')
+
+        function formatDate(date) {
+            let datePart = [
+                date.getMonth() + 1,
+                date.getDate(),
+                date.getFullYear()
+            ].map((n, i) => n.toString().padStart(i === 2 ? 4 : 2, "0")).join("/");
+            let timePart = [
+                date.getHours(),
+                date.getMinutes(),
+                date.getSeconds()
+            ].map((n, i) => n.toString().padStart(2, "0")).join(":");
+            return datePart + " " + timePart;
+        }
+
         function request(year, month, day) {
             const route = `/api/citas/${year}/${month}/${day}`
             $.ajax({
@@ -366,15 +390,26 @@ aria-hidden="true">
                 async: false,
                 success: function(resultado) {
                     console.log('Request complete!')
+                    $('#appointmentDetails').empty()
                     if (resultado.length == 0) {
                         console.log('No hay citas para esta fecha')
+                        return
                     }
                     console.log(resultado)
-                    console.log(resultado[0]['Nombres'])
-                    console.log(resultado[0]['Apellido_Paterno'])
-                    console.log(resultado[0]['Apellido_Paterno'])
-                    for (let key in resultado[0]) {
-                        document.getElementById('texto').innerHTML += `${key}: ${resultado[0][key]} \n`
+                    for (let i = 0; i < resultado.length; i++) {
+
+                        console.log(resultado[i]['Nombres'])
+                        console.log(resultado[i]['Apellido_Paterno'])
+                        console.log(resultado[i]['Apellido_Materno'])
+
+                        let date = new Date(resultado[i]['Fecha'])
+                        
+                        $('#appointmentDetails').append(`<small>Paciente: ${resultado[i]['Nombres']} ${resultado[i]['Apellido_Paterno']} ${resultado[i]['Apellido_Materno']}</small>`);
+                        $('#appointmentDetails').append(`<br><small>Le atiende: Dr. ${resultado[i]['Doctor_Nombres']} ${resultado[i]['Doctor_Apellido_Paterno']} ${resultado[i]['Doctor_Apellido_Materno']}</small>`);
+                        $('#appointmentDetails').append(`<br><small>Fecha asignada: ${formatDate(date)}</small>`);
+                        $('#appointmentDetails').append(`<br><small>Motivo: ${resultado[i]['Motivo']}</small>`);
+                        $('#appointmentDetails').append(`<hr>`);
+                        
                     }
 
                 },
@@ -397,52 +432,5 @@ aria-hidden="true">
                 }
             })
         }
-
-        //
-        $.fn.datepicker.dates['es'] = {
-            days: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-            daysShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
-            daysMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
-            months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-            monthsShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
-            today: 'Hoy',
-            clear: 'Limpiar',
-            format: 'dd/mm/yy',
-            titleFormat: "MM yyyy", 
-            weekStart: 1
-        };
-        // inicializar el datepicker
-        $('#select-fecha').datepicker({
-            autoclose: true,
-            language: 'es-419',
-            todayHighlight: true,   
-            keepEmptyValues: true,
-            todayBtn: true,
-            changeMonth: true,
-            changeYear: true,
-            keyboardNavigation: false,  
-            maxViewMode: 'days',
-            daysOfWeekHighlighted: [selectDia.value],
-            beforeShowDay : function(date) {
-                return date.getDay() == selectDia.value
-            },
-            startDate: new Date(new Date().getFullYear(), new Date().getMonth() - 2, 1),
-            endDate: new Date(),
-            format : 'yyyy-mm-dd'
-        });
-        // configurar evento para validar cuando se cambia la fecha
-        $('#select-fecha').datepicker().on('changeDate', function(e){
-            console.log(e)
-            if (e.date == null || e.date.getDay() != selectDia.value) {
-                console.log('La fecha es inválida')
-                fechaState = false
-                $('#select-fecha').addClass('is-invalid').removeClass('is-valid')
-            } else {
-                fechaState = true
-                $('#select-fecha').addClass('is-valid').removeClass('is-invalid')
-            }
-        });
-        //
-    });
 </script>
 {% endblock %}

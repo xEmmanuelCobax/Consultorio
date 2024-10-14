@@ -89,6 +89,7 @@ def Read(query, params=None):
 
 @app.route("/", methods=["GET"])
 def index():
+    
     return render_template("index.html")
 
 
@@ -204,7 +205,12 @@ def template():
 
 @app.route("/Agenda", methods=["GET"])
 def Agenda():
+    # Verificar si el usuario está autenticado
+    if "Tipo_usuario" not in session:
+        print("<No hay session>")
+        return redirect(url_for("Índice"))
     conn = mariadb.connect(**ROOT_CONECTION)
+    citas = []
     if conn:
         try:
             query = """
@@ -229,7 +235,7 @@ def Agenda():
             rows = cursor.fetchall()
 
             print("Cita:")
-            print(utils.print_rows(rows))
+            # print(utils.print_rows(rows))
 
             query_lista_pacientes = """
                 SELECT ID_paciente, Nombres, Apellido_paterno, Apellido_materno FROM pacientes
@@ -238,7 +244,7 @@ def Agenda():
             cursor.execute(query_lista_pacientes)
             lista_pacientes = cursor.fetchall()
             print("Pacientes")
-            print(utils.print_rows(lista_pacientes))
+            # print(utils.print_rows(lista_pacientes))
 
             query_lista_doctores = """
                 SELECT ID_doctor, Nombres, Apellido_paterno, Apellido_materno FROM doctores
@@ -247,7 +253,7 @@ def Agenda():
             cursor.execute(query_lista_doctores)
             lista_doctores = cursor.fetchall()
             print("Doctores")
-            print(utils.print_rows(lista_doctores))
+            # print(utils.print_rows(lista_doctores))
         except:
             pass
         finally:
@@ -257,12 +263,17 @@ def Agenda():
         citas=rows,
         lista_pacientes=lista_pacientes,
         lista_doctores=lista_doctores,
-        current_page='Agenda'
+        current_page='Agenda',
     )
 
 # region pacientes
 @app.route("/Pacientes", methods=["GET"])
 def Pacientes():
+    # Verificar si el usuario está autenticado
+    if "Tipo_usuario" not in session:
+        print("<No hay session>")
+        return redirect(url_for("Índice"))
+    
     query = "SELECT * FROM pacientes JOIN datos_basicos ON pacientes.ID_Datos_Basicos = datos_basicos.ID_Datos_Basicos"
     pacientes = Read(query)  # Llama a Read con la consulta adecuada
     return render_template("Pacientes.html", pacientes=pacientes, current_page='Pacientes')
@@ -396,6 +407,11 @@ def eliminar_Paciente():
 # region Medicamentos
 @app.route("/Inventario", methods=["GET"])
 def Inventario():
+    # Verificar si el usuario está autenticado
+    if "Tipo_usuario" not in session:
+        print("<No hay session>")
+        return redirect(url_for("Índice"))
+    
     conn = mariadb.connect(**ROOT_CONECTION)
     if conn:
         consultar_medicamentos = """
@@ -415,7 +431,7 @@ def Inventario():
         cursor.execute(consultar_proveedores)
         lista_proveedores = cursor.fetchall()
         # utils.print_rows(lista_proveedores)
-    
+
     return render_template("Inventario.html", medicamentos = rows, lista_proveedores=lista_proveedores, current_page='Inventario')
 
 @app.route('/agregar_medicamento', methods=['POST'])
@@ -598,11 +614,21 @@ def eliminar_medicamento():
 
 @app.route("/Ajustes", methods=["GET"])
 def Ajustes():
+    # Verificar si el usuario está autenticado
+    if "Tipo_usuario" not in session:
+        print("<No hay session>")
+        return redirect(url_for("Índice"))
+    
     return render_template("Ajustes.html", current_page='Ajustes')
 
 
 @app.route("/Inicio", methods=["GET"])
 def Inicio():
+    # Verificar si el usuario está autenticado
+    if "Tipo_usuario" not in session:
+        print("<No hay session>")
+        return redirect(url_for("Índice"))
+    
     conn = mariadb.connect(**ROOT_CONECTION)
     if conn:
         try:

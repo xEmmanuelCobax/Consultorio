@@ -2,15 +2,19 @@
 
 {% block body %}
 <!--JQuery-->
-<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
 <!-- Scripts de Bootstrap y jQuery -->
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css">
+<!-- OTRAS LIBRERIAS QUE NECESITES IMPORTAR -->
 <!-- Bootstrap datepicker CSS -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css"/>
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" />
 <!-- Bootstrap datepicker JS-->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+<script
+src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 
 <style>
 .table {
@@ -121,6 +125,32 @@ h1.h2:hover {
 </style>
 
 <div class="container-fluid">
+
+    
+    <div class="row">
+        <div class="col-8">
+            <div id="calendar"></div>
+        </div>
+        <div class="col-4">
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h5 class="card-title">Detalles de la Cita</h5>
+                    <div id="appointmentDetails">
+                        
+                    </div>
+                    <div class="d-grid gap-2 mt-3">
+                        <button id="addAppointment" class="btn btn-primary" type="button">Agregar Cita</button>
+                        <button id="modifyAppointment" class="btn btn-secondary" type="button" disabled>Modificar
+                            Cita</button>
+                        <button id="deleteAppointment" class="btn btn-danger" type="button" disabled>Eliminar
+                            Cita</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <div
         class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 class="h2">Medica</h1>
@@ -179,14 +209,6 @@ h1.h2:hover {
         </div>
     </div>
     
-    <div class="row">
-        <div class="col-10">
-            <div class="input-group date">
-                <input type="text" class="form-control" id="select-fecha" value="12-02-2012">
-                
-            </div>
-        </div>
-    </div>
 
 
     <!-- Agregar Medicina -->
@@ -412,37 +434,114 @@ h1.h2:hover {
         })
 </script>
 
+<!-- Scripts de bootstrap -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+crossorigin="anonymous"></script>
 <script>
+    // esto es para configurar la tabla en español
     $.fn.datepicker.dates['es'] = {
-        days: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-        daysShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
-        daysMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
-        months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-        monthsShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
-        today: 'Hoy',
-        clear: 'Limpiar',
-        format: 'dd/mm/yy',
-        titleFormat: "MM yyyy", 
-        weekStart: 1
-    };
-    // inicializar el datepicker
-    $('#select-fecha').datepicker({
-        autoclose: true,
-        language: 'es-419',
-        todayHighlight: true,   
-        keepEmptyValues: true,
-        todayBtn: true,
-        changeMonth: true,
-        changeYear: true,
-        keyboardNavigation: false,  
-        maxViewMode: 'days',
-        daysOfWeekHighlighted: [selectDia.value],
-        beforeShowDay : function(date) {
-            return date.getDay() == selectDia.value
-        },
-        startDate: new Date(new Date().getFullYear(), new Date().getMonth() - 2, 1),
-        endDate: new Date(),
-        format : 'yyyy-mm-dd'
-    });
+            days: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+            daysShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'],
+            daysMin: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'],
+            months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+            today: 'Ir al día de hoy',
+            clear: 'Limpiar',
+            format: 'dd/mm/yy',
+            titleFormat: "MM yyyy",
+            weekStart: 1
+        };
+        
+        $('#calendar').datepicker({
+            language: "es",
+            //calendarWeeks: true,
+            todayHighlight: true,   
+            keepEmptyValues: true,
+            todayBtn: true,
+            changeMonth: true,
+            changeYear: true,
+            keyboardNavigation: false,  
+            maxViewMode: 'months',
+        })
+
+        // configurar evento para validar cuando se cambia la fecha
+        $('#calendar').datepicker().on('changeDate', function(e){
+            console.log(e.date)
+            console.log(e.date.getFullYear())
+            console.log(e.date.getMonth() + 1)
+            console.log(e.date.getDate() + 1)
+            request(e.date.getFullYear(), e.date.getMonth() + 1, e.date.getDate())
+        });
+
+        $(document.querySelectorAll('.datepicker-inline')).addClass('bg-white w-100 rounded-5 p-4 shadow-lg overflow-auto overflow-hide-scroll')
+        $(document.querySelectorAll('.table-condensed')).addClass('table w-100').removeClass('table-condensed')
+
+        function formatDate(date) {
+            let datePart = [
+                date.getMonth() + 1,
+                date.getDate(),
+                date.getFullYear()
+            ].map((n, i) => n.toString().padStart(i === 2 ? 4 : 2, "0")).join("/");
+            let timePart = [
+                date.getHours(),
+                date.getMinutes(),
+                date.getSeconds()
+            ].map((n, i) => n.toString().padStart(2, "0")).join(":");
+            return datePart + " " + timePart;
+        }
+
+        function request(year, month, day) {
+            const route = `/api/citas/${year}/${month}/${day}`
+            $.ajax({
+                url: route,
+                async: false,
+                success: function(resultado) {
+                    console.log('Request complete!')
+                    $('#appointmentDetails').empty()
+                    if (resultado.length == 0) {
+                        console.log('No hay citas para esta fecha')
+                        return
+                    }
+                    console.log(resultado)
+                    for (let i = 0; i < resultado.length; i++) {
+
+                        console.log(resultado[i]['Nombres'])
+                        console.log(resultado[i]['Apellido_Paterno'])
+                        console.log(resultado[i]['Apellido_Materno'])
+
+                        let date = new Date(resultado[i]['Fecha'])
+                        
+                        $('#appointmentDetails').append(`<small>Paciente: ${resultado[i]['Nombres']} ${resultado[i]['Apellido_Paterno']} ${resultado[i]['Apellido_Materno']}</small>`);
+                        $('#appointmentDetails').append(`<br><small>Le atiende: Dr. ${resultado[i]['Doctor_Nombres']} ${resultado[i]['Doctor_Apellido_Paterno']} ${resultado[i]['Doctor_Apellido_Materno']}</small>`);
+                        $('#appointmentDetails').append(`<br><small>Fecha asignada: ${formatDate(date)}</small>`);
+                        $('#appointmentDetails').append(`<br><small>Motivo: ${resultado[i]['Motivo']}</small>`);
+                        $('#appointmentDetails').append(`<hr>`);
+                        
+                    }
+
+                },
+                error: function(jqXHR, exception) {
+                    if (jqXHR.status === 0) {
+                        alert('Not connect.\n Verify Network.');
+                    } else if (jqXHR.status == 404) {
+                        alert('Requested page not found. [404]');
+                    } else if (jqXHR.status == 500) {
+                        alert('Internal Server Error [500].');
+                    } else if (exception === 'parsererror') {
+                        alert('Requested JSON parse failed.');
+                    } else if (exception === 'timeout') {
+                        alert('Time out error.');
+                    } else if (exception === 'abort') {
+                        alert('Ajax request aborted.');
+                    } else {
+                        alert('Uncaught Error.\n' + jqXHR.responseText);
+                    }
+                }
+            })
+        }
 </script>
 {% endblock %}
