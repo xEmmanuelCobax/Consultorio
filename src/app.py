@@ -133,7 +133,6 @@ def logearse():
         cedula = request.form.get('cedula-doctor')
         password = request.form.get('password')
         print(f'Iniciar sesion el doctor:\n{cedula}\n{password}')
-
         conn = mariadb.connect(**ROOT_CONECTION)
         if conn:
             usuario_existe = """
@@ -407,11 +406,6 @@ def eliminar_Paciente():
 # region Medicamentos
 @app.route("/Inventario", methods=["GET"])
 def Inventario():
-    # Verificar si el usuario está autenticado
-    if "Tipo_usuario" not in session:
-        print("<No hay session>")
-        return redirect(url_for("Índice"))
-    
     conn = mariadb.connect(**ROOT_CONECTION)
     if conn:
         consultar_medicamentos = """
@@ -432,7 +426,12 @@ def Inventario():
         lista_proveedores = cursor.fetchall()
         # utils.print_rows(lista_proveedores)
 
-    return render_template("Inventario.html", medicamentos = rows, lista_proveedores=lista_proveedores, current_page='Inventario')
+    return render_template(
+        "Inventario.html",
+        medicamentos=rows,
+        lista_proveedores=lista_proveedores,
+        current_page="Inventario",
+    )
 
 @app.route('/agregar_medicamento', methods=['POST'])
 def agregar_medicamento():
@@ -694,6 +693,7 @@ def agregar_cita():
         hora = request.form.get("hora")
         motivo = request.form.get("motivo")
         id_doctor = request.form.get("doctor")
+        redirect_url = request.form.get("redirect")
 
         fechacita = datetime.datetime.strptime(f"{fecha} {hora}", "%Y-%m-%d %H:%M")
         print(
@@ -731,7 +731,65 @@ def agregar_cita():
             rows = cursor.fetchall()
             utils.print_rows(rows)
             conn.commit()
-    return redirect(url_for("Inicio"))
+    return redirect(redirect_url)
+
+@app.route("/modificar_cita", methods=["POST"])
+def modificar_cita():
+    if request.method == "POST":
+        id_cita = request.form.get("cita")
+        id_receta = request.form.get("receta")
+        id_paciente = request.form.get("modificar_paciente")
+        fecha = request.form.get("modificar_fecha")
+        hora = request.form.get("modificar_hora")
+        motivo = request.form.get("modificar_motivo")
+        id_doctor = request.form.get("modificar_doctor")
+        id_estatus_cita = request.form.get("modificar_id_estatus")
+        id_recepcionista = request.form.get("modificar_recepcionista")
+
+        redirect_url = request.form.get("redirect")
+
+        fechacita = datetime.datetime.strptime(f"{fecha} {hora}", "%Y-%m-%d %H:%M")
+        print(
+            (
+                id_cita,
+                fechacita,
+                motivo,
+                id_paciente,
+                id_doctor,
+                motivo,
+                id_doctor,
+                redirect_url,
+            )
+        )
+        conn = mariadb.connect(**ROOT_CONECTION)
+        if conn is not None:
+            try:
+                cursor = conn.cursor(dictionary=True)
+                verificar_cita = """
+                    SELECT COUNT(*) 
+                    FROM medicamento
+                    WHERE ID_Cita = ?
+                    """
+                params = (id_cita,)
+                cursor.execute(verificar_cita, params)
+                count = cursor.fetchone()['COUNT(*)']
+                if count == 0:
+                    raise Exception('Cita no encontrada')
+                update_cita = """
+                    UPDATE cita
+                    SET fecha=?, motivo=?, id_paciente=?, id_doctor=?, id_estatus_cita=?, id_recepcionista=?, id_receta=?
+                    WHERE id_cita = ?
+                    """
+                params = (fecha, motivo, id_paciente, id_doctor, id_estatus_cita, id_recepcionista, id_receta, id_cita)
+                cursor.execute(update_cita, params)
+                conn.commit()
+                print('Cita actualizada')
+            except Exception as e:
+                conn.rollback()
+                raise e
+            finally:
+                conn.close()
+    return redirect(redirect_url)
 
 
 @app.route("/Índice", methods=["GET"])
@@ -739,13 +797,45 @@ def Índice():
     return render_template("Índice.html")
 
 
+@app.route("/api/citas/<year>/<month>", methods=["GET"])
+def citas_mes(year, month):
+    conn = mariadb.connect(**ROOT_CONECTION)
+    if conn is not None:
+        cursor = conn.cursor(dictionary=True)
+        query = """
+            SELECT citas.ID_cita, datos_p.Nombres, datos_p.Apellido_Paterno, datos_p.Apellido_Materno,
+                Fecha, Motivo,
+                datos_d.Nombres AS Doctor_Nombres, datos_d.Apellido_Paterno AS Doctor_Apellido_Paterno,
+                datos_d.Apellido_Materno AS Doctor_Apellido_Materno,
+                datos_r.Nombres AS Recepcionista_Nombres, datos_r.Apellido_Paterno AS Recepcionista_Apellido_Paterno, 
+                datos_r.Apellido_Materno AS Recepcionista_Apellido_Materno
+            FROM citas
+            JOIN estatus_cita ON citas.ID_Estatus_Cita = estatus_cita.ID_Estatus_Cita
+            #Paciente y sus datos
+            JOIN pacientes ON citas.ID_Paciente = pacientes.ID_Paciente
+            JOIN datos_basicos AS datos_p ON pacientes.ID_Datos_Basicos = datos_p.ID_Datos_Basicos
+            #Doctor y sus datos
+            JOIN doctores ON citas.ID_Doctor = doctores.ID_Doctor
+            JOIN datos_basicos AS datos_d ON doctores.ID_Datos_Basicos = datos_d.ID_Datos_Basicos
+            #Recepcionista y sus datos
+            JOIN recepcionistas ON citas.ID_Recepcionista = recepcionistas.ID_Recepcionista
+            JOIN datos_basicos AS datos_r ON recepcionistas.ID_Datos_Basicos = datos_r.ID_Datos_Basicos
+            WHERE YEAR(Fecha) = ? AND MONTH(Fecha) = ?
+        """
+        params = (year, month)
+        cursor.execute(query, params)
+        citas = cursor.fetchall()
+        utils.print_rows(citas)
+        return jsonify(citas)
+    return jsonify(None) 
+
 @app.route("/api/citas/<year>/<month>/<day>", methods=["GET"])
 def post_test(year, month, day):
     conn = mariadb.connect(**ROOT_CONECTION)
     if conn is not None:
         cursor = conn.cursor(dictionary=True)
         query = """
-            SELECT datos_p.Nombres, datos_p.Apellido_Paterno, datos_p.Apellido_Materno,
+            SELECT citas.ID_cita, datos_p.Nombres, datos_p.Apellido_Paterno, datos_p.Apellido_Materno,
                 Fecha, Motivo,
                 datos_d.Nombres AS Doctor_Nombres, datos_d.Apellido_Paterno AS Doctor_Apellido_Paterno,
                 datos_d.Apellido_Materno AS Doctor_Apellido_Materno,

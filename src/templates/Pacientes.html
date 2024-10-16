@@ -96,28 +96,19 @@
 
 h1.h2 {
     font-size: 2rem; /* Tamaño más grande */
-    color: #2980b9; /* Color atractivo */
+    color: #e1e1e1; /* Color atractivo */
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); /* Sombra para dar profundidad */
     margin-bottom: 1rem; /* Espacio debajo del título */
     font-weight: bold; /* Hacer el texto más audaz */
     text-align: center;
 }
 
-h1.h2:hover {
-    color: #1f7a93; /* Color más oscuro al pasar el mouse */
-    transition: color 0.3s; /* Transición suave */
-}
-
 </style>
 <div class="container-fluid">
     <div
-        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        class="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 class="h2">Pacientes</h1>
         <div class="btn-toolbar mb-2 mb-md-0">
-            <div class="input-group">
-                <input type="text" class="form-control" placeholder="Buscar">
-                <button class="btn btn-outline-secondary" type="button"><i class="fas fa-search"></i></button>
-            </div>
         </div>
     </div>
     <div class="row">
@@ -202,7 +193,9 @@ h1.h2:hover {
                         </div>
                         <div class="input-group flex-nowrap mb-2">
                             <label for="telefono_paciente" class="input-group-text">Teléfono</label>
-                            <input type="tel" name="telefono_paciente" id="telefono_paciente" class="form-control" required maxlength="10">
+                            <input type="tel" pattern="[0-9]{10}" name="telefono_paciente" id="telefono_paciente" 
+                            class="form-control" required minlength="10" maxlength="10"
+                            title="Por favor, ingresa un número de teléfono de 10 dígitos.">
                         </div>
                         <div class="input-group flex-nowrap mb-2">
                             <label for="fecha_n_paciente" class="input-group-text">Fecha de nacimiento</label>
@@ -258,8 +251,9 @@ h1.h2:hover {
                         </div>
                         <div class="input-group flex-nowrap mb-2">
                             <label for="telefono_paciente" class="input-group-text">Teléfono</label>
-                            <input type="tel" name="telefono_paciente_mod" id="telefono_paciente_mod"
-                                class="form-control" value="" required maxlength="10">
+                            <input type="tel" pattern="[0-9]{10}" name="telefono_paciente_mod" 
+                            id="telefono_paciente_mod" class="form-control" value="" required minlength="10" maxlength="10"
+                            title="Por favor, ingresa un número de teléfono de 10 dígitos.">
                         </div>
                         <div class="input-group flex-nowrap mb-2">
                             <label for="fecha_n_paciente" class="input-group-text">Fecha de nacimiento</label>
@@ -413,7 +407,7 @@ h1.h2:hover {
                 const telefono = document.getElementById('telefono_paciente').value;
                 const email = document.getElementById('email_paciente').value;
                 const regexNombreApellido = /^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s]{1,20}$/;
-                const regexTelefono = /^[0-9]{1,10}$/;
+                const regexTelefono = /^[0-9]{10}$/;
                 const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                 // Validar nombre y apellidos
                 if (!validarCamposTexto(regexNombreApellido, nombre, 'El nombre solo debe contener letras, números y espacios.') ||

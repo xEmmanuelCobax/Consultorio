@@ -9,7 +9,7 @@ MediLink - Agenda
 {% block head %}
 <!--JQuery-->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"
-integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
 <!-- Scripts de Bootstrap y jQuery -->
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
@@ -17,429 +17,603 @@ integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="ano
 <!-- OTRAS LIBRERIAS QUE NECESITES IMPORTAR -->
 <!-- Bootstrap datepicker CSS -->
 <link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" />
+    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" />
 <!-- Bootstrap datepicker JS-->
-<script
-src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 
 <style>
     .table {
-        border-radius: 0.5rem; /* Ajusta el valor según lo necesites */
-        overflow: hidden; /* Asegúrate de que el contenido no sobresalga */
-        box-shadow: 0 8px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+        border-radius: 0.5rem;
+        /* Ajusta el valor según lo necesites */
+        overflow: hidden;
+        /* Asegúrate de que el contenido no sobresalga */
+        box-shadow: 0 8px 10px rgba(0, 0, 0, 0.1);
+        /* Sombra suave */
     }
-    
-    .table th, .table td {
-                border: 0.5px solid #ADD8E6; /* Borde de celdas */
-                padding: 0.5rem; /* Espaciado interno */
-            }
-    
-    .table th {
-        font-size: 1.2rem; /* Aumenta el tamaño de la fuente */
-        color: #333; /* Color del texto en encabezados */
-        background-color: #2980b9; /* Fondo para encabezados */
-        color: #fff; /* Color del texto en encabezados */
-        text-align: center; /* Centrar contenido si es apropiado */
-    }
-    
+
+    .table th,
     .table td {
-        font-size: 1rem; /* Tamaño de la fuente en celdas */
-        color: #555; /* Color del texto en celdas */
+        border: 0.5px solid #ADD8E6;
+        /* Borde de celdas */
+        padding: 0.5rem;
+        /* Espaciado interno */
     }
-    
+
+    .table th {
+        font-size: 1.2rem;
+        /* Aumenta el tamaño de la fuente */
+        color: #333;
+        /* Color del texto en encabezados */
+        background-color: #2980b9;
+        /* Fondo para encabezados */
+        color: #fff;
+        /* Color del texto en encabezados */
+        text-align: center;
+        /* Centrar contenido si es apropiado */
+    }
+
+    .table td {
+        font-size: 1rem;
+        /* Tamaño de la fuente en celdas */
+        color: #555;
+        /* Color del texto en celdas */
+    }
+
     .clickable-row {
-            cursor: pointer; /* Cambia el cursor a una mano para indicar que la fila es clickeable. */
+        cursor: pointer;
+        /* Cambia el cursor a una mano para indicar que la fila es clickeable. */
     }
+
     .card {
-        border: 1px solid #e1e1e1; /* Establece un borde gris claro alrededor de las tarjetas. */
-        border-radius: 0.5rem; /* Bordes redondeados para las tarjetas. */
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra suave para dar efecto de elevación. */
+        border: 1px solid #e1e1e1;
+        /* Establece un borde gris claro alrededor de las tarjetas. */
+        border-radius: 0.5rem;
+        /* Bordes redondeados para las tarjetas. */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        /* Sombra suave para dar efecto de elevación. */
     }
-    
+
     .btn {
-        border-radius: 0.3rem; /* Bordes ligeramente redondeados para botones. */
+        border-radius: 0.3rem;
+        /* Bordes ligeramente redondeados para botones. */
     }
-    
-    .modal-header { 
-        background-color: #2980b9; /* Fondo azul oscuro para el encabezado del modal. */
-        color: #fff; /* Color blanco para el texto en el encabezado del modal. */
+
+    .modal-header {
+        background-color: #2980b9;
+        /* Fondo azul oscuro para el encabezado del modal. */
+        color: #fff;
+        /* Color blanco para el texto en el encabezado del modal. */
     }
-    
+
     .modal-footer {
-        justify-content: center; /* Centra los botones en el pie del modal. */
+        justify-content: center;
+        /* Centra los botones en el pie del modal. */
     }
-    
+
     .input-group-text {
-        background-color: #e9ecef; /* Fondo gris claro para las etiquetas en inputs. */
-        border: 1px solid #ced4da; /* Borde gris para las etiquetas en inputs. */
+        background-color: #e9ecef;
+        /* Fondo gris claro para las etiquetas en inputs. */
+        border: 1px solid #ced4da;
+        /* Borde gris para las etiquetas en inputs. */
     }
-    
+
     .modal:hover {
-        box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada */
+        box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2);
+        /* Sombra más pronunciada */
     }
-    
+
     .btn:hover {
-        background-color: #1f7a93; /* Un tono más oscuro */
-        color: #fff; /* Asegúrate de que el texto sea legible */
+        background-color: #1f7a93;
+        /* Un tono más oscuro */
+        color: #fff;
+        /* Asegúrate de que el texto sea legible */
     }
-    
+
     .btn-submit:hover {
-        background-color: #219653; /* Color más oscuro al pasar el cursor */
-        cursor: pointer; /* Cambia el cursor para indicar interactividad */
+        background-color: #219653;
+        /* Color más oscuro al pasar el cursor */
+        cursor: pointer;
+        /* Cambia el cursor para indicar interactividad */
     }
-    
+
     .input-group {
-        border: 1px solid #ced4da; /* Borde gris claro alrededor del grupo de entrada */
-        border-radius: 0.25rem; /* Bordes redondeados */
-        box-shadow: none; /* Eliminar sombra si hay */
-        transition: border-color 0.3s; /* Transición suave al cambiar el borde */
+        border: 1px solid #ced4da;
+        /* Borde gris claro alrededor del grupo de entrada */
+        border-radius: 0.25rem;
+        /* Bordes redondeados */
+        box-shadow: none;
+        /* Eliminar sombra si hay */
+        transition: border-color 0.3s;
+        /* Transición suave al cambiar el borde */
     }
-    
+
     .input-group:focus-within {
-        border-color: #2980b9; /* Cambiar el color del borde al azul cuando el campo está en foco */
+        border-color: #2980b9;
+        /* Cambiar el color del borde al azul cuando el campo está en foco */
     }
-    
+
     .form-control {
-        border: 1px solid #e1e1e1; /* Borde gris claro para cada campo */
-        border-radius: 0.25rem; /* Bordes redondeados */
-        transition: border-color 0.3s; /* Transición suave al cambiar el borde */
+        border: 1px solid #e1e1e1;
+        /* Borde gris claro para cada campo */
+        border-radius: 0.25rem;
+        /* Bordes redondeados */
+        transition: border-color 0.3s;
+        /* Transición suave al cambiar el borde */
     }
-    
+
     .form-control:focus {
-        border-color: #2980b9; /* Cambiar color del borde a azul al hacer foco */
-        box-shadow: 0 0 5px rgba(41, 128, 185, 0.5); /* Añadir sombra suave en foco */
+        border-color: #2980b9;
+        /* Cambiar color del borde a azul al hacer foco */
+        box-shadow: 0 0 5px rgba(41, 128, 185, 0.5);
+        /* Añadir sombra suave en foco */
     }
-    
-    .btn, .table th, .table td {
-        transition: background-color 0.3s, color 0.3s; /* Transiciones para botones y celdas */
+
+    .btn,
+    .table th,
+    .table td {
+        transition: background-color 0.3s, color 0.3s;
+        /* Transiciones para botones y celdas */
     }
-    
+
     h1.h2 {
-        font-size: 2rem; /* Tamaño más grande */
-        color: #2980b9; /* Color atractivo */
-        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); /* Sombra para dar profundidad */
-        margin-bottom: 1rem; /* Espacio debajo del título */
-        font-weight: bold; /* Hacer el texto más audaz */
+        font-size: 2rem;
+        /* Tamaño más grande */
+        color: #e1e1e1;
+        /* Color atractivo */
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        /* Sombra para dar profundidad */
+        margin-bottom: 1rem;
+        /* Espacio debajo del título */
+        font-weight: bold;
+        /* Hacer el texto más audaz */
         text-align: center;
     }
-    
-    h1.h2:hover {
-        color: #1f7a93; /* Color más oscuro al pasar el mouse */
-        transition: color 0.3s; /* Transición suave */
-    }
-    
 </style>
 {% endblock %}
 
 {% block body %}
+
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-8">
+    <div
+        class="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Agenda</h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+        </div>
+    </div>
+
+<div class="container-fluid">
+    <div class="row mt-4">
+        <div class="col-12">
             <div id="calendar"></div>
         </div>
-        <div class="col-4">
-            <div class="card mt-4">
-                <div class="card-body">
-                    <h5 class="card-title">Detalles de la Cita</h5>
-                    <div id="appointmentDetails">   
-                    </div>
-                    <div class="d-grid gap-2 mt-3">
-                        <button id="addAppointment" class="btn btn-primary" type="button" data-bs-toggle="modal"
-                        data-bs-target="#modalAgregarCita">Agregar Cita</button>
-                        {% if session['Tipo_usuario'] is defined %}
-                            {% if session['Tipo_usuario'] == 'doctor' %}
-                            <button id="modifyAppointment" class="btn btn-secondary" type="button" >Modificar
-                                Cita</button>
-                            <button id="deleteAppointment" class="btn btn-danger" type="button" >Eliminar
-                                Cita</button>
-                            {% elif session['Tipo_usuario'] == 'recepcionista'  %}
-                            <button id="modifyAppointment" class="btn btn-secondary" type="button" disabled>Modificar
-                                Cita</button>
-                            <button id="deleteAppointment" class="btn btn-danger" type="button" disabled>Eliminar
-                                Cita</button>
-                            {% endif %}
-                        {% endif %}
-                    </div>
-                </div>
+    </div>
+    
+    <div class="card mt-4">
+        <div class="card-body">
+            <h5 class="card-title">Detalles de la Cita</h5>
+            <div class="table-responsive">
+                <table id="appointmentDetails" class="table table-striped table-sm">
+                    <thead>
+                        <tr id="id_cita_fila" class="clickable-row" data-id="id_cita">
+                            <th>Nombre</th>
+                            <th>Apellidos</th>
+                            <th>Fecha</th>
+                            <th>Doctor</th>
+                            <th>Motivo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Aquí se agregarán las filas dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+    
+            <div class="d-grid gap-2 mt-3">
+                <button id="addAppointment" class="btn btn-primary" type="button" data-bs-toggle="modal"
+                    data-bs-target="#modalAgregarCita">Agregar Cita</button>
+                {% if session['Tipo_usuario'] is defined %}
+                {% if session['Tipo_usuario'] == 'doctor' %}
+                <button id="modifyAppointment" class="btn btn-secondary" type="button">Modificar
+                    Cita</button>
+                <button id="deleteAppointment" class="btn btn-danger" type="button">Eliminar
+                    Cita</button>
+                {% elif session['Tipo_usuario'] == 'recepcionista' %}
+                <button id="modificarBoton" class="btn btn-secondary" type="button" disabled>Modificar
+                    Cita</button>
+                <button id="eliminarBoton" class="btn btn-danger" type="button" disabled>Eliminar
+                    Cita</button>
+                {% endif %}
+                {% endif %}
             </div>
         </div>
     </div>
 </div>
 
 <div class="modal fade" id="modalAgregarCita" tabindex="-1" aria-labelledby="modalAgregarPacienteLabel"
-aria-hidden="true">
-<div class="modal-dialog">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h1 class="modal-title h5" id="modalAgregarCitaLabel">Agregar Cita</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title h5" id="modalAgregarCitaLabel">Agregar Cita</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Agregar cita -->
+                <form id="form_agregar_cigar" action="/agregar_cita" method="post">
+                    <input type="hidden" name="redirect" value="{{ request.path }}">
+                    <div class="input-group flex-nowrap mb-2">
+                        <label for="paciente" class="input-group-text">Nombre</label>
+                        <select class="form-select" name="paciente" id="paciente">
+                            <option value="-1" selected>----- Elige una opción -----</option>
+                            {% if lista_pacientes %}
+                            {% for paciente in lista_pacientes %}
+                            <option value="{{paciente['ID_paciente']}}">{{paciente['Nombres']}}
+                                {{paciente['Apellido_paterno']}}
+                                {{paciente['Apellido_materno']}}</option>
+                            {% endfor %}
+                            {% endif %}
+                        </select>
+                    </div>
+                    <div class="input-group flex-nowrap mb-2">
+                        <label for="motivo" class="input-group-text">Motivo</label>
+                        <textarea class="form-control" id="motivo" rows="3" name="motivo"></textarea>
+                    </div>
+                    <div class="input-group flex-nowrap mb-2">
+                        <label for="fecha" class="input-group-text">Fecha</label>
+                        <input type="date" name="fecha" id="fecha" class="form-control">
+                    </div>
+                    <div class="input-group flex-nowrap mb-2">
+                        <label for="hora" class="input-group-text">Hora</label>
+                        <input type="time" name="hora" id="hora" class="form-control" min="07:00" max="24:00"
+                            step="1800" value="12:00">
+                    </div>
+                    <div class="input-group flex-nowrap mb-2">
+                        <label for="doctor" class="input-group-text">Doctor asignado</label>
+                        <select class="form-select" name="doctor" id="doctor">
+                            <option value="-1" selected>----- Elige una opción -----</option>
+                            {% if lista_doctores %}
+                            {% for doctor in lista_doctores %}
+                            <option value="{{doctor['ID_doctor']}}">Dr. {{doctor['Nombres']}}
+                                {{doctor['Apellido_paterno']}}
+                                {{doctor['Apellido_materno']}}</option>
+                            {% endfor %}
+                            {% endif %}
+                        </select>
+                    </div>
+                    <div class="input-group flex-nowrap mb-2">
+                        <input type="submit" name="submit" id="submit" class="form-control">
+                    </div>
+                </form>
+            </div>
         </div>
-        <div class="modal-body">
-            <!-- Agregar cita -->
-            <form id="form_agregar_cigar" action="/agregar_cita" method="post">
-                <div class="input-group flex-nowrap mb-2">
-                    <label for="paciente" class="input-group-text">Nombre</label>
-                    <select class="form-select" name="paciente" id="paciente">
-                        <option value="-1" selected>----- Elige una opción -----</option>
-                        {% if lista_pacientes %}
-                        {% for paciente in lista_pacientes %}
-                        <option value="{{paciente['ID_paciente']}}">{{paciente['Nombres']}}
-                            {{paciente['Apellido_paterno']}}
-                            {{paciente['Apellido_materno']}}</option>
-                        {% endfor %}
-                        {% endif %}
-                    </select>
-                </div>
-                <div class="input-group flex-nowrap mb-2">
-                    <label for="motivo" class="input-group-text">Motivo</label>
-                    <textarea class="form-control" id="motivo" rows="3" name="motivo"></textarea>
-                </div>
-                <div class="input-group flex-nowrap mb-2">
-                    <label for="fecha" class="input-group-text">Fecha</label>
-                    <input type="date" name="fecha" id="fecha" class="form-control">
-                </div>
-                <div class="input-group flex-nowrap mb-2">
-                    <label for="hora" class="input-group-text">Hora</label>
-                    <input type="time" name="hora" id="hora" class="form-control" min="07:00" max="24:00"
-                        step="1800" value="12:00">
-                </div>
-                <div class="input-group flex-nowrap mb-2">
-                    <label for="doctor" class="input-group-text">Doctor asignado</label>
-                    <select class="form-select" name="doctor" id="doctor">
-                        <option value="-1" selected>----- Elige una opción -----</option>
-                        {% if lista_doctores %}
-                        {% for doctor in lista_doctores %}
-                        <option value="{{doctor['ID_doctor']}}">Dr. {{doctor['Nombres']}}
-                            {{doctor['Apellido_paterno']}}
-                            {{doctor['Apellido_materno']}}</option>
-                        {% endfor %}
-                        {% endif %}
-                    </select>
-                </div>
-                <div class="input-group flex-nowrap mb-2">
-                    <input type="submit" name="submit" id="submit" class="form-control">
-                </div>
-            </form>
-        </div>
-    </div>
+        <div>
+            <div id="data" data-citas='{{ citas }}' data-pacientes='{{ lista_pacientes }}'
+                data-doctores='{{ lista_doctores }}'>
+            </div>
 
-<div id="data" data-citas='{{ citas }}' data-pacientes='{{ lista_pacientes }}' data-doctores='{{ lista_doctores }}'>
-</div>
+            {% endblock %}
 
-{% endblock %}
+            {% block scripts %}
 
-{% block scripts %}
-<script>
-    let selectedRow = null;
-    document.querySelectorAll('.clickable-row').forEach(row => {
-        row.addEventListener('click', function () {
-            // Seleccionar fila
-            if (selectedRow) {
-                selectedRow.classList.remove('table-primary');
-            }
-            selectedRow = this;
-            selectedRow.classList.add('table-primary');
+            <!-- Scripts de bootstrap -->
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+                integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+                crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+                crossorigin="anonymous"></script>
+            <script>
+                // esto es para configurar la tabla en español
+                $.fn.datepicker.dates['es'] = {
+                    days: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+                    daysShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'],
+                    daysMin: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'],
+                    months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                    monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                    today: 'Ir al día de hoy',
+                    clear: 'Limpiar',
+                    format: 'dd/mm/yy',
+                    titleFormat: "MM yyyy",
+                    weekStart: 1
+                };
 
-            const id = row.getAttribute('id'); // ID
-            const nombre = row.children[0].textContent; // Ajustado a [0] para "Nombre"
-            const proveedor = row.children[1].textContent; // Ajustado a [1] para "Dosis"
-            const telefono = row.children[2].textContent; // Ajustado a [1] para "Dosis"
-            const id_proveedor = row.children[2].getAttribute('id');
+                $('#calendar').datepicker({
+                    language: "es",
+                    //calendarWeeks: true,
+                    todayHighlight: true,
+                    keepEmptyValues: true,
+                    todayBtn: true,
+                    changeMonth: true,
+                    changeYear: true,
+                    keyboardNavigation: false,
+                    maxViewMode: 'months',
 
-            // Verificar los datos con la consola 
-            console.log(id)
-            console.log(nombre)
-            console.log(proveedor)
-            console.log(telefono)
-            console.log(id_proveedor)
+                })
 
-            // Asignar valores al modal
-            document.getElementById('modificar_medicina_id').value = id;
-            document.getElementById('modificar_medicina_nombre').value = nombre;
-            document.getElementById('modificar_medicina_telefono').value = telefono;
-            document.getElementById('modificar_medicina_id_proveedor').value = id_proveedor;
-            
-            //Asignar para eliminar
-            document.getElementById('eliminar_medicamento_id').value = id;
-            console.log(document.getElementById('eliminar_medicamento_id').value)
-        });
-    });
+                
 
-    document.getElementById('modificarBoton').addEventListener('click', function () {
-            if (!selectedRow) {
-                alert('Por favor selecciona una fila para modificar.');
-                return;
-            }
+                $('#calendar').datepicker().on('changeDate', function (e) {
+                    console.log(e.date)
+                    console.log(e.date.getFullYear())
+                    console.log(e.date.getMonth() + 1)
+                    console.log(e.date.getDate() + 1)
+                    //CREAR OTRO REQUEST PERO QUE MUESTRE EN LA OTRA TABLA
+                    request_citas_tabla(e.date.getFullYear(), e.date.getMonth() + 1, e.date.getDate())
+                });
 
-            // Si hay una fila seleccionada, se muestra el modal
-            const modal = new bootstrap.Modal(document.getElementById('modalModificarMedicina'));
-            modal.show();
-        });
+                $(document.querySelectorAll('.datepicker-inline')).addClass('bg-white w-100 rounded-5 p-3 shadow-lg overflow-auto overflow-hide-scroll')
+                $(document.querySelectorAll('.table-condensed')).addClass('table table-sm w-100').removeClass('table-condensed')
 
-        document.getElementById('eliminarBoton').addEventListener('click', function () {
-            if (!selectedRow) {
-                alert('Por favor selecciona una fila para eliminar.');
-                return;
-            }
-
-            // Si hay una fila seleccionada, se muestra el modal
-            const modal = new bootstrap.Modal(document.getElementById('modalEliminarMedicina'));
-            modal.show();
-        });
-
-
-        document.getElementById('modalAgregarCita').addEventListener('click', function () {
-            if (!selectedRow) {
-                alert('Por favor selecciona una fila para eliminar.');
-                return;
-            }
-
-            // Si hay una fila seleccionada, se muestra el modal
-            const modal = new bootstrap.Modal(document.getElementById('modalEliminarMedicina'));
-            modal.show();
-        });
-
-
-        // Evento para el checkb
-        const checkbox1 = document.getElementById('elegir_proveedor1') //False
-        checkbox1.addEventListener('change', (event) => {
-            if (event.currentTarget.checked) {
-                console.log('Elegir proveedor existente')
-                document.getElementById('show-nombre-proveedor').style.display = 'none'
-                document.getElementById('show-telefono-proveedor').style.display = 'none'
-                document.getElementById('show-select').style.display = 'flex'
-
-                document.getElementById('nombre_proveedor').removeAttribute('required')
-                document.getElementById('telefono_proveedor').removeAttribute('required')
-                document.getElementById('ID_proveedor').setAttribute('required', 'true')
-            } 
-        })
-        var event = new Event('change');
-        checkbox1.dispatchEvent(event);
-
-        const checkbox = document.getElementById('elegir_proveedor2') //True
-        checkbox.addEventListener('change', (event) => {
-            if (event.currentTarget.checked) {
-                console.log('Ingresar nuevo proveedor')
-                document.getElementById('show-nombre-proveedor').style.display = 'flex'
-                document.getElementById('show-telefono-proveedor').style.display = 'flex'
-                document.getElementById('show-select').style.display = 'none'
-
-                document.getElementById('nombre_proveedor').setAttribute('required', 'true')
-                document.getElementById('telefono_proveedor').setAttribute('required', 'true')
-                document.getElementById('ID_proveedor').removeAttribute('required')
-            }
-        })
-</script>
-
-<!-- Scripts de bootstrap -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-crossorigin="anonymous"></script>
-<script>
-    // esto es para configurar la tabla en español
-    $.fn.datepicker.dates['es'] = {
-            days: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-            daysShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'],
-            daysMin: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'],
-            months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-            monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-            today: 'Ir al día de hoy',
-            clear: 'Limpiar',
-            format: 'dd/mm/yy',
-            titleFormat: "MM yyyy",
-            weekStart: 1
-        };
-        
-        $('#calendar').datepicker({
-            language: "es",
-            //calendarWeeks: true,
-            todayHighlight: true,   
-            keepEmptyValues: true,
-            todayBtn: true,
-            changeMonth: true,
-            changeYear: true,
-            keyboardNavigation: false,  
-            maxViewMode: 'months',
-        })
-
-        // configurar evento para validar cuando se cambia la fecha
-        $('#calendar').datepicker().on('changeDate', function(e){
-            console.log(e.date)
-            console.log(e.date.getFullYear())
-            console.log(e.date.getMonth() + 1)
-            console.log(e.date.getDate() + 1)
-            request(e.date.getFullYear(), e.date.getMonth() + 1, e.date.getDate())
-        });
-
-        $(document.querySelectorAll('.datepicker-inline')).addClass('bg-white w-100 rounded-5 p-4 shadow-lg overflow-auto overflow-hide-scroll')
-        $(document.querySelectorAll('.table-condensed')).addClass('table w-100').removeClass('table-condensed')
-
-        function formatDate(date) {
-            let datePart = [
-                date.getMonth() + 1,
-                date.getDate(),
-                date.getFullYear()
-            ].map((n, i) => n.toString().padStart(i === 2 ? 4 : 2, "0")).join("/");
-            let timePart = [
-                date.getHours(),
-                date.getMinutes(),
-                date.getSeconds()
-            ].map((n, i) => n.toString().padStart(2, "0")).join(":");
-            return datePart + " " + timePart;
-        }
-
-        function request(year, month, day) {
-            const route = `/api/citas/${year}/${month}/${day}`
-            $.ajax({
-                url: route,
-                async: false,
-                success: function(resultado) {
-                    console.log('Request complete!')
-                    $('#appointmentDetails').empty()
-                    if (resultado.length == 0) {
-                        console.log('No hay citas para esta fecha')
-                        return
-                    }
-                    console.log(resultado)
-                    for (let i = 0; i < resultado.length; i++) {
-
-                        console.log(resultado[i]['Nombres'])
-                        console.log(resultado[i]['Apellido_Paterno'])
-                        console.log(resultado[i]['Apellido_Materno'])
-
-                        let date = new Date(resultado[i]['Fecha'])
-                        
-                        $('#appointmentDetails').append(`<small>Paciente: ${resultado[i]['Nombres']} ${resultado[i]['Apellido_Paterno']} ${resultado[i]['Apellido_Materno']}</small>`);
-                        $('#appointmentDetails').append(`<br><small>Le atiende: Dr. ${resultado[i]['Doctor_Nombres']} ${resultado[i]['Doctor_Apellido_Paterno']} ${resultado[i]['Doctor_Apellido_Materno']}</small>`);
-                        $('#appointmentDetails').append(`<br><small>Fecha asignada: ${formatDate(date)}</small>`);
-                        $('#appointmentDetails').append(`<br><small>Motivo: ${resultado[i]['Motivo']}</small>`);
-                        $('#appointmentDetails').append(`<hr>`);
-                        
-                    }
-
-                },
-                error: function(jqXHR, exception) {
-                    if (jqXHR.status === 0) {
-                        alert('Not connect.\n Verify Network.');
-                    } else if (jqXHR.status == 404) {
-                        alert('Requested page not found. [404]');
-                    } else if (jqXHR.status == 500) {
-                        alert('Internal Server Error [500].');
-                    } else if (exception === 'parsererror') {
-                        alert('Requested JSON parse failed.');
-                    } else if (exception === 'timeout') {
-                        alert('Time out error.');
-                    } else if (exception === 'abort') {
-                        alert('Ajax request aborted.');
-                    } else {
-                        alert('Uncaught Error.\n' + jqXHR.responseText);
-                    }
+                function formatDate(date) {
+                    let datePart = [
+                        date.getMonth() + 1,
+                        date.getDate(),
+                        date.getFullYear()
+                    ].map((n, i) => n.toString().padStart(i === 2 ? 4 : 2, "0")).join("/");
+                    let timePart = [
+                        date.getHours(),
+                        date.getMinutes(),
+                        date.getSeconds()
+                    ].map((n, i) => n.toString().padStart(2, "0")).join(":");
+                    return datePart + " " + timePart;
                 }
-            })
-        }
-</script>
-{% endblock %}
+
+                function request(year, month, day) {
+                    const route = `/api/citas/${year}/${month}/${day}`
+                    $.ajax({
+                        url: route,
+                        async: false,
+                        success: function (resultado) {
+                            console.log('Request complete!')
+                            $('#appointmentDetails').empty()
+                            if (resultado.length == 0) {
+                                console.log('No hay citas para esta fecha')
+                                return
+                            }
+                            console.log(resultado)
+                            for (let i = 0; i < resultado.length; i++) {
+
+                                console.log(resultado[i]['Nombres'])
+                                console.log(resultado[i]['Apellido_Paterno'])
+                                console.log(resultado[i]['Apellido_Materno'])
+
+                                let date = new Date(resultado[i]['Fecha'])
+
+                                document.getElementById('id_cita_fila').dataset.id = resultado[i]['ID_cita']
+                                document.getElementById('id_cita_fila').addClass('sdsds')
+                                $('#appointmentDetails').append(`<small>Paciente: ${resultado[i]['Nombres']} ${resultado[i]['Apellido_Paterno']} ${resultado[i]['Apellido_Materno']}</small>`);
+                                $('#appointmentDetails').append(`<br><small>Le atiende: Dr. ${resultado[i]['Doctor_Nombres']} ${resultado[i]['Doctor_Apellido_Paterno']} ${resultado[i]['Doctor_Apellido_Materno']}</small>`);
+                                $('#appointmentDetails').append(`<br><small>Fecha asignada: ${formatDate(date)}</small>`);
+                                $('#appointmentDetails').append(`<br><small>Motivo: ${resultado[i]['Motivo']}</small>`);
+                                $('#appointmentDetails').append(`<hr>`);
+
+                            }
+
+                        },
+                        error: function (jqXHR, exception) {
+                            if (jqXHR.status === 0) {
+                                alert('Not connect.\n Verify Network.');
+                            } else if (jqXHR.status == 404) {
+                                alert('Requested page not found. [404]');
+                            } else if (jqXHR.status == 500) {
+                                alert('Internal Server Error [500].');
+                            } else if (exception === 'parsererror') {
+                                alert('Requested JSON parse failed.');
+                            } else if (exception === 'timeout') {
+                                alert('Time out error.');
+                            } else if (exception === 'abort') {
+                                alert('Ajax request aborted.');
+                            } else {
+                                alert('Uncaught Error.\n' + jqXHR.responseText);
+                            }
+                        }
+                    })
+                }
+
+                function request_citas_tabla(year, month, day) {
+                    const route = `/api/citas/${year}/${month}/${day}`;
+                    $.ajax({
+                        url: route,
+                        async: false,
+                        success: function (resultado) {
+                            console.log('Request complete!');
+                            $('#appointmentDetails tbody').empty(); // Limpiar el cuerpo de la tabla
+                            if (resultado.length == 0) {
+                                console.log('No hay citas para esta fecha');
+                                return;
+                            }
+
+                            console.log(resultado);
+
+                            for (let i = 0; i < resultado.length; i++) {
+                                let date = new Date(resultado[i]['Fecha']);
+
+                                document.getElementById('id_cita_fila').dataset.id = resultado[i]['ID_cita']
+                                // Agregar una nueva fila a la tabla
+                                $('#appointmentDetails tbody').append(`
+                                    <tr class="clickable-row" data-id="${resultado[i]['Cita_ID']}">
+                                        <td>${resultado[i]['Nombres']}</td>
+                                        <td>${resultado[i]['Apellido_Paterno']} ${resultado[i]['Apellido_Materno']}</td>
+                                        <td>${formatDate(date)}</td>
+                                        <td>Dr. ${resultado[i]['Doctor_Nombres']} ${resultado[i]['Doctor_Apellido_Paterno']} ${resultado[i]['Doctor_Apellido_Materno']}</td>
+                                        <td>${resultado[i]['Motivo']}</td>
+                                    </tr>
+                                `);
+                            }
+
+                            // Reasignar el evento a las filas recién agregadas
+                            bindRowEvents();
+                        },
+                        error: function (jqXHR, exception) {
+                            if (jqXHR.status === 0) {
+                                alert('Not connect.\n Verify Network.');
+                            } else if (jqXHR.status == 404) {
+                                alert('Requested page not found. [404]');
+                            } else if (jqXHR.status == 500) {
+                                alert('Internal Server Error [500].');
+                            } else if (exception === 'parsererror') {
+                                alert('Requested JSON parse failed.');
+                            } else if (exception === 'timeout') {
+                                alert('Time out error.');
+                            } else if (exception === 'abort') {
+                                alert('Ajax request aborted.');
+                            } else {
+                                alert('Uncaught Error.\n' + jqXHR.responseText);
+                            }
+                        }
+                    });
+                }
+
+                function bindRowEvents() {
+                    let selectedRow = null;
+                    document.querySelectorAll('.clickable-row').forEach(row => {
+                        row.addEventListener('click', function () {
+                            // Deseleccionar la fila anterior
+                            if (selectedRow) {
+                                selectedRow.classList.remove('table-primary');
+                            }
+                            // Seleccionar la nueva fila
+                            selectedRow = this;
+                            selectedRow.classList.add('table-primary');
+
+                            // Guardar los datos de la fila seleccionada
+                            const id = row.getAttribute('data-id');
+                            const nombre = row.children[0].textContent;
+                            const apellidos = row.children[1].textContent;
+                            const fecha = row.children[2].textContent;
+                            const doctor = row.children[3].textContent;
+                            const motivo = row.children[4].textContent;
+
+                            // Verificar los datos en la consola
+                            console.log(id, nombre, apellidos, fecha, doctor, motivo);
+
+                            // Aquí puedes asignar los datos al modal si lo necesitas
+                        });
+                    });
+                }
+
+                // Llamar a la función bindRowEvents() al cargar la página o después de cargar los datos
+
+
+                //|||||||||||||||||||
+                function request_update(year, month) {
+                    const route = `/api/citas/${year}/${month}`
+                    $.ajax({
+                        url: route,
+                        async: false,
+                        success: function (resultado) {
+                            console.log('Request complete!')
+                            $('#appointmentDetails').empty()
+                            if (resultado.length == 0) {
+                                console.log('No hay citas para este mes')
+                                return
+                            }
+                            console.log(resultado)
+                            for (let i = 0; i < resultado.length; i++) {
+
+                                console.log(resultado[i]['Nombres'])
+                                console.log(resultado[i]['Apellido_Paterno'])
+                                console.log(resultado[i]['Apellido_Materno'])
+
+                                let date = new Date(resultado[i]['Fecha'])
+
+                                $('#appointmentDetails').append(`<small>Paciente: ${resultado[i]['Nombres']} ${resultado[i]['Apellido_Paterno']} ${resultado[i]['Apellido_Materno']}</small>`);
+                                $('#appointmentDetails').append(`<br><small>Le atiende: Dr. ${resultado[i]['Doctor_Nombres']} ${resultado[i]['Doctor_Apellido_Paterno']} ${resultado[i]['Doctor_Apellido_Materno']}</small>`);
+                                $('#appointmentDetails').append(`<br><small>Fecha asignada: ${formatDate(date)}</small>`);
+                                $('#appointmentDetails').append(`<br><small>Motivo: ${resultado[i]['Motivo']}</small>`);
+                                $('#appointmentDetails').append(`<hr>`);
+
+                            }
+                        },
+                        error: function (jqXHR, exception) {
+                            if (jqXHR.status === 0) {
+                                alert('Not connect.\n Verify Network.');
+                            } else if (jqXHR.status == 404) {
+                                alert('Requested page not found. [404]');
+                            } else if (jqXHR.status == 500) {
+                                alert('Internal Server Error [500].');
+                            } else if (exception === 'parsererror') {
+                                alert('Requested JSON parse failed.');
+                            } else if (exception === 'timeout') {
+                                alert('Time out error.');
+                            } else if (exception === 'abort') {
+                                alert('Ajax request aborted.');
+                            } else {
+                                alert('Uncaught Error.\n' + jqXHR.responseText);
+                            }
+                        }
+                    })
+                }
+
+                //
+                let selectedRow = null;
+                    document.querySelectorAll('.clickable-row').forEach(row => {
+                        row.addEventListener('click', function () {
+                            // Seleccionar fila
+                            if (selectedRow) {
+                                selectedRow.classList.remove('table-primary');
+                            }
+                            selectedRow = this;
+                            selectedRow.classList.add('table-primary');
+                            // Guardar en las variables
+                            const id = row.getAttribute('data-id');
+                            const nombre = row.children[0].textContent;
+                            const apellidoP = row.children[1].textContent.split(' ')[0]; // Obtener primer apellido
+                            const apellidoM = row.children[1].textContent.split(' ')[1]; // Obtener segundo apellido
+                            const fecha = row.children[2].textContent;
+                            const nombreD = row.children[3].textContent;
+                            const motivo = row.children[4].textContent;
+                            // Verificar los datos con la consola 
+                            console.log(id)
+                            console.log(nombre)
+                            console.log(apellidoP)
+                            console.log(apellidoM)
+                            console.log(fecha)
+                            console.log(nombreD)
+                            console.log(motivo)
+                            // Asignar valores al modal
+                            document.getElementById('paciente_id').value = id;
+                            document.getElementById('paciente_id_eli').value = id;
+                            document.getElementById('nombre_paciente_mod').value = nombre;
+                            document.getElementById('apellido_p_paciente_mod').value = apellidoP;
+                            document.getElementById('apellido_m_paciente_mod').value = apellidoM;
+                            document.getElementById('telefono_paciente_mod').value = fecha;
+                            document.getElementById('email_paciente_mod').value = nombreD;
+                            document.getElementById('fecha_n_paciente_mod').value = motivo;
+                        });
+                    });
+                    // Evento
+                    document.getElementById('modificarBoton').addEventListener('click', function () {
+                        if (!selectedRow) {
+                            alert('Por favor selecciona una fila para modificar.');
+                            return;
+                        }
+
+                        // Si hay una fila seleccionada, se muestra el modal
+                        const modal = new bootstrap.Modal(document.getElementById('modalModificarPaciente'));
+                        modal.show();
+                    });
+                    // Evento
+                    document.getElementById('eliminarBoton').addEventListener('click', function () {
+                        if (!selectedRow) {
+                            alert('Por favor selecciona una fila para eliminar.');
+                            return;
+                        }
+                        // Si hay una fila seleccionada, se muestra el modal
+                        const modal = new bootstrap.Modal(document.getElementById('modalEliminarPaciente'));
+                        modal.show();
+                    }); 
+            </script>
+            {% if session['Tipo_usuario'] is defined %}
+            {% if session['Tipo_usuario'] == 'doctor' %}
+            <script>
+
+            </script>
+            {% elif session['Tipo_usuario'] == 'recepcionista' %}
+            <script>
+
+            </script>
+            {% endif %}
+            {% endif %}
+
+            {% endblock %}

@@ -96,31 +96,24 @@
 
 h1.h2 {
     font-size: 2rem; /* Tamaño más grande */
-    color: #2980b9; /* Color atractivo */
+    color: #e1e1e1; /* Color atractivo */
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); /* Sombra para dar profundidad */
     margin-bottom: 1rem; /* Espacio debajo del título */
     font-weight: bold; /* Hacer el texto más audaz */
     text-align: center;
 }
 
-h1.h2:hover {
-    color: #1f7a93; /* Color más oscuro al pasar el mouse */
-    transition: color 0.3s; /* Transición suave */
-}
 
 </style>
 
 <div class="container-fluid">
     <!-- Main content -->
     <div
-        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        class="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 class="h2">Citas</h1>
-        <div class="btn-toolbar mb-2 mb-md-0">
-            <button type="button" class="btn btn-sm btn-outline-secondary me-2" data-bs-toggle="modal"
-                data-bs-target="#modalAgregarCita">Agregar</button>
-            <button type="button" class="btn btn-sm btn-outline-secondary">Modificar</button>
-        </div>
+    <div class="btn-toolbar mb-2 mb-md-0">
     </div>
+</div>
 
     <!-- Appointments table -->
     <div class="table-responsive">
@@ -137,7 +130,8 @@ h1.h2:hover {
                 {% if citas %}
                 {% for cita in citas %}
                 <tr>
-                    <td>{{cita['Nombres']}} {{cita['Apellido_Paterno']}} {{cita['Apellido_Materno']}}</td>
+                    <input type="hidden" id="I">
+                    <td id="celda1">{{cita['Nombres']}} {{cita['Apellido_Paterno']}} {{cita['Apellido_Materno']}}</td>
                     <td>{{cita['Fecha']}}</td>
                     <td>{{cita['Motivo']}}</td>
                     <td>Dr. {{cita['Nombres_doctor']}} {{cita['Apellido_p_doctor']}} {{cita['Apellido_m_doctor']}}</td>
@@ -158,6 +152,7 @@ h1.h2:hover {
                 <div class="modal-body">
                     <!-- Agregar cita -->
                     <form action="/agregar_cita" method="post">
+                        <input type="hidden" name="redirect" value="{{ request.path }}">
                         <div class="input-group flex-nowrap mb-2">
                             <label for="paciente" class="input-group-text">Nombre</label>
                             <select class="form-select" name="paciente" id="paciente">
