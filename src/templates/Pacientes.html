@@ -4,27 +4,27 @@
 <!--No se, no estaba eso, lo acaba de agregar-->
 <style>
 .table {
-    border-radius: 0.5rem; /* Ajusta el valor según lo necesites */
     overflow: hidden; /* Asegúrate de que el contenido no sobresalga */
     box-shadow: 0 8px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
 }
 
 .table th, .table td {
-            border: 0.5px solid #ADD8E6; /* Borde de celdas */
+            border: 0.5px solid #e1e1e1; /* Borde de celdas */
             padding: 0.5rem; /* Espaciado interno */
         }
 
 .table th {
     font-size: 1.2rem; /* Aumenta el tamaño de la fuente */
     color: #333; /* Color del texto en encabezados */
-    background-color: #2980b9; /* Fondo para encabezados */
+    background-color: #000000; /* Fondo para encabezados */
     color: #fff; /* Color del texto en encabezados */
     text-align: center; /* Centrar contenido si es apropiado */
 }
 
 .table td {
     font-size: 1rem; /* Tamaño de la fuente en celdas */
-    color: #555; /* Color del texto en celdas */
+    color: #FFF; /* Color del texto en celdas */
+    background-color: transparent;
 }
 
 .clickable-row {
@@ -41,11 +41,12 @@
 }
 
 .modal-header { 
-    background-color: #2980b9; /* Fondo azul oscuro para el encabezado del modal. */
+    background-color: #000000; /* Fondo azul oscuro para el encabezado del modal. */
     color: #fff; /* Color blanco para el texto en el encabezado del modal. */
 }
 
 .modal-footer {
+    background-color:rgba(0, 0, 0, 0);
     justify-content: center; /* Centra los botones en el pie del modal. */
 }
 
@@ -103,6 +104,10 @@ h1.h2 {
     text-align: center;
 }
 
+test {
+    background-color:transparent;
+}
+
 </style>
 <div class="container-fluid">
     <div
@@ -145,14 +150,14 @@ h1.h2 {
                 {% endif %}
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card mt-4">
+        <div class="bg-transparent col-md-3">
+            <div class="bg-transparent card mt-4">
                 <div class="card-body">
-                    <h5 class="card-title text-center">Acciones</h5>
+                    <h5 class="card-title text-center text-white ">Acciones</h5>
                     <div id="appointmentDetails">
                         <!-- Appointment details will be shown here -->
                     </div>
-                    <div class="d-grid gap-2 mt-3">
+                    <div class="d-grid gap-2 mt-3" id="test">
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                             data-bs-target="#modalAgregarPaciente">Agregar</button>
                         <button id="modificarBoton" class="btn btn-secondary">Modificar</button>
@@ -310,6 +315,8 @@ h1.h2 {
         </div>
     </div>
 
+    <!-- SIRVE? -->
+    
     <!-- Modal para mostrar flash-->
     <div class="modal fade" id="flashModal" tabindex="-1" role="dialog" aria-labelledby="flashModalLabel"
         aria-hidden="true">
