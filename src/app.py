@@ -745,7 +745,6 @@ def modificar_cita():
         id_doctor = request.form.get("modificar_doctor")
         id_estatus_cita = request.form.get("modificar_id_estatus")
         id_recepcionista = request.form.get("modificar_recepcionista")
-
         redirect_url = request.form.get("redirect")
 
         fechacita = datetime.datetime.strptime(f"{fecha} {hora}", "%Y-%m-%d %H:%M")
@@ -767,7 +766,7 @@ def modificar_cita():
                 cursor = conn.cursor(dictionary=True)
                 verificar_cita = """
                     SELECT COUNT(*) 
-                    FROM medicamento
+                    FROM citas
                     WHERE ID_Cita = ?
                     """
                 params = (id_cita,)
