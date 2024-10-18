@@ -1,0 +1,142 @@
+::after,
+::before {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+.wrapper {
+    display: flex;
+}
+
+body {
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+}
+
+html {
+    height: -webkit-fill-available;
+}
+
+main {
+    display: flex;
+    flex-wrap: nowrap;
+    height: 100vh;
+    height: -webkit-fill-available;
+    max-height: 100vh;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.sidebar {
+    width: 80px;
+    min-width: 80px;
+    z-index: 1000;
+    transition: .25s all ease-in-out;
+    background-color: #000000;
+    box-shadow: 4px 0 15px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+}
+
+#sidebar:not(.expand) .nav-link span {
+    opacity: 0; /* Completamente transparente */
+    visibility: hidden; /* Oculta el texto inicialmente */
+}
+
+.sidebar.expand .nav-link span {
+    visibility: visible; /* Muestra el texto cuando está expandido */
+    opacity: 1; /* Hace que el texto sea completamente visible */
+    transition: opacity 0.5s ease-in-out, visibility 0s; /* Sin retraso en la visibilidad al expandir */
+}
+
+.sidebar.expand {
+    width: 200px;
+    min-width: 200px;
+}
+
+.sidebar-content {
+    padding: 0rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+#sidebar:not(.expand) #image {
+    opacity: 0; /* Completamente transparente */
+    visibility: hidden; /* Oculta el texto inicialmente */
+}
+
+#sidebar:not(.expand) #text {
+    opacity: 0; /* Completamente transparente */
+    visibility: hidden; /* Oculta el texto inicialmente */
+}  
+
+#sidebar.expand #image {
+    visibility: visible; /* Muestra el texto cuando está expandido */
+    opacity: 1; /* Hace que el texto sea completamente visible */
+    transition: opacity 0.5s ease-in-out, visibility 0s; /* Sin retraso en la visibilidad al expandir */
+}
+#sidebar.expand #text {
+    visibility: visible; /* Muestra el texto cuando está expandido */
+    opacity: 1; /* Hace que el texto sea completamente visible */
+    transition: opacity 1s ease-in-out, visibility 0s; /* Sin retraso en la visibilidad al expandir */
+}
+
+#sidebar #che {
+    height: 100px;
+}
+
+#sidebar.nav-link svg {
+    display: flex; /* Asegura que el ícono se muestre */
+    margin: 0; /* Centra el ícono en su contenedor */
+    width: 16px; /* Ajusta al tamaño que desees */
+    height: 16px; /* Ajusta al tamaño que desees */
+    align-items: center; /* Centrar verticalmente el contenido del enlace */
+    justify-content: center; /* Centrar horizontalmente el contenido del enlace */
+    }
+
+#sidebar:not(.expand) .nav-link {
+    width: 48px;
+    height: 40px;
+}
+
+.nav-link {
+    color: rgba(255, 255, 255, 0.8) !important;
+    height: 40px;
+    width: 100%; /* Asegura que el enlace ocupe todo el ancho disponible */
+    display: block; /* Usar flexbox en los enlaces */
+    align-items: center; /* Centrar verticalmente el contenido del enlace */
+    justify-content: center; /* Centrar horizontalmente el contenido del enlace */
+}
+
+.nav-link:hover,
+.nav-link:focus {
+    background-color: rgba(255, 255, 255, 0.2); /* Color de fondo al pasar el mouse */
+    transform: scale(1.05); /* Escalar ligeramente */
+    color: #ffffff !important;
+}
+
+.nav-link.active {
+    background-color: #4B4B4B !important;
+}
+
+
+/* Custom styles */
+.main-content {
+    background-color: #f8f9fa;
+}
+
+.toggle-btn {
+    background-color: transparent;
+    border: none;
+    color: white;
+    margin: 10px;
+}
+
+body {
+    background-image: url("../img/amfzanxbvw621.png");
+    font-family: 'Poppins';
+}
+
+.container-fluid{
+    overflow-x: hidden;
+    overflow-y: auto;
+}

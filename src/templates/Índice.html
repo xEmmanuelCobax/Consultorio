@@ -1,13 +1,26 @@
-{% extends 'Top-navbar.html' %}
+{% extends 'Vertical-navbar.html' %}
 
-{% block content %}
+{% block body %}
+
+<link rel="stylesheet" type="text/css" href="../static/css/normal.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<div class="container-fluid">
+    <!-- Main content -->
+    <div
+        class="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Indice</h1>
+        <div class="ms-auto">
+            <a href="{{url_for('Ingreso')}}" class="btn btn-outline-light me-2">Iniciar sesión</a>
+            <a href="{{url_for('Registrarse')}}" class="btn btn-light">Registrarse</a>
+        </div>
+    </div>
     <div class="container mt-5">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-6 text-white">
                 <h1>Acerca de nosotros</h1>
-                <p>¡Estamos emocionados de anunciar la apertura de [Nombre del Consultorio]! Te invitamos a conocer nuestras
+                <p>¡Estamos emocionados de anunciar la apertura de MediLink! Te invitamos a conocer nuestras
                     instalaciones y a nuestro equipo de expertos en salud. ¡Tu bienestar es lo más importante para nosotros!
-                    #salud #bienestar #[Ciudad]</p>
+                    #salud #bienestar #pobreso</p>
                 <h2>Contáctanos</h2>
                 <div class="mt-3">
                     <a href="#" class="btn btn-primary me-2"><i class="fab fa-facebook-f"></i></a>
@@ -15,15 +28,15 @@
                 </div>
             </div>
             <div class="col-md-6">
-                <img src="https://via.placeholder.com/600x400?text=Equipo+Médico" alt="Equipo Médico"
+                <img src="https://www.unitecoprofesional.es/blog/wp-content/uploads/2021/09/equipo-medico.jpg" alt="Equipo Médico"
                     class="img-fluid rounded">
             </div>
         </div>
         <div class="row mt-5">
-            <div class="col-12 text-center">
+            <div class="col-12 text-center text-white">
                 <h2>Tu salud, nuestra prioridad</h2>
             </div>
         </div>
     </div>
-
+</div>
 {% endblock %}
