@@ -83,10 +83,10 @@
                 </div>
                 <div class="modal-body">
                     <!-- Formulario dentro del modal -->
-                    <form action="/agregar_medicamento" method="post">
+                    <form action="/agregar_medicamento" method="post" novalidate class="submit-validation">
                         <div class="input-group flex-nowrap mb-2">
                             <label for="nombre_medicamento" class="input-group-text">Nombre medicamento</label>
-                            <input type="text" name="nombre_medicamento" id="nombre_medicamento" class="form-control"
+                            <input type="text" name="nombre_medicamento" id="nombre_medicamento" class="form-control needs-validation alphanumeric"
                                 maxlength="20" required>
                         </div>
                         <div class="input-group flex-nowrap mb-2 justify-content-center">
@@ -104,13 +104,13 @@
                         </div>
                         <div class="input-group flex-nowrap mb-2" id="show-nombre-proveedor">
                             <label for="nombre_proveedor" class="input-group-text">Nombre</label>
-                            <input type="text" name="nombre_proveedor" id="nombre_proveedor" class="form-control"
+                            <input type="text" name="nombre_proveedor" id="nombre_proveedor" class="form-control needs-validation alphanumeric"
                                 maxlength="20">
                         </div>
 
                         <div class="input-group flex-nowrap mb-2" id="show-telefono-proveedor">
                             <label for="telefono_proveedor" class="input-group-text">Teléfono de contacto</label>
-                            <input type="tel" pattern="[0-9]{10}" name="telefono_proveedor" id="telefono_proveedor" class="form-control" required minlength="10" maxlength="10"
+                            <input type="tel" pattern="[0-9]{10}" name="telefono_proveedor" id="telefono_proveedor" class="form-control needs-validation numeric" required minlength="10" maxlength="10"
                             title="Por favor, ingresa un número de teléfono de 10 dígitos.">
                         </div>
                         <div class="input-group flex-nowrap mb-2" id="show-select">
@@ -144,17 +144,17 @@
                 </div>
                 <div class="modal-body">
                     <!-- Formulario dentro del modal -->
-                    <form id="form_medicina_mod" action="/modificar_medicamento" method="post">
+                    <form id="form_medicina_mod" action="/modificar_medicamento" method="post" class="submit-validation">
                         <input type="hidden" value="0" id="modificar_medicina_id" name="modificar_medicina_id">
                         <div class="input-group flex-nowrap mb-2">
                             <label for="nombre" class="input-group-text">Nombre</label>
                             <input type="text" name="modificar_medicina_nombre" id="modificar_medicina_nombre"
-                                class="form-control">
+                                class="form-control needs-validation alphanumeric">
                         </div>
 
                         <div class="input-group flex-nowrap mb-2">
                             <label for="telefono_proveedor" class="input-group-text">Teléfono de contacto</label>
-                            <input type="tel" pattern="[0-9]{10}" name="modificar_medicina_telefono" id="modificar_medicina_telefono" class="form-control" required minlength="10" maxlength="10"
+                            <input type="tel" pattern="[0-9]{10}" name="modificar_medicina_telefono" id="modificar_medicina_telefono" class="form-control needs-validation numeric" required minlength="10" maxlength="10"
                                 title="Por favor, ingresa un número de teléfono de 10 dígitos.">
                         </div>
                         <div class="input-group flex-nowrap mb-2">
@@ -222,6 +222,7 @@
         </div>
     {% endif%}
 
+    <script defer src="{{url_for('static', filename='js/validaciones.js')}}"></script>
 
     <script>
         let selectedRow = null;
@@ -312,7 +313,6 @@
             }
         })
     </script>
-
     <!-- Scripts de bootstrap -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
         integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"

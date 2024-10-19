@@ -78,13 +78,13 @@
                     <!-- Columnas para el formulario -->
                     <div class="col-xl-5 offset-xl-1">
                         <!-- Aquí comienza la sección del formulario -->
-                        <form method="post" action="" id="">
+                        <form method="post" action="" id="" class="submit-validation">
                             <h1 class="fw-bold mb-2 signin__titulo text-center text-white">Registrarse</h1>
                             <!-- NOMBRE -->
                             <div class="form-outline mb-2 text-white">
                                 <label for="username">Nombres</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control mt-2 {% if user_found %}is-invalid{% endif %}"
+                                    <input type="text" class="form-control needs-validation alpha capitalize mt-2 {% if user_found %}is-invalid{% endif %}"
                                         id="name" name="name" required pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+"
                                         title="Solo se permiten letras y espacios"
                                         oninput="this.value = this.value.replace(/[^A-Za-záéíóúÁÉÍÓÚñÑ\s]/g, '')"
@@ -102,7 +102,7 @@
                                         <label for="apellidoPaterno">Apellido paterno</label>
                                         <div>
                                             <input type="text"
-                                                class="form-control mt-2 {% if paternal_lastname_error %}is-invalid{% endif %} {% if paternal_lastname_valid %}is-valid{% endif %}"
+                                                class="form-control needs-validation alpha capitalize mt-2 {% if paternal_lastname_error %}is-invalid{% endif %} {% if paternal_lastname_valid %}is-valid{% endif %}"
                                                 id="apellidoPaterno" name="paternal_lastname" required
                                                 oninput="this.value = this.value.replace(/[^A-Za-záéíóúÁÉÍÓÚñÑ\s]/g, '')"
                                                 data-bs-toggle="tooltip" data-bs-placement="left"
@@ -116,7 +116,7 @@
                                         <label for="apellidoMaterno">Apellido materno</label>
                                         <div>
                                             <input type="text"
-                                                class="form-control mt-2"
+                                                class="form-control needs-validation alpha capitalize mt-2"
                                                 id="apellidoMaterno" name="maternal_lastname"
                                                 oninput="this.value = this.value.replace(/[^A-Za-záéíóúÁÉÍÓÚñÑ\s]/g, '')"
                                                 data-bs-toggle="tooltip" data-bs-placement="left"
@@ -213,6 +213,7 @@
         </div>
     </div>
 </div>
+<script defer src="{{url_for('static', filename='js/validaciones.js')}}"></script>
 <script>
     const checkbox = document.getElementById('registro-doctor')
 

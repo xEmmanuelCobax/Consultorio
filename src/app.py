@@ -3,6 +3,21 @@ import mariadb, utils, datetime
 from config import ROOT_CONECTION
 from models import Usuario
 from flask_login import login_manager, LoginManager, current_user, login_user, logout_user, login_required
+from functools import wraps
+
+
+"""
+TODO: 
+1. Hacer el crud para agregar recetas a las citas
+2. Ah sí, hacer validaciones en el front robustas con javascript
+3. Manejar la concurrencia, que cuando el doctor esté modificando una cita, la recepcionista se le bloquee la opción de hacer algo ???
+Si, literal se bloquea?, xD, esta raro pero ok, vava
+Algo así nos dijo sákura después de la charla de la psicóloga
+Le daremos prioridad al doctor, así si los dos modifican la misma cita, la recepcionista no deberá poder hacerlo
+"""
+
+"Probando"
+PaginaEnUso=False
 
 app = Flask(__name__)
 app.config["DEBUG"] = True
@@ -12,6 +27,8 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'Ingreso'
 
+
+# Esta función es para que flask-login recupere el usuario loggeado cuando una ruta tiene @login_required
 @login_manager.user_loader
 def load_user(id:int):
     # Si ya inició sesión, se guarda el tipo de usuario y se recupera
@@ -787,8 +804,8 @@ def agregar_cita():
 @app.route("/modificar_cita", methods=["POST"])
 @login_required
 def modificar_cita():
-    print("/modificar_cita")
     if request.method == "POST":
+        print("/modificar_cita")
         id_cita = request.form.get("cita_mod")
         id_paciente = request.form.get("paciente_mod")
         id_doctor = request.form.get("doctor_mod")
@@ -803,14 +820,52 @@ def modificar_cita():
                 id_cita,
                 id_paciente,
                 motivo,
+                fecha,
+                hora,
                 fechacita,
                 redirect_url,
                 id_doctor,
                 id_recepcionista,
             )
         )
+        conn = mariadb.connect(**current_user.Conection)
+        if conn is not None:
+            try:
+                cursor = conn.cursor(dictionary=True)
+                verificar_cita = """
+                    SELECT COUNT(*) 
+                    FROM citas
+                    WHERE ID_Cita = ?
+                    """
+                params = (id_cita,)
+                cursor.execute(verificar_cita, params)
+                count = cursor.fetchone()['COUNT(*)']
+                if count == 0:
+                    raise Exception('Cita no encontrada')
+                update_cita = """
+                    UPDATE citas
+                    SET fecha=?, motivo=?, id_paciente=?, id_doctor=?,  id_recepcionista=?
+                    WHERE id_cita = ?
+                    """
+                params = (
+                    fechacita,
+                    motivo,
+                    id_paciente,
+                    id_doctor,
+                    id_recepcionista,
+                    id_cita,
+                )
+                cursor.execute(update_cita, params)
+                conn.commit()
+                print('Cita actualizada')
+            except Exception as e:
+                conn.rollback()
+                raise e
+            finally:
+                conn.close()
     return redirect(redirect_url)
 # endregion
+
 
 @app.route("/Indice", methods=["GET"])
 def Indice():
@@ -910,6 +965,25 @@ def consulta_tabla(tabla):
             conn.close()
     return jsonify({ 'error': f'no hay conexión a la BD' })
 
+
+"Probado metodo"
+
+def RevisionPagina(f):
+    @wraps(f)
+    def aplicacion(*args, **kwargs):
+        global PaginaEnUso
+        if PaginaEnUso:
+            flash("La página está en uso, por favor intente más tarde.")
+            return redirect(url_for('index'))
+
+        PaginaEnUso = True
+        try:
+            return f(*args, **kwargs)
+        finally:
+            PaginaEnUso = False  
+
+    return aplicacion
+
 @app.route("/api/consulta/privilegios", methods=["GET"])
 @login_required
 def consulta_privilegios():
@@ -930,5 +1004,9 @@ def consulta_privilegios():
         finally:
             conn.close()
     return jsonify({ 'error': f'no hay conexión a la BD' })
+
+@app.route('/testeo', methods={'GET', 'POST'})
+def testeo():
+    return render_template('testeo.html')
 
 app.run()

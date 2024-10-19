@@ -217,8 +217,6 @@ MediLink - Agenda
                         Cita</button>
                     <button id="eliminarBoton" class="btn btn-danger" type="button">Eliminar
                         Cita</button>
-
-
                 </div>
             </div>
         </div>
@@ -300,7 +298,7 @@ MediLink - Agenda
                     <form id="form_Modificar_cita" action="/modificar_cita" method="post">
                         <input type="hidden" name="redirect" value="{{ request.path }}">
                         <!-- ID -->
-                        <input type="hidden" name="cita_mod" id="cita_mod" value="1">
+                        <input type="hidden" name="cita_mod" id="cita_mod" value="">
                         <input type="hidden" name="recepcionista_mod" value="1"> <!-- ID Recepcionista_mod CAMBIAR-->
                         <div class="input-group flex-nowrap mb-2">
                             <label for="paciente" class="input-group-text">Nombre</label>
@@ -399,7 +397,7 @@ MediLink - Agenda
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
     crossorigin="anonymous"></script>
-
+<script defer src="{{url_for('static', filename='js/validaciones.js')}}"></script>
 <script>
     let selectedRow = null;
     // esto es para configurar la tabla en español
@@ -443,18 +441,21 @@ MediLink - Agenda
     $(document.querySelectorAll('.table-condensed')).addClass('table table-sm w-100').removeClass('table-condensed')
     //
     function formatDate(date) {
+        let adjustedDate = new Date(date.getTime() + (date.getTimezoneOffset() * 60000)); //Ajustar el horario
+        //  
         //Crea una representación de la fecha en formato "MM/DD/YYYY"
         let datePart = [
-            date.getMonth() + 1,    //Mes (0-11)
-            date.getDate(),         //Día del mes
-            date.getFullYear()      //Año
+            adjustedDate.getMonth() + 1,    //Mes (0-11)
+            adjustedDate.getDate(),         //Día del mes
+            adjustedDate.getFullYear()      //Año
         ].map((n, i) => n.toString().padStart(i === 2 ? 4 : 2, "0"))    //Rellenar los ceros
             .join("/");     //Une los elementos con "/"
         // Crea una representación de la hora en formato "HH:MM:SS"
+        console.log(adjustedDate.getHours(), adjustedDate.getMinutes(), adjustedDate.getSeconds())
         let timePart = [
-            date.getHours(),        //Hora
-            date.getMinutes(),      //Minutos
-            date.getSeconds()       //Segundos
+            adjustedDate.getHours(),        //Hora
+            adjustedDate.getMinutes(),      //Minutos
+            adjustedDate.getSeconds()       //Segundos
         ].map((n, i) => n.toString().padStart(2, "0"))
             .join(":");     // Une los elementos con ":"
         //Devuelve la cadena completa en formato "MM/DD/YYYY HH:MM:SS"
@@ -485,7 +486,7 @@ MediLink - Agenda
                     document.getElementById('id_cita_fila').dataset.id = resultado[i]['ID_cita']
                     // Agregar una nueva fila a la tabla
                     $('#appointmentDetails tbody').append(`
-                                    <tr class="clickable-row" id_cita="${resultado[i]['ID_cita']}" id_doctor="${resultado[i]['ID_Doctor']}" id_paciente="${resultado[i]['ID_Paciente']}" >
+                                    <tr class="clickable-row" id_cita_1="${resultado[i]['ID_cita']}" id_doctor="${resultado[i]['ID_Doctor']}" id_paciente="${resultado[i]['ID_Paciente']}" >
                                         <td>${resultado[i]['Nombres']}</td>
                                         <td>${resultado[i]['Apellido_Paterno']} ${resultado[i]['Apellido_Materno']}</td>
                                         <td>${formatDate(date)}</td>
@@ -529,10 +530,10 @@ MediLink - Agenda
                 selectedRow = this;
                 selectedRow.classList.add('table-primary');
                 // Guardar los datos de la fila seleccionada
-                const id_cita = row.getAttribute('id_cita');
+                const id_cita = row.getAttribute('id_cita_1');
                 const id_paciente = row.getAttribute('id_paciente');
                 const id_doctor = row.getAttribute('id_doctor');
-                const fechaCompleta = row.children[2].textContent; // '10/15/2024 06:00:00'
+                const fechaCompleta = row.children[2].textContent; // '10/15/2024 06:00:00' 
                 const [fecha, hora] = fechaCompleta.split(' ');
                 const motivo = row.children[4].textContent;
                 // Verificar los datos en la consola
@@ -546,7 +547,7 @@ MediLink - Agenda
                 const partes = fecha.split('/'); // ['10', '15', '2024']
                 const fechaFormateada = `${partes[2]}-${partes[0].padStart(2, '0')}-${partes[1].padStart(2, '0')}`;
                 // Aquí puedes asignar los datos al modal si lo necesitas
-                document.getElementById('paciente_mod').value = id_cita;
+                document.getElementById('cita_mod').value = id_cita;
                 document.getElementById('paciente_mod').value = id_paciente;
                 document.getElementById('doctor_mod').value = id_doctor;
                 document.getElementById('motivo_mod').value = motivo;
