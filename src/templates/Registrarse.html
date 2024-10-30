@@ -59,14 +59,14 @@
     <!-- Main content -->
     <div
         class="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Registro</h1>
-        <div class="ms-auto">
+        <h1 class="h2 ">Registro</h1>
+        <div class="d-flex ms-md-auto">
             <a href="{{url_for('Ingreso')}}" class="btn btn-outline-light me-2">Iniciar sesión</a>
             <a href="{{url_for('Registrarse')}}" class="btn btn-light">Registrarse</a>
         </div>
     </div>
-    <div class="container-fluid mx-4 mb-4 register-container">
-        <div class="d-flex justify-content-center align-items-center" style="height: 90vh">
+    <div class="container-fluid mb-4 register-container">
+        <div class="d-flex justify-content-center align-items-center">
             <div class="col-xl-10">
                 <div class="row">
                     <!-- Columnas para la imagen -->
@@ -78,19 +78,16 @@
                     <!-- Columnas para el formulario -->
                     <div class="col-xl-5 offset-xl-1">
                         <!-- Aquí comienza la sección del formulario -->
-                        <form method="post" action="" id="" class="submit-validation">
+                        <form method="post" action="/Registrarse">
                             <h1 class="fw-bold mb-2 signin__titulo text-center text-white">Registrarse</h1>
                             <!-- NOMBRE -->
                             <div class="form-outline mb-2 text-white">
                                 <label for="username">Nombres</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control needs-validation alpha capitalize mt-2 {% if user_found %}is-invalid{% endif %}"
-                                        id="name" name="name" required pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+"
+                                    <input type="text" class="form-control mt-2"
+                                        id="name" name="nombres" pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+"
                                         title="Solo se permiten letras y espacios"
-                                        oninput="this.value = this.value.replace(/[^A-Za-záéíóúÁÉÍÓÚñÑ\s]/g, '')"
-                                        data-bs-toggle="tooltip-user-found" data-bs-placement="left"
-                                        data-bs-custom-class="custom-tooltip"
-                                        data-bs-title="{% if user_found %}Estos nombres ya han sido registrados.{% else %}Ingresa tus nombres.{% endif %}" />
+                                        oninput="this.value = this.value.replace(/[^A-Za-záéíóúÁÉÍÓÚñÑ\s]/g, '')" required/>
                                 </div>
                             </div>
                             
@@ -102,12 +99,9 @@
                                         <label for="apellidoPaterno">Apellido paterno</label>
                                         <div>
                                             <input type="text"
-                                                class="form-control needs-validation alpha capitalize mt-2 {% if paternal_lastname_error %}is-invalid{% endif %} {% if paternal_lastname_valid %}is-valid{% endif %}"
-                                                id="apellidoPaterno" name="paternal_lastname" required
-                                                oninput="this.value = this.value.replace(/[^A-Za-záéíóúÁÉÍÓÚñÑ\s]/g, '')"
-                                                data-bs-toggle="tooltip" data-bs-placement="left"
-                                                data-bs-custom-class="custom-tooltip"
-                                                />
+                                                class="form-control mt-2"
+                                                id="apellidoPaterno" name="apellidoPaterno" 
+                                                pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" oninput="this.value = this.value.replace(/[^A-Za-záéíóúÁÉÍÓÚñÑ\s]/g, '')" required/>
                                         </div>
                                     </div>
 
@@ -116,11 +110,10 @@
                                         <label for="apellidoMaterno">Apellido materno</label>
                                         <div>
                                             <input type="text"
-                                                class="form-control needs-validation alpha capitalize mt-2"
-                                                id="apellidoMaterno" name="maternal_lastname"
-                                                oninput="this.value = this.value.replace(/[^A-Za-záéíóúÁÉÍÓÚñÑ\s]/g, '')"
-                                                data-bs-toggle="tooltip" data-bs-placement="left"
-                                                data-bs-custom-class="custom-tooltip">
+                                                class="form-control mt-2"
+                                                id="apellidoMaterno" name="apellidoMaterno" required
+                                                pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+"
+                                                oninput="this.value = this.value.replace(/[^A-Za-záéíóúÁÉÍÓÚñÑ\s]/g, '')"/>
                                         </div>
                                     </div>
                                 </div>
@@ -131,34 +124,36 @@
                                 <label for="email">Correo electrónico</label>
                                 <div class="col-sm-10">
                                     <input type="email" class="form-control mt-2"
-                                        id="email" name="email" required data-bs-toggle="tooltip" data-bs-placement="left"
-                                        data-bs-custom-class="custom-tooltip" />
+                                        id="email" name="email" required
+                                        pattern="^([a-zA-Z][\w]+(?:\.\w+)?)+@([\w]+(?:\.[a-z]{2,10})+)$"/>
                                 </div>
                             </div>
 
                             <!-- Teléfono -->
-                                <div class="form-outline mb-2 text-white">
-                                    <label for="telefono">Teléfono</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control mt-2 {% if user_found %}is-invalid{% endif %}" id="telefono" name="telefono"
-                                        required pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" title="Solo se permiten letras y espacios"
-                                        oninput="this.value = this.value.replace(/[^A-Za-záéíóúÁÉÍÓÚñÑ\s]/g, '')"
-                                        data-bs-toggle="tooltip-user-found" data-bs-placement="left" data-bs-custom-class="custom-tooltip"
-                                        data-bs-title="{% if user_found %}Estos nombres ya han sido registrados.{% else %}Ingresa tus nombres.{% endif %}" />
-                                    </div>
+                            <div class="form-outline mb-2 text-white">
+                                <label for="telefono">Teléfono</label>
+                                <div class="col-sm-10">
+                                    <input type="tel" class="form-control mt-2" id="telefono" name="telefono" minlength="10" maxlength="10" pattern="^[0-9]{10}$" required/>
+                                </div>
+                            </div>
+
+                            <div class="form-outline mb-2 text-white">
+                                <label for="fechaNacimiento">Fecha de nacimiento</label>
+                                <div class="col-sm-10">
+                                    <input type="date" class="form-control mt-2" id="fechaNacimiento" name="fechaNacimiento" min="1924-01-01" max="{{curdateminusdelta(6574)}}" value="2000-01-01"/>
+                                </div>
                             </div>
 
                             <!-- RFC -->
                             <div class="form-outline mb-2 text-white">
                                 <label for="rfc">RFC</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control mt-2 {% if user_found %}is-invalid{% endif %}" id="rfc" name="rfc"
-                                        required pattern="[A-Za-záéíóúÁÉÍÓÚñÑ\s]+" title="Solo se permiten letras y espacios"
-                                        oninput="this.value = this.value.replace(/[^A-Za-záéíóúÁÉÍÓÚñÑ\s]/g, '')"
-                                        data-bs-toggle="tooltip-user-found" data-bs-placement="left" data-bs-custom-class="custom-tooltip"
-                                        data-bs-title="{% if user_found %}Estos nombres ya han sido registrados.{% else %}Ingresa tus nombres.{% endif %}" />
+                                    <input type="text" class="form-control mt-2" id="rfc" name="rfc"
+                                        pattern="^[A-Z0-9]+$" minlength="13" maxlength="13" required/>
                                 </div>
                             </div>
+
+                            <!-- Registrarse como doctor??? -->
                             <div class="form-check mb-2 text-white">
                                 <input class="form-check-input" type="checkbox" value="1" id="registro-doctor" name="registro-doctor">
                                 <label class="form-check-label" for="flexCheckDefault">Registrarse como doctor</label>
@@ -168,9 +163,8 @@
                                 <div class="form-outline mb-2 text-white" id="show-cedula">
                                     <label for="cedula">Cédula Profesional</label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control mt-2 {% if user_found %}is-invalid{% endif %}" id="cedula" name="cedula"
-                                            data-bs-toggle="tooltip-user-found" data-bs-placement="left" data-bs-custom-class="custom-tooltip"
-                                            data-bs-title="{% if user_found %}Estos nombres ya han sido registrados.{% else %}Ingresa tus nombres.{% endif %}" />
+                                            <input type="number" class="form-control mt-2" id="cedula" name="cedula"
+                                            pattern="^[0-9]+$" required />
                                         </div>
                                 </div>
 
@@ -180,8 +174,7 @@
                                 <div class="col-sm-10">
                                     <div class="input-group">
                                         <input type="password" class="form-control mt-2 signup__password" id="password"
-                                            name="password" required data-bs-toggle="tooltip" data-bs-placement="left"
-                                            data-bs-custom-class="custom-tooltip"
+                                            name="password" minlength="8" maxlength="20"
                                             data-bs-title="La contraseña debe al menos tener 8 caracteres de largo" />
                                         <div class="mt-2">
                                             <button class="btn btn-outline-secondary" type="button" id="generatePassword">
@@ -213,7 +206,6 @@
         </div>
     </div>
 </div>
-<script defer src="{{url_for('static', filename='js/validaciones.js')}}"></script>
 <script>
     const checkbox = document.getElementById('registro-doctor')
 

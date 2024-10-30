@@ -26,30 +26,33 @@
     </div>
     <!-- Medication inventory table -->
     <div class="row">
-
-        <div class="col-md-9">
-            <!-- Medication inventory table -->
-            <div class="table-responsive">
-                <table class="table table-striped table-sm">
-                    <thead>
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Proveedor</th>
-                            <th>Telefono proveedor</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% if medicamentos != None %}
-                        {% for medicamento in medicamentos %}
-                        <tr id="{{medicamento['ID_Medicamento']}}" class="clickable-row">
-                            <td>{{medicamento['Nombre_medicamento']}}</td>
-                            <td>{{medicamento['Nombre']}}</td>
-                            <td id="{{medicamento['ID_Proveedor']}}">{{medicamento['Teléfono']}}</td>
-                        </tr>
-                        {% endfor %}
-                        {% endif %}
-                    </tbody>
-                </table>
+        <div class="col-md-9 mt-4">
+                    <!-- Medication inventory table -->
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Proveedor</th>
+                                    <th>Telefono proveedor</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if medicamentos != None %}
+                                {% for medicamento in medicamentos %}
+                                <tr id="{{medicamento['ID_Medicamento']}}" class="clickable-row">
+                                    <td>{{medicamento['Nombre_medicamento']}}</td>
+                                    <td>{{medicamento['Nombre']}}</td>
+                                    <td id="{{medicamento['ID_Proveedor']}}">{{medicamento['Teléfono']}}</td>
+                                </tr>
+                                {% endfor %}
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="col-md-3">
@@ -60,10 +63,9 @@
                         <!-- Appointment details will be shown here -->
                     </div>
                     <div class="d-grid gap-2 mt-3">
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                            data-bs-target="#modalAgregarMedicina">Agregar</button>
-                        <button id="modificarBoton" class="btn btn-secondary">Modificar</button>
-                        <button id="eliminarBoton" class="btn btn-danger">Eliminar</button>
+                        <button id="agregarInventarioBoton" class="btn btn-primary">Agregar</button>
+                        <button id="modificarInventarioBoton" class="btn btn-secondary">Modificar</button>
+                        <button id="eliminarInventarioBoton" class="btn btn-danger">Eliminar</button>
                     </div>
                 </div>
             </div>
@@ -73,17 +75,18 @@
 
 
     <!-- Agregar Medicina -->
-    <div class="modal fade" id="modalAgregarMedicina" tabindex="-1" aria-labelledby="modalAgregarMedicinaLabel"
+    <div class="modal fade" id="modalAgregarInventario" tabindex="-1" aria-labelledby="modalAgregarInventarioLabel"
         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title h5" id="modalAgregarMedicinaLabel">Agregar Medicina</h1>
+                    <h1 class="modal-title h5" id="modalAgregarInventarioLabel">Agregar Medicina</h1>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <!-- Formulario dentro del modal -->
                     <form action="/agregar_medicamento" method="post" novalidate class="submit-validation">
+                        <input type="hidden" name="token_agregar" value="{{ session.token }}">
                         <div class="input-group flex-nowrap mb-2">
                             <label for="nombre_medicamento" class="input-group-text">Nombre medicamento</label>
                             <input type="text" name="nombre_medicamento" id="nombre_medicamento" class="form-control needs-validation alphanumeric"
@@ -127,6 +130,7 @@
                         <div class="input-group flex-nowrap mb-2">
                             <input type="submit" name="submit" id="submit" class="form-control">
                         </div>
+                        <div class="center"><span id="segundosModalagregar"></span></div>
                     </form>
                 </div>
             </div>
@@ -134,17 +138,18 @@
     </div>
 
     <!-- Modificar Medicina -->
-    <div class="modal fade" id="modalModificarMedicina" tabindex="-1" aria-labelledby="modalAgregarMedicinaLabel"
+    <div class="modal fade" id="modalModificarInventario" tabindex="-1" aria-labelledby="modalAgregarInventarioLabel"
         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title h5" id="modalModificarMedicinaLabel"> Modificar Medicina</h1>
+                    <h1 class="modal-title h5" id="modalModificarInventarioLabel"> Modificar Medicina</h1>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <!-- Formulario dentro del modal -->
                     <form id="form_medicina_mod" action="/modificar_medicamento" method="post" class="submit-validation">
+                        <input type="hidden" name="token_modificar" value="{{ session.token }}">
                         <input type="hidden" value="0" id="modificar_medicina_id" name="modificar_medicina_id">
                         <div class="input-group flex-nowrap mb-2">
                             <label for="nombre" class="input-group-text">Nombre</label>
@@ -169,10 +174,10 @@
                                 {% endif %}
                             </select>
                         </div>
-
                         <div class="input-group flex-nowrap mb-2">
                             <input type="submit" name="submit" id="change" class="form-control btn btn-primary">
                         </div>
+                        <div class="center"><span id="segundosModalmodificar"></span></div>
                     </form>
                 </div>
             </div>
@@ -180,7 +185,7 @@
     </div>
 
     <!-- Eliminar Medicina -->
-    <div class="modal fade" id="modalEliminarMedicina" tabindex="-1" aria-labelledby="modalEliminarMedicinaLabel"
+    <div class="modal fade" id="modalEliminarInventario" tabindex="-1" aria-labelledby="modalEliminarInventarioLabel"
         aria-hidden="true">
         <!-- Modal -->
         <div class="modal-dialog">
@@ -188,12 +193,13 @@
             <div class="modal-content">
                 <!-- Titulos -->
                 <div class="modal-header">
-                    <h1 class="modal-title h5" id="modalEliminarMedicinaLabel">Eliminar Medicina</h1>
+                    <h1 class="modal-title h5" id="modalEliminarInventarioLabel">Eliminar Medicina</h1>
                 </div>
                 <!-- Cuerpo -->
                 <div class="modal-body">
                     <!-- Formulario dentro -->
                     <form id="form_medicina_elim" action="/eliminar_medicamento" method="post">
+                        <input type="hidden" name="token_eliminar" value="{{ session.token }}">
                         <!--ID-->
                         <input type="input-group" name="eliminar_medicamento_id" id="eliminar_medicamento_id"
                             class="form-control" style="display: none;" value="">
@@ -203,11 +209,11 @@
                                 <button type="submit" name="eliminate" id="eliminate" class="btn btn-danger me-2">
                                     Eliminar
                                 </button>
-                                <button type="button" class="btn btn-primary me-2" data-bs-dismiss="modal"
-                                    aria-label="Close">
+                                <button type="button" name="cancel" id="cancel" class="btn btn-primary me-2" data-bs-dismiss="modal" aria-label="Close">
                                     Cancelar
                                 </button>
                             </div>
+                            <div class="center"><span id="segundosModaleliminar"></span></div>
                         </div>
                     </form>
                 </div>
@@ -223,65 +229,12 @@
     {% endif%}
 
     <script defer src="{{url_for('static', filename='js/validaciones.js')}}"></script>
-
     <script>
-        let selectedRow = null;
-        document.querySelectorAll('.clickable-row').forEach(row => {
-            row.addEventListener('click', function () {
-                // Seleccionar fila
-                if (selectedRow) {
-                    selectedRow.classList.remove('table-primary');
-                }
-                selectedRow = this;
-                selectedRow.classList.add('table-primary');
-
-                const id = row.getAttribute('id'); // ID
-                const nombre = row.children[0].textContent; // Ajustado a [0] para "Nombre"
-                const proveedor = row.children[1].textContent; // Ajustado a [1] para "Dosis"
-                const telefono = row.children[2].textContent; // Ajustado a [1] para "Dosis"
-                const id_proveedor = row.children[2].getAttribute('id');
-
-                // Verificar los datos con la consola 
-                console.log(id)
-                console.log(nombre)
-                console.log(proveedor)
-                console.log(telefono)
-                console.log(id_proveedor)
-
-                // Asignar valores al modal
-                document.getElementById('modificar_medicina_id').value = id;
-                document.getElementById('modificar_medicina_nombre').value = nombre;
-                document.getElementById('modificar_medicina_telefono').value = telefono;
-                document.getElementById('modificar_medicina_id_proveedor').value = id_proveedor;
-
-                //Asignar para eliminar
-                document.getElementById('eliminar_medicamento_id').value = id;
-                console.log(document.getElementById('eliminar_medicamento_id').value)
-            });
-        });
-
-        document.getElementById('modificarBoton').addEventListener('click', function () {
-            if (!selectedRow) {
-                alert('Por favor selecciona una fila para modificar.');
-                return;
-            }
-
-            // Si hay una fila seleccionada, se muestra el modal
-            const modal = new bootstrap.Modal(document.getElementById('modalModificarMedicina'));
-            modal.show();
-        });
-
-        document.getElementById('eliminarBoton').addEventListener('click', function () {
-            if (!selectedRow) {
-                alert('Por favor selecciona una fila para eliminar.');
-                return;
-            }
-
-            // Si hay una fila seleccionada, se muestra el modal
-            const modal = new bootstrap.Modal(document.getElementById('modalEliminarMedicina'));
-            modal.show();
-        });
-
+        const view = 'Inventario';
+    </script>
+    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+    <script src="../static/js/websockets.js"></script>
+    <script>
         // Evento para el checkb
         const checkbox1 = document.getElementById('elegir_proveedor1') //False
         checkbox1.addEventListener('change', (event) => {

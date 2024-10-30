@@ -1,5 +1,100 @@
 {% extends 'Vertical-navbar.html' %}
 
+{% block style %}
+<style>
+    .carousel{
+        margin:auto;
+    }
+</style>
+{% endblock %}
 
 {% block body %}
+<!-- Referenciar al archivo CSS en la carpeta static/css-->
+<link rel="stylesheet" type="text/css" href="../static/css/normal.css">
+<div class="container-fluid">
+    <div class="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Ajustes</h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title text-center text-white pb-2 border-bottom">Cuenta</h5>
+                <div class="d-flex flex-column align-items-center text-white text-decoration-none pb-2 border-bottom" aria-expanded="false">
+                    <img src="https://i.pinimg.com/originals/f2/fe/e1/f2fee18928e2a527a800fe311ba4a955.gif" alt="" class="rounded-circle me-2 col-md-1" id="image"> 
+                    {% if session['Tipo_usuario'] is defined %}
+                        {% if session['Tipo_usuario'] == 'doctor' %}
+                        <strong id="text"> Dr. {{current_user['Nombres']}} {{current_user['Apellido_Paterno']}}</strong>
+                        {% elif session['Tipo_usuario'] == 'recepcionista'  %}
+                        <strong id="text"> Recepcionista {{current_user['Nombres']}} {{current_user['Apellido_Paterno']}}</strong>
+                        {% endif %}
+                    {% else %}
+                    <strong id="text">Invitado</strong>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="card mt-4">
+            <div class="card-body">
+                <h5 class="card-title text-center text-white pb-2 border-bottom">Background</h5>
+                <div id="carouselExampleCaptions" class="carousel slide col-md-6 align-items-center">
+                    <div class="carousel-indicators">
+                      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                    </div>
+                    <div class="carousel-inner">
+                      <div class="carousel-item active" type="button" id="background1">
+                        <img src="../static/img/amfzanxbvw621.png" class="d-block w-100" alt="...">
+                        <div class="carousel-caption d-none d-md-block">
+                          <h5>Stardew Valley Mountains - Night</h5>
+                        </div>
+                      </div>
+                      <div class="carousel-item" type="button" id="background2">
+                        <img src="../static/img/9526f08c1e26dcb4f6b9afd9d76af8ab.png" class="d-block w-100" alt="...">
+                        <div class="carousel-caption d-none d-md-block">
+                          <h5>Stardew Valley Mountains - Day</h5>
+                        </div>
+                      </div>
+                      <div class="carousel-item" type="button" id="background3">
+                        <img src="../static/img/descargar.png" class="d-block w-100" alt="...">
+                        <div class="carousel-caption d-none d-md-block">
+                          <h5>Stardew Valley Beach - Day</h5>
+                        </div>
+                      </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+                      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                      <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+                      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                      <span class="visually-hidden">Next</span>
+                    </button>
+                  </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function setBackground(imageUrl) {
+        document.documentElement.style.setProperty('--background-image', `url('${imageUrl}')`);
+        localStorage.setItem('backgroundImage', imageUrl);
+    }
+
+    document.getElementById('background1').addEventListener('click', function (){
+        setBackground('../img/amfzanxbvw621.png');
+    });
+
+    document.getElementById('background2').addEventListener('click', function (){
+        setBackground('../img/9526f08c1e26dcb4f6b9afd9d76af8ab.png');
+    });
+
+    document.getElementById('background3').addEventListener('click', function (){
+        setBackground('../img/descargar.png');
+    });
+</script>
 {% endblock %}

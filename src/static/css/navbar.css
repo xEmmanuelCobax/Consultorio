@@ -133,10 +133,18 @@ main {
 
 body {
     background-image: url("../img/amfzanxbvw621.png");
+    background-size: cover;
+    background-position: center;
     font-family: 'Poppins';
 }
 
 .container-fluid{
     overflow-x: hidden;
     overflow-y: auto;
+}
+
+#text{
+    max-height: 50px;
+    overflow: hidden; /* Necesario para que funcione text-overflow */
+    text-overflow: hidden;
 }

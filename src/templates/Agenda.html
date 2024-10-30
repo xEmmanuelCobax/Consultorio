@@ -20,155 +20,9 @@ MediLink - Agenda
     href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" />
 <!-- Bootstrap datepicker JS-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+<!-- CSS -->
+<link rel="stylesheet" type="text/css" href="../static/css/agenda.css"> 
 
-<style>
-    .table {
-        border-radius: 0.5rem;
-        /* Ajusta el valor según lo necesites */
-        overflow: hidden;
-        /* Asegúrate de que el contenido no sobresalga */
-        box-shadow: 0 8px 10px rgba(0, 0, 0, 0.1);
-        /* Sombra suave */
-    }
-
-    .table th,
-    .table td {
-        border: 0.5px solid #ADD8E6;
-        /* Borde de celdas */
-        padding: 0.5rem;
-        /* Espaciado interno */
-    }
-
-    .table th {
-        font-size: 1.2rem;
-        /* Aumenta el tamaño de la fuente */
-        color: #333;
-        /* Color del texto en encabezados */
-        background-color: #2980b9;
-        /* Fondo para encabezados */
-        color: #fff;
-        /* Color del texto en encabezados */
-        text-align: center;
-        /* Centrar contenido si es apropiado */
-    }
-
-    .table td {
-        font-size: 1rem;
-        /* Tamaño de la fuente en celdas */
-        color: #555;
-        /* Color del texto en celdas */
-    }
-
-    .clickable-row {
-        cursor: pointer;
-        /* Cambia el cursor a una mano para indicar que la fila es clickeable. */
-    }
-
-    .card {
-        border: 1px solid #e1e1e1;
-        /* Establece un borde gris claro alrededor de las tarjetas. */
-        border-radius: 0.5rem;
-        /* Bordes redondeados para las tarjetas. */
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        /* Sombra suave para dar efecto de elevación. */
-    }
-
-    .btn {
-        border-radius: 0.3rem;
-        /* Bordes ligeramente redondeados para botones. */
-    }
-
-    .modal-header {
-        background-color: #2980b9;
-        /* Fondo azul oscuro para el encabezado del modal. */
-        color: #fff;
-        /* Color blanco para el texto en el encabezado del modal. */
-    }
-
-    .modal-footer {
-        justify-content: center;
-        /* Centra los botones en el pie del modal. */
-    }
-
-    .input-group-text {
-        background-color: #e9ecef;
-        /* Fondo gris claro para las etiquetas en inputs. */
-        border: 1px solid #ced4da;
-        /* Borde gris para las etiquetas en inputs. */
-    }
-
-    .modal:hover {
-        box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2);
-        /* Sombra más pronunciada */
-    }
-
-    .btn:hover {
-        background-color: #1f7a93;
-        /* Un tono más oscuro */
-        color: #fff;
-        /* Asegúrate de que el texto sea legible */
-    }
-
-    .btn-submit:hover {
-        background-color: #219653;
-        /* Color más oscuro al pasar el cursor */
-        cursor: pointer;
-        /* Cambia el cursor para indicar interactividad */
-    }
-
-    .input-group {
-        border: 1px solid #ced4da;
-        /* Borde gris claro alrededor del grupo de entrada */
-        border-radius: 0.25rem;
-        /* Bordes redondeados */
-        box-shadow: none;
-        /* Eliminar sombra si hay */
-        transition: border-color 0.3s;
-        /* Transición suave al cambiar el borde */
-    }
-
-    .input-group:focus-within {
-        border-color: #2980b9;
-        /* Cambiar el color del borde al azul cuando el campo está en foco */
-    }
-
-    .form-control {
-        border: 1px solid #e1e1e1;
-        /* Borde gris claro para cada campo */
-        border-radius: 0.25rem;
-        /* Bordes redondeados */
-        transition: border-color 0.3s;
-        /* Transición suave al cambiar el borde */
-    }
-
-    .form-control:focus {
-        border-color: #2980b9;
-        /* Cambiar color del borde a azul al hacer foco */
-        box-shadow: 0 0 5px rgba(41, 128, 185, 0.5);
-        /* Añadir sombra suave en foco */
-    }
-
-    .btn,
-    .table th,
-    .table td {
-        transition: background-color 0.3s, color 0.3s;
-        /* Transiciones para botones y celdas */
-    }
-
-    h1.h2 {
-        font-size: 2rem;
-        /* Tamaño más grande */
-        color: #e1e1e1;
-        /* Color atractivo */
-        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-        /* Sombra para dar profundidad */
-        margin-bottom: 1rem;
-        /* Espacio debajo del título */
-        font-weight: bold;
-        /* Hacer el texto más audaz */
-        text-align: center;
-    }
-</style>
 {% endblock %}
 
 {% block body %}
@@ -184,55 +38,52 @@ MediLink - Agenda
     <div class="container-fluid">
         <!-- Calendario -->
         <div class="row mt-4">
-            <div class="col-12">
+            <div class="col-md-6">
                 <div id="calendar"></div>
             </div>
-        </div>
-        <!-- Carta -->
-        <div class="card mt-4">
-            <div class="card-body">
-                <h5 class="card-title">Detalles de la Cita</h5>
-                <div class="table-responsive">
-                    <table id="appointmentDetails" class="table table-striped table-sm">
-                        <thead>
-                            <tr id="id_cita_fila" class="clickable-row" data-id="id_cita">
-                                <th>Nombre</th>
-                                <th>Apellidos</th>
-                                <th>Fecha</th>
-                                <th>Doctor</th>
-                                <th>Motivo</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- Aquí se agregarán las filas dinámicamente -->
-                        </tbody>
-                    </table>
-                </div>
-                <!-- Apartado de botones -->
-                <div class="d-grid gap-2 mt-3">
-                    <button id="addAppointment" class="btn btn-primary" type="button" data-bs-toggle="modal"
-                        data-bs-target="#modalAgregarCita">Agregar Cita</button>
-
-                    <button id="modificarBoton" class="btn btn-secondary" type="button">Modificar
-                        Cita</button>
-                    <button id="eliminarBoton" class="btn btn-danger" type="button">Eliminar
-                        Cita</button>
+            <!-- Carta -->
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title text-center text-white ">Acciones</h5>
+                        <div class="table-responsive">
+                            <table id="appointmentDetails" class="table table-sm">
+                                <thead>
+                                    <th>Nombre</th>
+                                    <th>Apellidos</th>
+                                    <th>Fecha</th>
+                                    <th>Doctor</th>
+                                    <th>Motivo</th>
+                                </thead>
+                                <tbody id="id_cita_fila" data-id="id_cita">
+                                <!-- Aquí se agregarán las filas dinámicamente -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- Apartado de botones -->
+                        <div class="d-grid gap-2 mt-3">
+                            <button id="agregarCitasBoton" class="btn btn-primary">Agregar</button>
+                            <button id="modificarCitasBoton" class="btn btn-secondary">Modificar</button>
+                            <button id="eliminarCitasBoton" class="btn btn-danger">Eliminar</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
     <!-- Modal para agregar citas -->
-    <div class="modal fade" id="modalAgregarCita" tabindex="-1" aria-labelledby="modalAgregarPacienteLabel"
+    <div class="modal fade" id="modalAgregarCitas" tabindex="-1" aria-labelledby="modalAgregarCitasLabel"
         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title h5" id="modalAgregarCitaLabel">Agregar Cita</h1>
+                    <h1 class="modal-title h5" id="modalAgregarCitasLabel">Agregar Cita</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <!-- Agregar cita -->
                     <form id="form_agregar_cigar" action="/agregar_cita" method="post">
+                        <input type="hidden" name="token_agregar" value="{{ session.token }}">
                         <input type="hidden" name="redirect" value="{{ request.path }}">
                         <!-- ID -->
                         <input type="hidden" name="redirect" value="{{ request.path }}">
@@ -279,23 +130,25 @@ MediLink - Agenda
                         <div class="input-group flex-nowrap mb-2">
                             <input type="submit" name="submit" id="submit" class="form-control">
                         </div>
+                        <div class="center"><span id="segundosModalagregar"></span></div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
     <!-- Modal para modificar citas -->
-    <div class="modal fade" id="modalModificarCita" tabindex="-1" aria-labelledby="modalModificarCitaLabel"
+    <div class="modal fade" id="modalModificarCitas" tabindex="-1" aria-labelledby="modalModificarCitasLabel"
         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title h5" id="modalModificarCitaLabel">Modificar Cita</h1>
+                    <h1 class="modal-title h5" id="modalModificarCitasLabel">Modificar Cita</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <!-- Modificar cita -->
                     <form id="form_Modificar_cita" action="/modificar_cita" method="post">
+                        <input type="hidden" name="token_modificar" value="{{ session.token }}">
                         <input type="hidden" name="redirect" value="{{ request.path }}">
                         <!-- ID -->
                         <input type="hidden" name="cita_mod" id="cita_mod" value="">
@@ -342,6 +195,7 @@ MediLink - Agenda
                         <div class="input-group flex-nowrap mb-2">
                             <input type="submit" name="submit" id="change" class="form-control">
                         </div>
+                        <div class="center"><span id="segundosModalmodificar"></span></div>
                     </form>
                 </div>
             </div>
@@ -349,8 +203,8 @@ MediLink - Agenda
     </div>
     <div id="data" data-citas="{{ citas }}" data-pacientes="{{ lista_pacientes }}" data-doctores="{{ lista_doctores }}">
     </div>
-    <!-- Eliminar paciente -->
-    <div class="modal fade" id="modalEliminarPaciente" tabindex="-1" aria-labelledby="modalEliminarPacienteLabel"
+    <!-- Eliminar cita -->
+    <div class="modal fade" id="modalEliminarCitas" tabindex="-1" aria-labelledby="modalEliminarCitasLabel"
         aria-hidden="true">
         <!-- Modal -->
         <div class="modal-dialog">
@@ -358,12 +212,13 @@ MediLink - Agenda
             <div class="modal-content">
                 <!-- Titulos -->
                 <div class="modal-header">
-                    <h1 class="modal-title h5" id="modalEliminarPacienteLabel">Eliminar paciente</h1>
+                    <h1 class="modal-title h5" id="modalEliminarCitasLabel">Eliminar paciente</h1>
                 </div>
                 <!-- Cuerpo -->
                 <div class="modal-body">
                     <!-- Formulario dentro -->
                     <form id="form_pacientes_elim" action="/Eliminar_Cita" method="post">
+                        <input type="hidden" name="token_eliminar" value="{{ session.token }}">
                         <!--ID-->
                         <input type="input-group" name="cita_id_eli" id="cita_id_eli" class="form-control"
                             style="display: none;" value="">
@@ -373,12 +228,12 @@ MediLink - Agenda
                                 <button type="submit" name="eliminate" id="eliminate" class="btn btn-danger me-2">
                                     Eliminar
                                 </button>
-                                <button type="button" class="btn btn-primary me-2" data-bs-dismiss="modal"
-                                    aria-label="Close">
+                                <button type="button" name="cancel" id="cancel" class="btn btn-primary me-2" data-bs-dismiss="modal"aria-label="Close">
                                     Cancelar
                                 </button>
                             </div>
                         </div>
+                        <div class="center"><span id="segundosModaleliminar"></span></div>
                     </form>
                 </div>
             </div>
@@ -399,7 +254,11 @@ MediLink - Agenda
     crossorigin="anonymous"></script>
 <script defer src="{{url_for('static', filename='js/validaciones.js')}}"></script>
 <script>
-    let selectedRow = null;
+    const view = 'Citas';
+</script>
+<script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+<script src="../static/js/websockets.js"></script>
+<script>
     // esto es para configurar la tabla en español
     $.fn.datepicker.dates['es'] = {
         days: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
@@ -436,9 +295,9 @@ MediLink - Agenda
         request_citas_tabla(e.date.getFullYear(), e.date.getMonth() + 1, e.date.getDate())
     });
     //Diseño
-    $(document.querySelectorAll('.datepicker-inline')).addClass('bg-white w-100 rounded-5 p-3 shadow-lg overflow-auto overflow-hide-scroll')
+    $(document.querySelectorAll('.datepicker-inline')).addClass('w-100 rounded-5 p-3 shadow-lg overflow-auto overflow-hide-scroll')
     //Diseño
-    $(document.querySelectorAll('.table-condensed')).addClass('table table-sm w-100').removeClass('table-condensed')
+    $(document.querySelectorAll('.table-condensed')).addClass('table table-sm w-100 custom-table').removeClass('table-condensed')
     //
     function formatDate(date) {
         let adjustedDate = new Date(date.getTime() + (date.getTimezoneOffset() * 60000)); //Ajustar el horario
@@ -530,7 +389,7 @@ MediLink - Agenda
                 selectedRow = this;
                 selectedRow.classList.add('table-primary');
                 // Guardar los datos de la fila seleccionada
-                const id_cita = row.getAttribute('id_cita_1');
+                const id_cita = row.getAttribute('id_cita');
                 const id_paciente = row.getAttribute('id_paciente');
                 const id_doctor = row.getAttribute('id_doctor');
                 const fechaCompleta = row.children[2].textContent; // '10/15/2024 06:00:00' 
@@ -556,26 +415,6 @@ MediLink - Agenda
             });
         });
     }
-    // Evento
-    document.getElementById('modificarBoton').addEventListener('click', function () {
-        if (!selectedRow) {
-            alert('Por favor selecciona una cita para modificar.');
-            return;
-        }
-        // Si hay una fila seleccionada, se muestra el modal
-        const modal = new bootstrap.Modal(document.getElementById('modalModificarCita'));
-        modal.show();
-    });
-    // Evento
-    document.getElementById('eliminarBoton').addEventListener('click', function () {
-        if (!selectedRow) {
-            alert('Por favor selecciona una cita para eliminar.');
-            return;
-        }
-        // Si hay una fila seleccionada, se muestra el modal
-        const modal = new bootstrap.Modal(document.getElementById('modalEliminarPaciente'));
-        modal.show();
-    }); 
 </script>
 
 {% if session['Tipo_usuario'] is defined %}
