@@ -181,8 +181,7 @@ MediLink - Agenda
                         </div>
                         <div class="input-group flex-nowrap mb-2">
                             <label for="doctor" class="input-group-text">Doctor asignado</label>
-                            <select class="form-select" name="doctor_mod" id="doctor_mod">
-                                <option value="-1" selected>----- Elige una opción -----</option>
+                            <select class="form-select" name="doctor_mod" id="doctor_mod" disabled>
                                 {% if lista_doctores %}
                                 {% for doctor in lista_doctores %}
                                 <option value="{{doctor['ID_doctor']}}">Dr. {{doctor['Nombres']}}
@@ -192,8 +191,22 @@ MediLink - Agenda
                                 {% endif %}
                             </select>
                         </div>
+
+                        {% if session['Tipo_usuario'] is defined %}
+                        {% if session['Tipo_usuario'] == 'doctor' %}
+
                         <div class="input-group flex-nowrap mb-2">
-                            <input type="submit" name="submit" id="change" class="form-control">
+                            <label for="doctor" class="input-group-text">Cambiar estado de la cita</label>
+                            <select class="form-select" name="doctor_mod" id="lista_estatus">
+                                <option value="1">Cita atendida</option>
+                            </select>
+                        </div>
+
+                        {% endif %}
+                        {% endif %}
+
+                        <div class="input-group flex-nowrap mb-2">
+                            <input type="submit" name="submit" id="submit-modificar" class="form-control">
                         </div>
                         <div class="center"><span id="segundosModalmodificar"></span></div>
                     </form>
@@ -217,8 +230,9 @@ MediLink - Agenda
                 <!-- Cuerpo -->
                 <div class="modal-body">
                     <!-- Formulario dentro -->
-                    <form id="form_pacientes_elim" action="/Eliminar_Cita" method="post">
+                    <form id="form_pacientes_elim" action="/eliminar_cita" method="post">
                         <input type="hidden" name="token_eliminar" value="{{ session.token }}">
+                        <input type="hidden" name="redirect" value="{{ request.path }}">
                         <!--ID-->
                         <input type="input-group" name="cita_id_eli" id="cita_id_eli" class="form-control"
                             style="display: none;" value="">
@@ -228,7 +242,7 @@ MediLink - Agenda
                                 <button type="submit" name="eliminate" id="eliminate" class="btn btn-danger me-2">
                                     Eliminar
                                 </button>
-                                <button type="button" name="cancel" id="cancel" class="btn btn-primary me-2" data-bs-dismiss="modal"aria-label="Close">
+                                <button type="button" name="cancel" id="cancel" class="btn btn-primary me-2" data-bs-dismiss="modal" aria-label="Close">
                                     Cancelar
                                 </button>
                             </div>
@@ -286,11 +300,10 @@ MediLink - Agenda
     })
     // Evento changeDate del componente datepicker
     $('#calendar').datepicker().on('changeDate', function (e) {
-        console.log(e.date) //Mostrar el objeto date
-        console.log(e.date.getFullYear()) //Obtiene el año de la fecha seleccionada 
-        console.log(e.date.getMonth() + 1) //Obtiene el mes, se pone +1 por que getMonth() devuelve los meses indexados
-        console.log(e.date.getDate()) //Obtiene el día del mes seleccionado
-        //CREAR OTRO REQUEST PERO QUE MUESTRE EN LA OTRA TABLA
+        // console.log(e.date) //Mostrar el objeto date
+        // console.log(e.date.getFullYear()) //Obtiene el año de la fecha seleccionada 
+        // console.log(e.date.getMonth() + 1) //Obtiene el mes, se pone +1 por que getMonth() devuelve los meses indexados
+        // console.log(e.date.getDate()) //Obtiene el día del mes seleccionado
         //Llama a la funcion request_citas_tabla con los valores año/mes/dia
         request_citas_tabla(e.date.getFullYear(), e.date.getMonth() + 1, e.date.getDate())
     });
@@ -345,14 +358,14 @@ MediLink - Agenda
                     document.getElementById('id_cita_fila').dataset.id = resultado[i]['ID_cita']
                     // Agregar una nueva fila a la tabla
                     $('#appointmentDetails tbody').append(`
-                                    <tr class="clickable-row" id_cita_1="${resultado[i]['ID_cita']}" id_doctor="${resultado[i]['ID_Doctor']}" id_paciente="${resultado[i]['ID_Paciente']}" >
-                                        <td>${resultado[i]['Nombres']}</td>
-                                        <td>${resultado[i]['Apellido_Paterno']} ${resultado[i]['Apellido_Materno']}</td>
-                                        <td>${formatDate(date)}</td>
-                                        <td>Dr. ${resultado[i]['Doctor_Nombres']} ${resultado[i]['Doctor_Apellido_Paterno']} ${resultado[i]['Doctor_Apellido_Materno']}</td>
-                                        <td>${resultado[i]['Motivo']}</td>
-                                    </tr>
-                                `);
+                        <tr class="clickable-row" id_cita="${resultado[i]['ID_cita']}" id_doctor="${resultado[i]['ID_Doctor']}" id_paciente="${resultado[i]['ID_Paciente']}" >
+                            <td>${resultado[i]['Nombres']}</td>
+                            <td>${resultado[i]['Apellido_Paterno']} ${resultado[i]['Apellido_Materno']}</td>
+                            <td>${formatDate(date)}</td>
+                            <td>Dr. ${resultado[i]['Doctor_Nombres']} ${resultado[i]['Doctor_Apellido_Paterno']} ${resultado[i]['Doctor_Apellido_Materno']}</td>
+                            <td>${resultado[i]['Motivo']}</td>
+                        </tr>
+                    `);
                 }
                 // Reasignar el evento a las filas recién agregadas
                 bindRowEvents();
@@ -396,22 +409,21 @@ MediLink - Agenda
                 const [fecha, hora] = fechaCompleta.split(' ');
                 const motivo = row.children[4].textContent;
                 // Verificar los datos en la consola
-                console.log(id_cita)
-                console.log(id_paciente)
-                console.log(id_doctor)
-                console.log(motivo)
-                console.log(fecha)
-                console.log(hora)
+                //console.log({id_cita, id_paciente,id_doctor,motivo,fecha,hora});
                 //
                 const partes = fecha.split('/'); // ['10', '15', '2024']
                 const fechaFormateada = `${partes[2]}-${partes[0].padStart(2, '0')}-${partes[1].padStart(2, '0')}`;
                 // Aquí puedes asignar los datos al modal si lo necesitas
                 document.getElementById('cita_mod').value = id_cita;
+                document.getElementById('cita_id_eli').value = id_cita;
                 document.getElementById('paciente_mod').value = id_paciente;
                 document.getElementById('doctor_mod').value = id_doctor;
                 document.getElementById('motivo_mod').value = motivo;
                 document.getElementById('fecha_mod').value = fechaFormateada;
                 document.getElementById('hora_mod').value = hora;
+
+                var numeroFila = $(row).index() + 1;
+                console.log("Número de fila:", numeroFila);
             });
         });
     }

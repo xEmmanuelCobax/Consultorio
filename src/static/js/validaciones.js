@@ -1,8 +1,17 @@
 // aquí voy a importar funciones para validar formularios   
 /*
-submit-validation
-needs-validation:
-numeric alpha numeric alphanumeric alpha-hyphen
+Documentación:
+Poner en el form: submit-validation
+Poner en el input: needs-validation [OPCIÓN]
+
+OPCIONES:
+numeric 
+alpha
+alphanumeric 
+alpha-hyphen
+name
+
+NO USAR LAS VALIDACIONES CONSTANTES, ESAS SE APLICAN AUTOMÁTICAMENTE
 */
 function simpleValidation(element) {
     if (element.style.display === 'none' || element.parentElement.style.display === 'none') 
@@ -13,7 +22,6 @@ function simpleValidation(element) {
     } else {
         element.classList.remove('is-valid')
         element.classList.add('is-invalid')
-        console.log('invalida')
     }
 }
 
@@ -52,11 +60,25 @@ const inputValidations = {
             e.classList.remove('is-valid')
             e.classList.add('is-invalid')
         }
+    },
+    'simple': (e) => {
+        if (e.value === '') return
+        
+        simpleValidation(e)
+    },
+    'mayus': (e) => {
+        if (e.value === '') return
+
+        e.value = e.value.toUpperCase();
+    },
+    'trim': (e) => {
+        if (e.value === '') return
+        e.value = e.value.replace(/[^A-Za-záéíóúÁÉÍÓÚñÑ\s]/g, '')
     }
 }
 
 const unfocusValidations = {
-    'capitalize': (e) => {
+    'name': (e) => {
         if (e.value === '') return
         
         let split = e.value.split(' ')
@@ -90,10 +112,8 @@ const constValidations = {
     },
     'min-length': (e) => {
         if (e.value === '') return
-        let minLengthValue = e.getAttribute('minLength')
-        if (minLengthValue === null)
-            console.log(minLengthValue)
-            return
+        let minLengthValue = e.getAttribute('minlength')
+        if (minLengthValue === null) return
 
         let notAllowed = (minLengthValue !== null && e.value.length < minLengthValue)
         if (!e.checkValidity() || notAllowed) {
@@ -105,6 +125,20 @@ const constValidations = {
             e.classList.add('is-valid')
             e.classList.remove('is-invalid')
         }
+    },
+    'pattern': (e) => {
+        if (e.value === '') return
+        if (!e.hasAttribute('pattern')) return
+        
+        const pattern = e.getAttribute("pattern")
+        const regex = new RegExp(`^${pattern}$`);
+        if (regex.test(e.value)) {
+            e.classList.add('is-valid')
+            e.classList.remove('is-invalid')
+        } else {
+            e.classList.remove('is-valid')
+            e.classList.add('is-invalid')
+        }
     }
 }
 
@@ -113,7 +147,7 @@ const array = Array.from(elementsToValidate)
 array.forEach(element => {
     if (element.classList.contains('numeric')) {
         element.onkeydown = (evt) => {
-            if (evt.keyCode == 37 || evt.keyCode == 38 || evt.keyCode == 39 || evt.keyCode == 40 || evt.keyCode == 13 || evt.keyCode == 27 || evt.keyCode == 8)
+            if (evt.keyCode == 37 || evt.keyCode == 38 || evt.keyCode == 39 || evt.keyCode == 40 || evt.keyCode == 13 || evt.keyCode == 27 || evt.keyCode == 8 || evt.keyCode == 9)
                 return true
             if (`${evt.key}`.match(/[0-9]/)){
                 if (!evt.target.checkValidity()) {
@@ -135,24 +169,25 @@ array.forEach(element => {
     if (element.classList.contains('alphanumeric')) {
         element.setAttribute('pattern', "^[a-zA-ZÀ-ú0-9]+(-[a-zA-Z0-9]+)*$")
     }
-    if (element.classList.contains('capitalize')) {
+    if (element.classList.contains('name')) {
         element.setAttribute('pattern', "^([a-zA-ZÀ-ú]{2,})([ \\-]?[a-zA-ZÀ-ú]{2,})*$")
     }
 
-    element.addEventListener('input', (evt) => {
+    const handleValidation = (evt) => {
         console.log('input')
         for (const validation in inputValidations) {
             if (element.classList.contains(validation)){
                 inputValidations[validation](element)
             }
         }
+        constValidations['pattern'](element)
         constValidations['min-length'](element)
         constValidations['empty'](element)
-    })
+    }
 
-    element.addEventListener('click', (evt) => {
-        simpleValidation(element)
-    })
+    element.addEventListener('input', handleValidation)
+    element.addEventListener('paste', handleValidation)
+    element.addEventListener('change', handleValidation)
 
     element.addEventListener('blur', (evt) => {
         console.log('blur')

@@ -37,8 +37,6 @@ Le daremos prioridad al doctor, así si los dos modifican la misma cita, la rece
 
 # region app
 
-PaginaEnUso = False
-
 app = Flask(__name__)
 socketio = SocketIO(app=app)
 limiter = Limiter(key_func=lambda: request.path, app=app)
@@ -50,6 +48,18 @@ login_manager.init_app(app)
 login_manager.login_view = "Ingreso"
 
 # endregion
+
+
+@app.template_global('getcurdate')
+def getcurdate():
+    curdate = datetime.now()
+    return f'{curdate.year}-{curdate.month}-{curdate.day}'
+
+@app.template_global('curdateminusdelta')
+def curdateminusdelta(days):
+    curdate = datetime.now() #6574
+    fecha = curdate - timedelta(days=days)
+    return f'{fecha.year}-{str(fecha.month).zfill(2)}-{str(fecha.day).zfill(2)}'
 
 # region Locks
 
@@ -153,7 +163,7 @@ def request_button_states(data):
         event_name = f'update_{view}_states'
         socketio.emit(event_name, button_states[view])
 
-#endregion
+# endregion
 
 # Esta función es para que flask-login recupere el usuario loggeado cuando una ruta tiene @login_required
 @login_manager.user_loader
@@ -212,7 +222,7 @@ def load_user(id: int):
 def error():
     return "<h1>ACCESO PROHIBIDO</h1>"
 
-#region CUD
+# region CUD
 
 # Metodo para poder realizar CUD> CREATE, UPDATE Y DELETE
 def CUD(query, params=None):
@@ -236,9 +246,9 @@ def CUD(query, params=None):
             connection.close()
         print("-------------------- Conexión finalizada -------------------->")
 
-#endregion
+# endregion
 
-#region Read
+# region Read
 
 def Read(query, params=None):
     print("<-------------------- Conectando... --------------------")
@@ -272,7 +282,7 @@ def Read(query, params=None):
             connection.close()
             print("-------------------- Conexión finalizada -------------------->")
 
-#endregion
+# endregion
 
 @app.route("/", methods=["GET"])
 def index():
@@ -353,7 +363,7 @@ def Ingreso():
     # Solicitar datos
     return render_template("Ingreso.html")
 
-#region login
+# region login
 
 active_sessions = {
     'doctores': {},
@@ -364,6 +374,7 @@ active_sessions = {
 def logearse():
     if current_user.is_authenticated:
         print("FORBIDDEN")
+        flash('Mensaje de error ',  'error')
         return redirect(url_for("Inicio"))
 
     tipo_sesion = request.form.get("elegir_sesion")
@@ -391,9 +402,11 @@ def logearse():
                 if result is not None:
                     # utils.print_cols(result)
                     # Aquí logeamos al usuario con flask-login
-                    if cedula in active_sessions['doctores']:  
+                    ID_Doctor = str(result["ID_Doctor"])
+                    if ID_Doctor in active_sessions['doctores']:  
                         print("Ya hay una sesión activa para este doctor.")
-                        return "Ya hay una sesión activa", 403
+                        flash(" Ya hay una sesión activa para este doctor.")
+                        return redirect(url_for("Ingreso"))
                     usuario = Usuario(
                         id=result["ID_Doctor"],
                         tipo_usuario=tipo_sesion,
@@ -404,7 +417,6 @@ def logearse():
                     )
                     print(usuario)
                     login_user(usuario)
-                    ID_Doctor = str(result["ID_Doctor"])
                     active_sessions['doctores'][ID_Doctor] = ID_Doctor
                     # También guardamos datos en la sesión
                     # session.clear()
@@ -442,9 +454,11 @@ def logearse():
                 if result is not None:
                     utils.print_cols(result)
                     # Aquí se logea la recepcionista
-                    if rfc in active_sessions['recepcionistas']:
+                    ID_Recepcionista = str(result["ID_Recepcionista"])
+                    if ID_Recepcionista in active_sessions['recepcionistas']:  
                         print("Ya hay una sesión activa para esta recepcionista.")
-                        return "Ya hay una sesión activa", 403
+                        flash(" Ya hay una sesión activa para este doctor.")
+                        return redirect(url_for("Inicio"))
                     usuario = Usuario(
                         id=result["ID_Recepcionista"],
                         tipo_usuario=tipo_sesion,
@@ -455,7 +469,6 @@ def logearse():
                     )
                     print(usuario)
                     login_user(usuario)
-                    ID_Recepcionista = str(result["ID_Recepcionista"])
                     active_sessions['recepcionistas'][ID_Recepcionista] = ID_Recepcionista
                     # Se guardan datos en la session
                     # session.clear()
@@ -478,9 +491,9 @@ def logearse():
 
     return redirect(url_for("Inicio"))
 
-#endregion
+# endregion
 
-#region logout
+# region logout
 
 @app.route("/logout", methods=["GET"])
 @login_required
@@ -576,8 +589,7 @@ def Agenda():
         lista_doctores=lista_doctores,
         current_page="Agenda",
     )
-
-#endregion
+# endregion
 
 # region pacientes
 @app.route("/Pacientes", methods=["GET"])
@@ -602,7 +614,6 @@ def agregar_Pacientes():
     if lock_agregar_pacientes.locked():
         app.logger.warning("Intento de acceso a la funcion de agregar pacientes mientras se encontraba en uso (blocked).")
         return jsonify({'message': 'BLOQUEADO: FUNCIÓN EN USO'}), 423
-    
     try:
         with lock_agregar_pacientes:
             # Solicita los datos del forms en Pacientes.html
@@ -721,6 +732,7 @@ def modificar_Paciente():
     except Exception as e:
         app.logger.error(f'Error en la operación de modificar paciente: {str(e)}')
         return jsonify({'message': f'Error en la operación de modificar paciente: {str(e)}'}), 500
+        
     return redirect(url_for("Pacientes"))
 
 
@@ -1140,7 +1152,7 @@ def agregar_cita():
                 id_doctor = request.form.get("doctor")
                 redirect_url = request.form.get("redirect")
 
-                fechacita = datetime.datetime.strptime(f"{fecha} {hora}", "%Y-%m-%d %H:%M")
+                fechacita = datetime.strptime(f"{fecha} {hora}", "%Y-%m-%d %H:%M")
                 print(
                     (
                         fechacita,
@@ -1182,7 +1194,7 @@ def agregar_cita():
             return jsonify({'message': f'Error en la operación de agregar cita: {str(e)}'}), 500
     return redirect(redirect_url)
 
-
+# region modificar cita
 @app.route("/modificar_cita", methods=["POST"])
 @login_required
 @limiter.limit("10 per minute")
@@ -1209,7 +1221,7 @@ def modificar_cita():
                 fecha = request.form.get("fecha_mod")
                 hora = request.form.get("hora_mod")
                 redirect_url = request.form.get("redirect")
-                fechacita = datetime.datetime.strptime(f"{fecha} {hora}", "%Y-%m-%d %H:%M")
+                fechacita = datetime.strptime(f"{fecha} {hora}", "%Y-%m-%d %H:%M")
                 print(
                     (
                         id_cita,
@@ -1263,17 +1275,60 @@ def modificar_cita():
             app.logger.error(f'Error en la operación de modificar cita: {str(e)}')
             return jsonify({'message': f'Error en la operación de modificar cita: {str(e)}'}), 500
     return redirect(redirect_url)
-
-
 # endregion
 
+# region Eliminar cita
+@app.route("/eliminar_cita", methods=["POST"])
+@login_required
+@limiter.limit("10 per minute")
+def eliminar_cita():
+    if request.method == "POST":
+        user_token = session['token']
+        request_token = request.form.get("token_eliminar")
+        redirect_url = request.form.get("redirect")
+
+    if request_token != user_token:
+        app.logger.warning("Intento de acceso a la funcion de eliminar citas de usuario no autenticado.")
+        return jsonify({'message': 'FORBIDDEN: NO AUTENTICADO'}), 403
+    if lock_modificar_cita.locked():
+        app.logger.warning("Intento de acceso a la funcion de eliminar citas mientras se encontraba en uso (blocked).")
+        return jsonify({'message': 'BLOQUEADO: FUNCIÓN EN USO'}), 423
+    try:
+        with lock_modificar_cita:
+            print("/eliminar_cita")
+            app.logger.info("Ejecutando operación de eliminar cita...")
+            id_cita = request.form.get("cita_id_eli")
+            print(id_cita)
+            conn = mariadb.connect(**current_user.Conection)
+            if conn is not None:
+                try:
+                    cursor = conn.cursor(dictionary=True)
+                    update_cita = """
+                            UPDATE citas
+                            SET ID_Estatus_Cita = 2
+                            WHERE id_cita = ?
+                            """
+                    params = (id_cita,)
+                    cursor.execute(update_cita, params)
+                    conn.commit()
+                    print("Cita actualizada")
+                except Exception as e:
+                    conn.rollback()
+                    raise e
+                finally:
+                    conn.close()
+
+    except Exception as e:
+        app.logger.error(f'Error en la operación de eliminar cita: {str(e)}')
+        return jsonify({'message': f'Error en la operación de eliminar cita: {str(e)}'}), 500
+    return redirect(redirect_url)
 
 @app.route("/Indice", methods=["GET"])
 def Indice():
     # return f'{current_user}, {current_user.is_authenticated} , {current_user.is_anonymous} '
     return render_template("Índice.html", current_page='Indice')
 
-#region APIs
+# region APIs
 
 @app.route("/api/citas/<year>/<month>", methods=["GET"])
 @login_required
@@ -1335,7 +1390,7 @@ def post_test(year, month, day):
             #Recepcionista y sus datos
             JOIN recepcionistas ON citas.ID_Recepcionista = recepcionistas.ID_Recepcionista
             JOIN datos_basicos AS datos_r ON recepcionistas.ID_Datos_Basicos = datos_r.ID_Datos_Basicos
-            WHERE YEAR(Fecha) = ? AND MONTH(Fecha) = ? AND DAY(Fecha) = ?
+            WHERE YEAR(Fecha) = ? AND MONTH(Fecha) = ? AND DAY(Fecha) = ? AND citas.ID_Estatus_Cita = 1;
         """
         params = (year, month, day)
         cursor.execute(query, params)
@@ -1391,6 +1446,6 @@ def consulta_privilegios():
             conn.close()
     return jsonify({"error": f"no hay conexión a la BD"})
 
-#endregion
+# endregion
 
 app.run(host='0.0.0.0', port=5000)

@@ -4,123 +4,125 @@
 
 <link rel="stylesheet" type="text/css" href="../static/css/normal.css">
 <div class="container-fluid">
-    <!-- Main content -->
-    <div
-        class="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Ingreso</h1>
-        <div class="d-flex ms-md-auto">
-            <a href="{{url_for('Ingreso')}}" class="btn btn-outline-light me-2">Iniciar sesión</a>
-            <a href="{{url_for('Registrarse')}}" class="btn btn-light">Registrarse</a>
-        </div>
+<!-- Main content -->
+<div
+    class="d-flex justify-content-center flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Ingreso</h1>
+    <div class="d-flex ms-md-auto">
+        <a href="{{url_for('Ingreso')}}" class="btn btn-outline-light me-2">Iniciar sesión</a>
+        <a href="{{url_for('Registrarse')}}" class="btn btn-light">Registrarse</a>
     </div>
-    <div class="container-fluid" style="margin-top: 50px;">
-        <div class="d-flex justify-content-center align-items-center">
-            <!-- 56px es la altura aproximada del navbar, ajusta este valor según sea necesario -->
-            <div class="col-xl-10">
-                <div class="row">
-                    <!-- Columnas para la imagen -->
-                    <div class="col-xl-4 offset-xl-1 mb-4 mb-xl-0 d-none d-lg-block">
-                        <!-- Aquí se coloca la imagen -->
-                        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg"
-                            class="img-fluid" alt="Phone image" />
-                    </div>
-                    <!-- Columnas para el formulario -->
-                    <div class="col-xl-5 offset-xl-1">
-                        <!-- Aquí comienza la sección del formulario -->
-                        <form method="post" action="/iniciar_sesion">
-                            <!-- Eliminar la clase text-end del formulario -->
-                            <h1 class="fw-bold mb-4 signin__titulo text-white text-center" data-section="singin" data-value="Sign In">
-                                Iniciar Sesión</h1>
-                            <!-- Agregar la clase text-center para centrar el título -->
-                            <!-- Email input -->
-                            <div class="form-check text-white">
-                                <input class="form-check-input" type="radio" name="elegir_sesion" id="elegir_doctor" value="doctor" checked>
-                                <label class="form-check-label" for="elegir_doctor">Iniciar sesión como doctor</label>
-                            </div>
-                            <div class="form-check mb-3 text-white">
-                                <input class="form-check-input" type="radio" name="elegir_sesion" id="elegir_recepcionista" value="recepcionista">
-                                <label class="form-check-label" for="elegir_recepcionista">Iniciar sesión como recepcionista</label>
-                            </div>
-
-                            <div class="form-outline mb-4 text-white" id="login_doctor">
-                                <label for="email" data-section="signin" data-value="Email Address">Ingrese su cédula profesional</label>
-                                <!-- Eliminar la clase text-end de la etiqueta -->
-                                <input type="text" value=""
-                                    class="form-control mt-2" id="cedula-doctor"
-                                    name="cedula-doctor" required data-bs-toggle="tooltip-bademail" data-bs-placement="left"
-                                    data-bs-custom-class="custom-tooltip"
-                                    data-bs-title="{% if email_not_found %}Correo no encontrado.{% else %}Por favor, ingresa un correo electronico con un dominio valido como: @gmail.com, @hotmail.com, @live.com, o @outlook.com.{% endif %}" />
-                            </div>
-
-                            <div class="form-outline mb-4 text-white" id="login_recepcionista">
-                                <label for="text" data-section="signin" data-value="Email Address">Ingrese su RFC</label>
-                                <!-- Eliminar la clase text-end de la etiqueta -->
-                                <input type="text" value=""
-                                    class="form-control mt-2" id="rfc-recepcionista"
-                                    name="rfc-recepcionista" required data-bs-toggle="tooltip-bademail" data-bs-placement="left"
-                                    data-bs-custom-class="custom-tooltip"
-                                    data-bs-title="{% if email_not_found %}Correo no encontrado.{% else %}Por favor, ingresa un correo electronico con un dominio valido como: @gmail.com, @hotmail.com, @live.com, o @outlook.com.{% endif %}" />
-                            </div>
-                            
-                            <!-- Password input -->
-                            <div class="form-outline mb-4 text-white" >
-                                <label for="password" data-section="singin" data-value="Password">Contraseña</label>
-                                <!-- Eliminar la clase text-end de la etiqueta -->
-                                <input type="password"
-                                    class="form-control mt-2 {% if bad_password %}is-invalid{% endif %}" id="password"
-                                    name="password" required data-bs-toggle="tooltip-badpassword"
-                                    data-bs-placement="left" data-bs-custom-class="custom-tooltip"/>
-                            </div>
-                            <div class="d-flex flex-column align-items-left mb-4 sigin__remembe0r text-white">
-                                <!-- Enlace "Forgot password?" -->
-                                <div class="">
-                                    <a data-section="singin" data-value="Don’t have an account?">¿No cuentas con una
-                                        cuenta?</a>
-                                    <a data-section="singin" data-value="check in" href=""
-                                        class="forget">Presione aquí</a>
-                                </div>
-                            </div>
-                            <!-- Submit button -->
-                            <button type="submit" class="btn__form btn btn-primary btn-lg btn-block" id="submitButton">
-                                <span data-section="singin" data-value="Sign in">Iniciar sesión</span>
-                            </button>
-                            <!-- Eliminar la clase text-end del botón -->
-                        </form>
-                        <!-- Fin del formulario -->
-                    </div>
-                    <!-- Fin de la columna -->
-                </div>
-                <!-- Fin de la fila -->
+</div>
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center" role="alert">
+            <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" width="25" height="25" viewBox="0 0 16 16" role="img" aria-label="Warning:">
+                <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+            </svg>
+            <strong>ERROR: </strong> {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+<div class="container-fluid" style="margin-top: 50px;">
+    <div class="d-flex justify-content-center align-items-center">
+        <!-- 56px es la altura aproximada del navbar, ajusta este valor según sea necesario -->
+        <div class="col-xl-10">
+            <div class="row">
+                <!-- Columnas para la imagen -->
+                <div class="col-xl-4 offset-xl-1 mb-4 mb-xl-0 d-none d-lg-block">
+                    <!-- Aquí se coloca la imagen -->
+                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg"
+                        class="img-fluid" alt="Phone image" />
+                </div>
+                <!-- Columnas para el formulario -->
+                <div class="col-xl-5 offset-xl-1">
+                    <form method="post" action="/iniciar_sesion" class=".submit-validation" novalidate>
+                        <h1 class="fw-bold mb-4 text-white text-center">Iniciar Sesión</h1>
+                        <div class="form-check text-white">
+                            <input class="form-check-input" type="radio" name="elegir_sesion" id="elegir_doctor" value="doctor" checked>
+                            <label class="form-check-label" for="elegir_doctor">Iniciar sesión como doctor</label>
+                        </div>
+                        <div class="form-check mb-3 text-white">
+                            <input class="form-check-input" type="radio" name="elegir_sesion" id="elegir_recepcionista" value="recepcionista">
+                            <label class="form-check-label" for="elegir_recepcionista">Iniciar sesión como recepcionista</label>
+                        </div>
+                        <div class="form-outline mb-4 text-white" id="login_doctor">
+                            <label for="email">Ingrese su cédula profesional</label>
+                            <div class="position-relative">
+                                <input type="text" class="form-control mt-2 .needs-validation numeric pattern" pattern="^[0-9]+$" minlength="10" maxlength="10" id="cedula-doctor" name="cedula-doctor" />
+                                <div class="invalid-tooltip">Una cédula profesional válida consiste en 10 números.</div>
+                            </div>
+                        </div>
+                        <div class="form-outline mb-4 text-white" id="login_recepcionista">
+                            <label for="text">Ingrese su RFC</label>
+                            <div class="position-relative">
+                                <input type="text" class="form-control mt-2 .needs-validation mayus" id="rfc-recepcionista" name="rfc-recepcionista" pattern="^[A-Z0-9]+$" minlength="13" maxlength="13" required />
+                                <div class="invalid-tooltip">El RFC de personas físicas es de 13 caracteres.</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Password input -->
+                        <div class="form-outline mb-4 text-white" >
+                            <label for="password" data-section="singin" data-value="Password">Contraseña</label>
+                            <div class="input-group has-validation">
+                                <input type="password" class="form-control .needs-validation simple" id="password" name="password" pattern=".{8,}" minlength="8" maxlength="20" required/>
+                                <div class="invalid-tooltip">La contraseña debe al menos tener 8 caracteres de largo.</div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex flex-column align-items-left mb-4 sigin__remembe0r text-white">
+                            <div class="">
+                                <a data-section="singin" data-value="Don’t have an account?">¿No cuentas con una
+                                    cuenta?</a>
+                                <a data-section="singin" data-value="check in" href=""
+                                    class="forget">Presione aquí</a>
+                            </div>
+                        </div>
+                        <!-- Submit button -->
+                        <button type="submit" class="btn__form btn btn-primary btn-lg btn-block" id="submitButton">
+                            <span data-section="singin" data-value="Sign in">Iniciar sesión</span>
+                        </button>
+                        <!-- Eliminar la clase text-end del botón -->
+                    </form>
+                    <!-- Fin del formulario -->
+                </div>
+                <!-- Fin de la columna -->
+            </div>
+            <!-- Fin de la fila -->
         </div>
     </div>
+</div>
 
-    <script>
-        const checkDoctor = document.getElementById('elegir_doctor') //False
-        checkDoctor.addEventListener('change', (event) => {
-            if (event.currentTarget.checked) {
-                console.log('Elegir doctor')
-                document.getElementById('login_doctor').removeAttribute('hidden')
-                document.getElementById('cedula-doctor').setAttribute('required', 'true')
-                
-                document.getElementById('login_recepcionista').setAttribute('hidden', 'true')
-                document.getElementById('rfc-recepcionista').removeAttribute('required')
-            } 
-        })
-        var event = new Event('change');
-        checkDoctor.dispatchEvent(event);
+<script src="{{url_for('static', filename='js/validaciones.js')}}"></script>
+<script>
+    const checkDoctor = document.getElementById('elegir_doctor') //False
+    checkDoctor.addEventListener('change', (event) => {
+        if (event.currentTarget.checked) {
+            console.log('Elegir doctor')
+            document.getElementById('login_doctor').removeAttribute('hidden')
+            document.getElementById('cedula-doctor').setAttribute('required', 'true')
+            
+            document.getElementById('login_recepcionista').setAttribute('hidden', 'true')
+            document.getElementById('rfc-recepcionista').removeAttribute('required')
+        } 
+    })
 
-        const checkRecepcionista = document.getElementById('elegir_recepcionista') //True
-        checkRecepcionista.addEventListener('change', (event) => {
-            if (event.currentTarget.checked) {
-                console.log('elegir recepcionista')
-                document.getElementById('login_recepcionista').removeAttribute('hidden')
-                document.getElementById('rfc-recepcionista').setAttribute('required', 'true')
-                
-                document.getElementById('login_doctor').setAttribute('hidden', 'true')
-                document.getElementById('cedula-doctor').removeAttribute('required')
-            }
-        })
+    const checkRecepcionista = document.getElementById('elegir_recepcionista') //True
+    checkRecepcionista.addEventListener('change', (event) => {
+        if (event.currentTarget.checked) {
+            console.log('elegir recepcionista')
+            document.getElementById('login_recepcionista').removeAttribute('hidden')
+            document.getElementById('rfc-recepcionista').setAttribute('required', 'true')
+            
+            document.getElementById('login_doctor').setAttribute('hidden', 'true')
+            document.getElementById('cedula-doctor').removeAttribute('required')
+        }
+    })
 
-    </script>
+    var event = new Event('change');
+    checkDoctor.dispatchEvent(event);
+</script>
 {% endblock %}

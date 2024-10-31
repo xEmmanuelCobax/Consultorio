@@ -1,0 +1,76 @@
+2024-10-31 00:58:14,453 - WARNING -  * Debugger is active!
+2024-10-31 00:58:27,247 - WARNING -  * Debugger is active!
+2024-10-31 00:58:29,841 - WARNING -  * Debugger is active!
+2024-10-31 00:58:29,863 - ERROR - Invalid session C3KKmSzEQHMaSyxAAAAA (further occurrences of this error will be logged with level INFO)
+2024-10-31 00:58:29,864 - ERROR - Invalid session C3KKmSzEQHMaSyxAAAAA (further occurrences of this error will be logged with level INFO)
+2024-10-31 00:58:34,521 - WARNING -  * Debugger is active!
+2024-10-31 00:58:41,137 - WARNING -  * Debugger is active!
+2024-10-31 00:58:42,723 - WARNING -  * Debugger is active!
+2024-10-31 00:58:44,320 - WARNING -  * Debugger is active!
+2024-10-31 00:58:46,918 - WARNING -  * Debugger is active!
+2024-10-31 00:58:50,481 - WARNING -  * Debugger is active!
+2024-10-31 00:58:58,150 - WARNING -  * Debugger is active!
+2024-10-31 00:59:03,761 - WARNING -  * Debugger is active!
+2024-10-31 00:59:31,738 - WARNING -  * Debugger is active!
+2024-10-31 00:59:33,280 - WARNING -  * Debugger is active!
+2024-10-31 00:59:37,875 - WARNING -  * Debugger is active!
+2024-10-31 01:01:38,235 - WARNING -  * Debugger is active!
+2024-10-31 01:04:20,151 - WARNING -  * Debugger is active!
+2024-10-31 01:07:28,512 - WARNING -  * Debugger is active!
+2024-10-31 01:07:30,046 - WARNING -  * Debugger is active!
+2024-10-31 01:09:26,308 - WARNING -  * Debugger is active!
+2024-10-31 01:09:31,901 - WARNING -  * Debugger is active!
+2024-10-31 01:09:33,434 - WARNING -  * Debugger is active!
+2024-10-31 01:11:36,768 - WARNING -  * Debugger is active!
+2024-10-31 01:11:38,294 - WARNING -  * Debugger is active!
+2024-10-31 01:11:42,871 - WARNING -  * Debugger is active!
+2024-10-31 01:11:50,515 - WARNING -  * Debugger is active!
+2024-10-31 01:11:53,063 - WARNING -  * Debugger is active!
+2024-10-31 01:12:07,820 - WARNING -  * Debugger is active!
+2024-10-31 01:12:22,568 - WARNING -  * Debugger is active!
+2024-10-31 01:12:48,445 - WARNING -  * Debugger is active!
+2024-10-31 01:12:59,121 - WARNING -  * Debugger is active!
+2024-10-31 01:13:00,669 - WARNING -  * Debugger is active!
+2024-10-31 01:13:00,695 - ERROR - Invalid session FzRAZ8Ri-_EVY8H7AAAA (further occurrences of this error will be logged with level INFO)
+2024-10-31 01:13:00,695 - ERROR - Invalid session FzRAZ8Ri-_EVY8H7AAAA (further occurrences of this error will be logged with level INFO)
+2024-10-31 01:13:26,638 - INFO - Ejecutando operación de eliminar cita...
+2024-10-31 01:13:35,721 - WARNING -  * Debugger is active!
+2024-10-31 01:14:13,836 - WARNING -  * Debugger is active!
+2024-10-31 01:14:50,936 - WARNING -  * Debugger is active!
+2024-10-31 01:14:55,714 - INFO - Ejecutando operación de eliminar cita...
+2024-10-31 01:15:09,643 - INFO - Ejecutando operación de eliminar cita...
+2024-10-31 01:15:13,558 - INFO - Ejecutando operación de eliminar cita...
+2024-10-31 01:15:29,048 - WARNING -  * Debugger is active!
+2024-10-31 01:15:32,635 - WARNING -  * Debugger is active!
+2024-10-31 01:15:35,233 - WARNING -  * Debugger is active!
+2024-10-31 01:15:39,713 - INFO - Ejecutando operación de eliminar cita...
+2024-10-31 01:16:17,390 - WARNING -  * Debugger is active!
+2024-10-31 01:18:11,550 - INFO - Ejecutando operación de modificar cita...
+2024-10-31 01:18:11,561 - ERROR - Error en la operación de modificar cita: unconverted data remains: :00
+2024-10-31 01:18:17,805 - INFO - Ejecutando operación de modificar cita...
+2024-10-31 01:18:17,806 - ERROR - Error en la operación de modificar cita: unconverted data remains: :00
+2024-10-31 01:24:09,542 - WARNING -  * Debugger is active!
+2024-10-31 01:25:34,543 - WARNING -  * Debugger is active!
+2024-10-31 01:25:49,343 - WARNING -  * Debugger is active!
+2024-10-31 01:25:52,924 - WARNING -  * Debugger is active!
+2024-10-31 01:26:08,902 - INFO - Ejecutando operación de eliminar cita...
+2024-10-31 01:38:06,432 - WARNING -  * Debugger is active!
+2024-10-31 01:38:10,003 - WARNING -  * Debugger is active!
+2024-10-31 01:38:12,548 - WARNING -  * Debugger is active!
+2024-10-31 01:38:42,581 - WARNING -  * Debugger is active!
+2024-10-31 01:38:45,178 - WARNING -  * Debugger is active!
+2024-10-31 01:38:54,314 - INFO - Ejecutando operación de eliminar cita...
+2024-10-31 01:39:36,548 - INFO - Ejecutando operación de eliminar cita...
+2024-10-31 01:40:37,437 - WARNING -  * Debugger is active!
+2024-10-31 01:41:23,709 - WARNING -  * Debugger is active!
+2024-10-31 01:43:04,820 - WARNING -  * Debugger is active!
+2024-10-31 01:43:48,012 - WARNING -  * Debugger is active!
+2024-10-31 01:43:50,592 - WARNING -  * Debugger is active!
+2024-10-31 01:43:56,194 - WARNING -  * Debugger is active!
+2024-10-31 01:44:11,216 - INFO - Ejecutando operación de eliminar cita...
+2024-10-31 03:50:54,320 - INFO - Ejecutando operación de agregar paciente...
+2024-10-31 03:50:54,326 - INFO - Operacion de agregar paciente Cristian Balam Cime completada correctamente
+2024-10-31 03:52:08,545 - INFO - Ejecutando operación de modificar paciente...
+2024-10-31 03:52:08,557 - INFO - Operacion de modificar paciente Cristian Balam Cime completada correctamente
+2024-10-31 03:53:02,194 - INFO - Ejecutando operación de agregar cita...
+2024-10-31 03:53:02,194 - ERROR - Error en la operación de agregar cita: type object 'datetime.datetime' has no attribute 'datetime'
