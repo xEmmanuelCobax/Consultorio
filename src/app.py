@@ -1050,23 +1050,7 @@ def eliminar_medicamento():
         app.logger.error(f'Error en la operación de agregar medicina: {str(e)}')
         return jsonify({'message': f'Error en la operación de agregar medicina: {str(e)}'}), 500
     return redirect(url_for("Inventario"))
-
-
 # endregion
-
-
-@app.route("/Ajustes", methods=["GET"])
-@login_required
-def Ajustes():
-    print(current_user.Conection)
-    # Verificar si el usuario está autenticado
-    if "Tipo_usuario" not in session:
-        print("<No hay session>")
-        return redirect(url_for("Índice"))
-
-    return render_template("Ajustes.html", current_page="Ajustes")
-
-
 @app.route("/Inicio", methods=["GET"])
 @login_required
 def Inicio():
